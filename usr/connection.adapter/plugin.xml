@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.informatica.sdk.connection.presentation.connectionPresentation" id="SNOWFLAKEV2ConnectionPresentation">
+      <connectionPresentation resourceType="com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfo" adapterClass="com.unicosolution.adapter.snowflakev2.connection.adapter.SnowflakeV2ConnectInfoAdapter"/>
+   </extension>
+   <extension point="com.informatica.sdk.connection.connectInfo" id="SNOWFLAKEV2CONNECTIONADAPTER">
+      <connectionType metaClass="com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfo" id="SNOWFLAKEV2" displayName="%connectionType.name" categoryId="com.unicosolution.database.category" description="%connectionType.description"/>
+      <category displayName="%category.name" id="com.unicosolution.database.category" description="%category.description"/>
+   </extension>
+</plugin>

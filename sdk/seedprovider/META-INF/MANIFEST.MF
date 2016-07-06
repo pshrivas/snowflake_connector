@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SnowflakeV2 Adapter Typesystem Seed Provider Bundle
+Bundle-SymbolicName: com.unicosolution.adapter.snowflakev2.seedprovider;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Unicosolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.informatica.imf,
+ com.infa.products.imf.runtime,
+ com.infa.products.basemodel.core.java,
+ com.infa.products.frameworks.exceptionframework,
+ com.informatica.sdk.seedprovider
+Export-Package: com.unicosolution.adapter.snowflakev2.typesystem

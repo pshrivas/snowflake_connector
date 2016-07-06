@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://com.unicosolution.adapter.snowflakev2.table.runtime.capability/1" xmlns:asoextension="http://com.informatica.adapter.sdkadapter.asoextension/2" xmlns:capability="http://com.unicosolution.adapter.snowflakev2.table.runtime.capability/1" xmlns:imx="http://com.informatica.imx" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://com.unicosolution.adapter.snowflakev2.table.runtime.capability/1">
+<xsd:import namespace="http://com.informatica.adapter.sdkadapter.asoextension/2" schemaLocation="com.informatica.adapter.sdkadapter.asoextension.xsd"/>
+<xsd:import namespace="http://com.informatica.imx" schemaLocation="IMX.xsd"/>
+<xsd:complexType name="TableCallCapabilityAttributesExtension">
+<xsd:complexContent>
+<xsd:extension base="asoextension:D_ModelExtensionCallCapAttributes"/>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TableCallCapabilityAttributesExtension" type="capability:TableCallCapabilityAttributesExtension"/>
+<xsd:complexType name="TableLookupCapabilityAttributesExtension">
+<xsd:complexContent>
+<xsd:extension base="asoextension:D_ModelExtensionLookupCapAttributes"/>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TableLookupCapabilityAttributesExtension" type="capability:TableLookupCapabilityAttributesExtension"/>
+<xsd:complexType name="TableReadCapabilityAttributesExtension">
+<xsd:complexContent>
+<xsd:extension base="asoextension:D_ModelExtensionReadCapAttributes">
+<xsd:attribute name="postSQL">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="postSQL." type="imx:idref"/>
+<xsd:attribute name="preSQL">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="rowLimit" type="xsd:int"/>
+<xsd:attribute name="rowLimit." type="imx:idref"/>
+<xsd:attribute name="rowOffSet" type="xsd:int"/>
+<xsd:attribute name="rowOffSet." type="imx:idref"/>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TableReadCapabilityAttributesExtension" type="capability:TableReadCapabilityAttributesExtension"/>
+<xsd:complexType name="TableWriteCapabilityAttributesExtension">
+<xsd:complexContent>
+<xsd:extension base="asoextension:D_ModelExtensionWriteCapAttributes">
+<xsd:attribute name="bulkLoad" type="xsd:boolean"/>
+<xsd:attribute name="partitionID">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="partitionID." type="imx:idref"/>
+<xsd:attribute name="truncateTargetTable" type="xsd:boolean"/>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TableWriteCapabilityAttributesExtension" type="capability:TableWriteCapabilityAttributesExtension"/>
+</xsd:schema>

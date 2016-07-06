@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SnowflakeV2 Adapter UI Wizard Bundle
+Bundle-SymbolicName: com.unicosolution.adapter.snowflakev2.ui.wizard;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Unicosolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.ui,
+ com.informatica.tools.adapters.ui.appsdk,
+ com.informatica.tools.adapters.ui.datasources,
+ com.informatica.tools.adapters.ui.sdk.connection,
+ com.informatica.tools.ui.connection,
+ com.informatica.sdk.connection,
+ com.unicosolution.adapter.snowflakev2.connection.model
+Export-Package: com.unicosolution.adapter.snowflakev2.wizard
+Bundle-Localization: i18n/plugin

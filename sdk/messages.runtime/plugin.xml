@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.informatica.sdk.i18n.messages" id="SnowflakeV2runtime">
+      <group id="SnowflakeV2" prefix="SnowflakeV2">
+         <message id="CONN_SUCC" code="200" severity="Info" text="%SnowflakeV2_CONN_SUCC_200.text" cause="%SnowflakeV2_CONN_SUCC_200.cause" action="%SnowflakeV2_CONN_SUCC_200.action"/>
+      </group>
+   </extension>
+</plugin>

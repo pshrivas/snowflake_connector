@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SnowflakeV2 Adapter Metadata Model Annotated Bundle
+Bundle-SymbolicName: com.unicosolution.adapter.snowflakev2.models.metadata.annotatedjava;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Unicosolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .
+Require-Bundle: com.infa.products.basemodel.core.annotatedjava,
+ com.infa.products.imf.annotations,
+ com.infa.products.extensions.adapter.sdk.models.sdkcanonical.annotatedjava
+Export-Package: com.unicosolution.adapter.snowflakev2.metadata.model

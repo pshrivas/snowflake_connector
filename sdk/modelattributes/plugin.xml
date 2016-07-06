@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.informatica.sdk.modelattributes.ModelAttributes" id="TABLESNOWFLAKEV2MODELATTRIBUTES">
+      <ModelClass description="SnowflakeV2_Description" displayName="SnowflakeV2_DisplayName" name="com.informatica.sdk.adapter.metadata.patternblocks.container.semantic.iface.Container" objectType="table">
+         <Icon icon="icons/Thick_DST_9_application_component_16x16.gif" iconType="Banner"/>
+         <Icon icon="icons/Thick_DST_9_application_component_16x16.gif" iconType="Iconic"/>
+         <Icon icon="icons/Thick_DST_9_application_component_16x16.gif" iconType="Default"/>
+      </ModelClass>
+      <ModelClass description="" displayName="Table" name="com.informatica.sdk.adapter.metadata.patternblocks.flatrecord.semantic.iface.FlatRecord" objectType="table">
+         <Icon icon="icons/Thick_DST_9_enterprise_table_75x66.png" iconType="Banner"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_30x30.gif" iconType="Iconic"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_16x16.gif" iconType="Default"/>
+      </ModelClass>
+      <ModelClass name="com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableRecordExtensions">
+         <ModelProperty description="" displayName="Table Type" hidden="false" substitutable="false" name="tableType" partitionOverrideable="false"/>
+      </ModelClass>
+      <ModelClass description="SnowflakeV2_Description" displayName="SnowflakeV2_DisplayName" name="com.informatica.sdk.adapter.metadata.patternblocks.field.semantic.iface.Field" objectType="table"/>
+      <ModelClass name="com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions">
+         <ModelProperty description="" displayName="Table Type" hidden="false" substitutable="false" name="isNullable" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Default Column Value" hidden="false" substitutable="false" name="defaultColValue" partitionOverrideable="false"/>
+      </ModelClass>
+      <ModelClass displayName="tableRead" name="com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableReadCapabilityAttributesExtension">
+         <ModelProperty description="" displayName="Pre SQL" hidden="false" substitutable="false" name="preSQL" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Post SQL" hidden="false" substitutable="true" name="postSQL" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Row Off Set" hidden="false" substitutable="true" name="rowOffSet" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Row Limit" hidden="false" substitutable="true" name="rowLimit" partitionOverrideable="false"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_75x66.png" iconType="Banner"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_30x30.gif" iconType="Iconic"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_16x16.gif" iconType="Default"/>
+      </ModelClass>
+      <ModelClass displayName="tableWrite" name="com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableWriteCapabilityAttributesExtension">
+         <ModelProperty description="" displayName="Truncate Target Table" hidden="false" substitutable="false" name="truncateTargetTable" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Bulk Load" hidden="false" substitutable="false" name="bulkLoad" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Partition ID" hidden="false" substitutable="true" name="partitionID" partitionOverrideable="false"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_75x66.png" iconType="Banner"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_30x30.gif" iconType="Iconic"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_table_16x16.gif" iconType="Default"/>
+      </ModelClass>
+      <ModelClass description="SnowflakeV2" displayName="SnowflakeV2" name="com.informatica.sdk.adapter.metadata.aso.semantic.iface.ComplexASO">
+         <Icon icon="icons/Thick_DST_9_enterprise_PDO_75x66.png" iconType="Banner"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_PDO_30x30.gif" iconType="Iconic"/>
+         <Icon icon="icons/Thick_DST_9_enterprise_PDO_16x16.gif" iconType="Default"/>
+      </ModelClass>
+   </extension>
+</plugin>

@@ -1,0 +1,317 @@
+<Connector definitionVersion="10.0">
+   <ConnectorDefinition uuid="898ba5dc-1c68-491d-a27e-982f40c4ad70" connectorCategory="Database" connectorShortName="SnowflakeV2" connectorType="ENTERPRISE_APP" version="1.0.0" poolType="NONE" vendorShortName="Unicosolution" vendorLongName="Unicosolution" name="SnowflakeV2">
+      <Connections>
+         <Connection>
+            <name>SnowflakeV2</name>
+            <ConnectionAttributes>
+               <ConnectionAttribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="user" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="user" defaultDisplayName="Username" description=""/>
+               <ConnectionAttribute isMandatory="true" isEncrypted="true" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="password" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="password" defaultDisplayName="Password" description=""/>
+               <ConnectionAttribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="db" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="db" defaultDisplayName="DB" description=""/>
+               <ConnectionAttribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="warehouse" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="warehouse" defaultDisplayName="Warehouse" description=""/>
+               <ConnectionAttribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="account" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="account" defaultDisplayName="Account" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="authenticator" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="authenticator" defaultDisplayName="Authenticator" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="role" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="role" defaultDisplayName="Role" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="schema" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="schema" defaultDisplayName="Schema" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="20" minLength="0" type="STRING" name="tracing" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="tracing" defaultDisplayName="Tracing" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="passcode" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcode" defaultDisplayName="Passcode" description=""/>
+               <ConnectionAttribute defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="BOOLEAN" name="passcodeInPassword" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcodeInPassword" defaultDisplayName="PasscodeInPassword" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="8" minLength="0" type="STRING" name="port" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="port" defaultDisplayName="Port" description=""/>
+            </ConnectionAttributes>
+            <ConnectionDisplayDefinitions displayType="DEFAULT">
+               <pageList pageName="Connection Page" pageDescription="Connection Page">
+                  <groupList name="Connection Section" description="Connection Section" toolTip="Connection Section" title="Connection Section">
+                     <displayAttributeList displayName="Username" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="user" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="user" defaultDisplayName="Username" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Password" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute isMandatory="true" isEncrypted="true" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="password" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="password" defaultDisplayName="Password" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="DB" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="db" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="db" defaultDisplayName="DB" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Warehouse" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="warehouse" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="warehouse" defaultDisplayName="Warehouse" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Account" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="account" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="account" defaultDisplayName="Account" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Authenticator" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="50" minLength="0" type="STRING" name="authenticator" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="authenticator" defaultDisplayName="Authenticator" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Role" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="role" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="role" defaultDisplayName="Role" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Schema" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="schema" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="schema" defaultDisplayName="Schema" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Tracing" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="20" minLength="0" type="STRING" name="tracing" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="tracing" defaultDisplayName="Tracing" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Passcode" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="passcode" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcode" defaultDisplayName="Passcode" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="PasscodeInPassword" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="BOOLEAN" name="passcodeInPassword" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcodeInPassword" defaultDisplayName="PasscodeInPassword" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Port" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="8" minLength="0" type="STRING" name="port" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="port" defaultDisplayName="Port" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                  </groupList>
+               </pageList>
+            </ConnectionDisplayDefinitions>
+         </Connection>
+      </Connections>
+      <TypeSystem name="SnowflakeV2Unicosolutiontypesystem" mappingType="platform">
+         <NativeDataTypes>
+            <NativeDataType semanticType="Length" name="String" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="String" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Integer" name="INTEGER" comments="" maxPrecision="10" defaultPrecision="10" editablePrecision="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticIntegerType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="integer" nativeDataType="INTEGER" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="true"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Date" name="TIMESTAMP" comments="" yearSupported="true" monthSupported="true" daySupported="true" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="false" maxScale="6" defaultScale="6" editableScale="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="TIMESTAMP" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Float" name="DOUBLE" comments="" maxPrecision="15" defaultPrecision="15" editablePrecision="true" precisionRadix="binary" maxExponent="252" minExponent="252" exponentRadix="decimal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticFloatType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="double" nativeDataType="DOUBLE" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="TIMESTAMPNTZ" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="TIMESTAMPNTZ" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="TIMESTAMPNTZ" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="TIMESTAMPNTZ" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Integer" name="NUMBER" comments="" maxPrecision="38" defaultPrecision="38" editablePrecision="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticIntegerType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="integer" nativeDataType="NUMBER" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="VARCHAR" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="VARCHAR" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="true"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Date" name="DATE" comments="" yearSupported="true" monthSupported="true" daySupported="true" hourSupported="false" minuteSupported="false" secondSupported="false" timezoneSupported="false" maxScale="10" defaultScale="10" editableScale="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="DATE" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="true"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Float" name="FLOAT" comments="" maxPrecision="15" defaultPrecision="15" editablePrecision="false" precisionRadix="decimal" maxExponent="11" minExponent="0" exponentRadix="binary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticFloatType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="double" nativeDataType="FLOAT" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="true"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="VARIANT" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="VARIANT" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="VARIANT" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="true"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="OBJECT" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="OBJECT" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="OBJECT" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="ARRAY" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="ARRAY" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="ARRAY" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Length" name="BOOLEAN" comments="" maxLength="5" defaultLength="5" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="integer" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Date" name="TIME" comments="" yearSupported="false" monthSupported="false" daySupported="false" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="false" maxScale="6" defaultScale="6" editableScale="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="TIME" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Date" name="TIMESTAMPLTZ" comments="" yearSupported="true" monthSupported="true" daySupported="true" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="true" maxScale="9" defaultScale="9" editableScale="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="TIMESTAMPLTZ" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+            <NativeDataType semanticType="Date" name="TIMESTAMPTZ" comments="" yearSupported="true" monthSupported="true" daySupported="true" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="true" maxScale="9" defaultScale="9" editableScale="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
+               <NativeToPlatformDataTypeMaps>
+                  <NativeToPlatformDataTypeMap platformDataType="date" nativeDataType="TIMESTAMPTZ" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+               </NativeToPlatformDataTypeMaps>
+            </NativeDataType>
+         </NativeDataTypes>
+      </TypeSystem>
+      <CommonMetadataPattern templateType="TypeA">
+         <PatternObjects>
+            <PatternObject displayName="Folder" objectType="Packages" name="Packages" patternObjectType="Packages" supported="false">
+               <iconSet bannerIconName="Thick_DST_9_enterprise_package_16x16.gif" iconicIconName="Thick_DST_9_enterprise_package_16x16.gif" dfltIconName="Thick_DST_9_enterprise_package_16x16.gif" defaultSet="false"/>
+            </PatternObject>
+            <PatternObject displayName="Foreign Key" name="SharedDataRelationships" patternObjectType="SharedDataRelationships" supported="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="relationshipDefination"/>
+         </PatternObjects>
+      </CommonMetadataPattern>
+      <MetadataPattern name="SnowflakeV2_table_Pattern" templateType="TypeA">
+         <PatternObjects>
+            <PatternObject description="SnowflakeV2_Description" displayName="SnowflakeV2_DisplayName" objectType="table" name="Containers" patternObjectType="Containers" supported="true">
+               <iconSet bannerIconName="Thick_DST_9_application_component_16x16.gif" iconicIconName="Thick_DST_9_application_component_16x16.gif" dfltIconName="Thick_DST_9_application_component_16x16.gif" defaultSet="false"/>
+            </PatternObject>
+            <PatternObject description="SnowflakeV2_Description" displayName="Folder" objectType="table" name="Packages" patternObjectType="Packages" supported="false">
+               <iconSet bannerIconName="Thick_DST_9_enterprise_package_16x16.gif" iconicIconName="Thick_DST_9_enterprise_package_16x16.gif" dfltIconName="Thick_DST_9_enterprise_package_16x16.gif" defaultSet="false"/>
+            </PatternObject>
+            <PatternObject displayName="Foreign Key" name="SharedDataRelationships" patternObjectType="SharedDataRelationships" supported="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="relationshipDefination"/>
+            <PatternObject description="" displayName="Table" objectType="table" name="table" patternObjectType="FlatRecords" supported="true" generateInNewerConvention="true" nullConnectionAllowed="false" anonDSOSupported="false" CDOSupported="false" complexASOSupported="false" simpleASOSupported="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="nativeMetadataObjectDefinition">
+               <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
+               <NativeMetadataObjectExtensions>
+                  <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="tableType" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Table Type" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+               </NativeMetadataObjectExtensions>
+               <nativeObjectFieldDefinition>tableField</nativeObjectFieldDefinition>
+               <ConnectionReference>
+                  <connections>SnowflakeV2</connections>
+               </ConnectionReference>
+               <metadataImportConfig multiSelectImportSupported="true" filterByDescImportSupported="false" filterByNameImportSupported="true" filterByPathImportSupported="false" skipDescriptionsImportSupported="false" showEntityRequested="true" showHierarchyOption="true" showRelatedRecsOption="false"/>
+               <operationTypes implicitlyCreated="false" interactionPattern="Connections" multiCapabilitySupport="single" name="tableRead">
+                  <readCapability displayName="tableRead">
+                     <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="preSQL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Pre SQL" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="postSQL" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Post SQL" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="INTEGER" name="rowOffSet" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Row Off Set" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="INTEGER" name="rowLimit" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Row Limit" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <inputProjectSupport name="tableRead">
+                        <filterOperation supportsNativeFilter="true" supportsInfaFilter="SnowflakeV2ExpressionSupport"/>
+                        <joinOperation supportsNativeJoin="true" supportsInfaJoin="SnowflakeV2ExpressionSupport" implicitJoin="false"/>
+                        <projectionOperation dropFields="true" projectionAtNativeSource="false" projectionAtPlatform="true">
+                           <ProjectionOperationEnums enums="ALL"/>
+                           <ProjectionOperationEnums enums="DISTINCT"/>
+                           <ProjectionOperationEnums enums="ANY"/>
+                           <ProjectionOperationEnums enums="FIRST ROW"/>
+                           <ProjectionOperationEnums enums="LAST ROW"/>
+                        </projectionOperation>
+                        <sortOperation sortAtNativeSource="false" sortAtPlatform="true"/>
+                     </inputProjectSupport>
+                     <partitioningSupport userPartitioning="true" autoPartitioning="true">
+                        <PartitioningStrategy strategy="ArbitraryPartitioning"/>
+                        <PartitioningStrategy strategy="RangePartitioning"/>
+                     </partitioningSupport>
+                  </readCapability>
+                  <lookupCapability lookupType="BASIC">
+                     <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
+                  </lookupCapability>
+                  <supportedPlatforms>
+                     <supportedPlatform>JAVA</supportedPlatform>
+                  </supportedPlatforms>
+               </operationTypes>
+               <operationTypes implicitlyCreated="false" interactionPattern="Connections" multiCapabilitySupport="single" name="tableWrite">
+                  <writeCapability displayName="tableWrite">
+                     <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
+                     <attributes defaultValue="true" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="truncateTargetTable" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Truncate Target Table" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="true" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="bulkLoad" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Bulk Load" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="partitionID" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Partition ID" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <outputProjectSupport name="tableWrite">
+                        <projectionOperation dropFields="true" projectionAtNativeSource="false" projectionAtPlatform="false"/>
+                     </outputProjectSupport>
+                     <partitioningSupport userPartitioning="false" autoPartitioning="true"/>
+                  </writeCapability>
+                  <supportedPlatforms>
+                     <supportedPlatform>JAVA</supportedPlatform>
+                  </supportedPlatforms>
+               </operationTypes>
+               <metadataWriteOptions supportCreate="true" supportUpdate="true" supportDelete="true">
+                  <writeDialogOptions displayUpdateElseCreate="true" displayDropAndCreate="true"/>
+               </metadataWriteOptions>
+            </PatternObject>
+            <PatternObject description="SnowflakeV2_Description" displayName="SnowflakeV2_DisplayName" objectType="table" name="tableField" patternObjectType="Fields" supported="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="nativeObjectFieldDefinition">
+               <fieldExtensions>
+                  <attributes defaultValue="true" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="isNullable" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Table Type" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                  <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="defaultColValue" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Default Column Value" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+               </fieldExtensions>
+            </PatternObject>
+         </PatternObjects>
+      </MetadataPattern>
+   </ConnectorDefinition>
+   <ConnectorWorkflow>
+      <WorkflowTasks>
+         <WorkflowTask id="GENERATE_MESSAGES_MESSAGES" taskType="GENERATE_MESSAGES" componentName="MESSAGES" status="MESSAGES_GENERATION" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="CONNECTION_MODEL_SnowflakeV2" taskType="CONNECTION_MODEL" componentName="SnowflakeV2" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="CONNECTION_PRESENTATION_SnowflakeV2" taskType="CONNECTION_PRESENTATION" componentName="SnowflakeV2" status="GENERATED" taskKind="CodeGenerationTask">
+            <DepenendentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="TEST_CONNECTION_SnowflakeV2" taskType="TEST_CONNECTION" componentName="SnowflakeV2" status="NONE" taskKind="TestTask">
+            <DepenendentTasks>
+               <dependentTasks>CONNECTION_PRESENTATION_SnowflakeV2</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem" taskType="TYPESYSTEM" componentName="SnowflakeV2Unicosolutiontypesystem" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="METADATA_ADAPTER_SnowflakeV2_table_Pattern" taskType="METADATA_ADAPTER" componentName="SnowflakeV2_table_Pattern" status="GENERATED" taskKind="CodeGenerationTask">
+            <DepenendentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>TEST_CONNECTION_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="METADATA_DEFINITION_SnowflakeV2_table_Pattern" taskType="METADATA_DEFINITION" componentName="SnowflakeV2_table_Pattern" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="TEST_NMO_METADATA_table" taskType="TEST_NMO_METADATA" componentName="table" status="NONE" taskKind="TestTask">
+            <DepenendentTasks>
+               <dependentTasks>METADATA_ADAPTER_SnowflakeV2_table_Pattern</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="NMO_METADATA_MODEL_table" taskType="NMO_METADATA_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_METADATA_FIELD_MODEL_table" taskType="NMO_METADATA_FIELD_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_OPERATIONS_table" taskType="NMO_RUNTIME_OPERATIONS" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_MODEL_table" taskType="NMO_RUNTIME_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="TEST_NMO_READ_table" taskType="TEST_NMO_READ" componentName="table" status="NONE" taskKind="TestTask">
+            <DepenendentTasks>
+               <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="TEST_NMO_WRITE_table" taskType="TEST_NMO_WRITE" componentName="table" status="NONE" taskKind="TestTask">
+            <DepenendentTasks>
+               <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
+            <DepenendentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
+      </WorkflowTasks>
+   </ConnectorWorkflow>
+   <ProjectConfiguration>
+      <BuildConfigurations>
+         <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
+            <JavaLibraryReferences>
+               <JavaLibraryReference file="snowflake_jdbc" canShip="true"/>
+            </JavaLibraryReferences>
+         </JavaBuildConfiguration>
+         <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
+            <JavaLibraryReferences>
+               <JavaLibraryReference file="snowflake_jdbc" canShip="true"/>
+            </JavaLibraryReferences>
+         </JavaBuildConfiguration>
+      </BuildConfigurations>
+   </ProjectConfiguration>
+   <NmoSwaggers/>
+</Connector>

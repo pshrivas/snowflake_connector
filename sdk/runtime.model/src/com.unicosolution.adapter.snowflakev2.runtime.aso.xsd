@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://com.unicosolution.adapter.snowflakev2.runtime.aso/1" xmlns:aso="http://com.informatica.adapter.sdkadapter.aso/2" xmlns:aso1="http://com.unicosolution.adapter.snowflakev2.runtime.aso/1" xmlns:imx="http://com.informatica.imx" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://com.unicosolution.adapter.snowflakev2.runtime.aso/1">
+<xsd:import namespace="http://com.informatica.adapter.sdkadapter.aso/2" schemaLocation="com.informatica.adapter.sdkadapter.aso.xsd"/>
+<xsd:import namespace="http://com.informatica.imx" schemaLocation="IMX.xsd"/>
+<xsd:complexType name="ComplexASO">
+<xsd:complexContent>
+<xsd:extension base="aso:D_ComplexASO"/>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ComplexASO" type="aso1:ComplexASO"/>
+</xsd:schema>

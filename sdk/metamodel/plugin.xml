@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="com.informatica.sdk.metamodel.metamodel" id="TABLESNOWFLAKEV2METAMODEL">
+      <metaModel metaModelName="SnowflakeV2 Adapter Connection, NMO and ASO Models-MetaModels">
+         <package packageName="com.unicosolution.adapter.snowflakev2.connection">
+            <metaClass baseMetaClass="com.informatica.metadata.infasdk.connectinfo.sdkadapter.SDKConnectInfo" metaClassName="com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfo" name="SnowflakeV2 Connect Info"/>
+            <metaClass baseMetaClass="com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.SDKConnectInfoModelExtension" metaClassName="com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension" name="SnowflakeV2 Connect Info Extension"/>
+         </package>
+         <package packageName="com.unicosolution.adapter.snowflakev2.table.metadata">
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.logical.L_ModelExtensionFieldBase" metaClassName="com.unicosolution.adapter.snowflakev2.table.metadata.TableFieldExtensions" name="SnowflakeV2 Field Extension"/>
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.logical.L_ModelExtensionNode" metaClassName="com.unicosolution.adapter.snowflakev2.table.metadata.TableRecordExtensions" name="SnowflakeV2 Record Extension"/>
+         </package>
+         <package packageName="com.unicosolution.adapter.snowflakev2.runtime.aso">
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.aso.D_ComplexASO" metaClassName="com.unicosolution.adapter.snowflakev2.runtime.aso.ComplexASO" name="SnowflakeV2 Complex ASO"/>
+         </package>
+         <package packageName="com.unicosolution.adapter.snowflakev2.table.runtime.capability">
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.asoextension.D_ModelExtensionWriteCapAttributes" metaClassName="com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension" name="SnowflakeV2 Write Capability Attributes"/>
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.asoextension.D_ModelExtensionReadCapAttributes" metaClassName="com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableReadCapabilityAttributesExtension" name="SnowflakeV2 Read Capability Attributes"/>
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.asoextension.D_ModelExtensionLookupCapAttributes" metaClassName="com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableLookupCapabilityAttributesExtension" name="SnowflakeV2 Lookup Capability Attributes"/>
+            <metaClass baseMetaClass="com.informatica.adapter.sdkadapter.asoextension.D_ModelExtensionCallCapAttributes" metaClassName="com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableCallCapabilityAttributesExtension" name="SnowflakeV2 Call Capability Attributes"/>
+         </package>
+      </metaModel>
+   </extension>
+</plugin>

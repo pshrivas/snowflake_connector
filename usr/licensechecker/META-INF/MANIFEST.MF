@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SnowflakeV2 Adapter License Checker Bundle
+Bundle-SymbolicName: com.unicosolution.adapter.snowflakev2.licensechecker;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Unicosolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.informatica.products.sdk,
+ org.eclipse.osgi
+Export-Package: com.unicosolution.adapter.snowflakev2.licensechecker

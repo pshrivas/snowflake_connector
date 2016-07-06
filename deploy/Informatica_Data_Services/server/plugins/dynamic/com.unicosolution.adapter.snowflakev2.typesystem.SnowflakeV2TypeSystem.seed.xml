@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<imx:IMX xmlns:imx="http://com.informatica.imx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" serializationSpecVersion="6.0" crcEnabled="0" xmlns:directmaps="http://com.informatica.metadata.common.typesystem.directmaps/2" versiondirectmaps="2.1.0" xmlns:description="http://com.informatica.metadata.common.description/2" versiondescription="2.1.0" xmlns:typesystem="http://com.informatica.metadata.common.typesystem/2" versiontypesystem="2.2.0" xmlns:core="http://com.informatica.metadata.common.core/2" versioncore="2.1.1" xmlns:types="http://com.informatica.metadata.common.types/2" versiontypes="2.3.0" xmlns:storagesemantics="http://com.informatica.metadata.common.typesystem.storagesemantics/2" versionstoragesemantics="2.1.0" xsi:schemaLocation="http://com.informatica.imx IMX.xsd http://com.informatica.metadata.common.typesystem.directmaps/2 com.informatica.metadata.common.typesystem.directmaps.xsd http://com.informatica.metadata.common.description/2 com.informatica.metadata.common.description.xsd http://com.informatica.metadata.common.typesystem/2 com.informatica.metadata.common.typesystem.xsd http://com.informatica.metadata.common.core/2 com.informatica.metadata.common.core.xsd http://com.informatica.metadata.common.types/2 com.informatica.metadata.common.types.xsd http://com.informatica.metadata.common.typesystem.storagesemantics/2 com.informatica.metadata.common.typesystem.storagesemantics.xsd">
+<typesystem:TypeSystem imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem" name="SNOWFLAKEV2">
+<annotations>
+<Annotation imx:id="ID_1" xsi:type="description:Description" body="SnowflakeV2+Adapter+Type+System"/>
+</annotations>
+<dataTypes>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FString" xsi:type="typesystem:DataType" name="String" displayName="String">
+<semantic xsi:type="storagesemantics:LengthStorageSemantic" defaultLength="255" editableLength="true" lengthUnit="characters" maxLength="65536" variableAllocation="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FINTEGER" xsi:type="typesystem:DataType" name="INTEGER" displayName="INTEGER">
+<semantic xsi:type="storagesemantics:IntegerStorageSemantic" defaultPrecision="10" editablePrecision="true" maxPrecision="10"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FTIMESTAMP" xsi:type="typesystem:DataType" name="TIMESTAMP" displayName="TIMESTAMP">
+<semantic xsi:type="storagesemantics:GregorianTimeStorageSemantic" daySupported="true" defaultScale="6" editableScale="true" hourSupported="true" maxScale="6" minuteSupported="true" monthSupported="true" secondSupported="true" yearSupported="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FDOUBLE" xsi:type="typesystem:DataType" name="DOUBLE" displayName="DOUBLE">
+<semantic xsi:type="storagesemantics:FloatStorageSemantic" defaultPrecision="15" editablePrecision="true" exponentMax="252" exponentMin="252" exponentRadix="decimal" maxPrecision="15"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FNUMBER" xsi:type="typesystem:DataType" name="NUMBER" displayName="NUMBER">
+<semantic xsi:type="storagesemantics:IntegerStorageSemantic" defaultPrecision="38" editablePrecision="true" maxPrecision="38"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FVARCHAR" xsi:type="typesystem:DataType" name="VARCHAR" displayName="VARCHAR">
+<semantic xsi:type="storagesemantics:LengthStorageSemantic" defaultLength="255" editableLength="true" lengthUnit="characters" maxLength="65536" variableAllocation="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FDATE" xsi:type="typesystem:DataType" name="DATE" displayName="DATE">
+<semantic xsi:type="storagesemantics:GregorianTimeStorageSemantic" daySupported="true" defaultScale="10" editableScale="true" maxScale="10" monthSupported="true" yearSupported="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FFLOAT" xsi:type="typesystem:DataType" name="FLOAT" displayName="FLOAT">
+<semantic xsi:type="storagesemantics:FloatStorageSemantic" defaultPrecision="15" editablePrecision="true" exponentMax="11" maxPrecision="15" precisionRadix="decimal"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FVARIANT" xsi:type="typesystem:DataType" name="VARIANT" displayName="VARIANT">
+<semantic xsi:type="storagesemantics:LengthStorageSemantic" defaultLength="255" editableLength="true" lengthUnit="characters" maxLength="65536" variableAllocation="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FOBJECT" xsi:type="typesystem:DataType" name="OBJECT" displayName="OBJECT">
+<semantic xsi:type="storagesemantics:LengthStorageSemantic" defaultLength="255" editableLength="true" lengthUnit="characters" maxLength="65536" variableAllocation="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FARRAY" xsi:type="typesystem:DataType" name="ARRAY" displayName="ARRAY">
+<semantic xsi:type="storagesemantics:LengthStorageSemantic" defaultLength="255" editableLength="true" lengthUnit="characters" maxLength="65536" variableAllocation="true"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FBOOLEAN" xsi:type="typesystem:DataType" name="BOOLEAN" displayName="BOOLEAN">
+<semantic xsi:type="storagesemantics:IntegerStorageSemantic" defaultPrecision="3" editablePrecision="true" maxPrecision="3"/>
+</DataType>
+<DataType imx:id="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FTIME" xsi:type="typesystem:DataType" name="TIME" displayName="TIME">
+<semantic xsi:type="storagesemantics:GregorianTimeStorageSemantic" defaultScale="6" editableScale="true" hourSupported="true" maxScale="6" minuteSupported="true" secondSupported="true"/>
+</DataType>
+</dataTypes>
+<ownedMaps>
+<TypeSystemMap imx:id="ID_15" xsi:type="directmaps:DirectTypeSystemMap" to="ID_16">
+<dataTypeMaps>
+<DataTypeMap imx:id="ID_17" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_18" localType="ID_19"/>
+<DataTypeMap imx:id="ID_20" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_21" localType="ID_22"/>
+<DataTypeMap imx:id="ID_23" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_24" localType="ID_25"/>
+<DataTypeMap imx:id="ID_26" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_21" localType="ID_27"/>
+<DataTypeMap imx:id="ID_28" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_29" localType="ID_30"/>
+<DataTypeMap imx:id="ID_31" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_29" localType="ID_32"/>
+<DataTypeMap imx:id="ID_33" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_34" localType="ID_35"/>
+<DataTypeMap imx:id="ID_36" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_24" localType="ID_37"/>
+<DataTypeMap imx:id="ID_38" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_21" localType="ID_39"/>
+<DataTypeMap imx:id="ID_40" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_18" localType="ID_41"/>
+<DataTypeMap imx:id="ID_42" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_21" localType="ID_43"/>
+<DataTypeMap imx:id="ID_44" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_29" localType="ID_45"/>
+<DataTypeMap imx:id="ID_46" xsi:type="directmaps:DataTypeMap" bestMapFromLocal="true" foreignType="ID_24" localType="ID_47"/>
+</dataTypeMaps>
+</TypeSystemMap>
+</ownedMaps>
+</typesystem:TypeSystem>
+<imx:proxies>
+<proxy imx:id="ID_16" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem" type="typesystem:TypeSystem" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_18" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem%2Fdouble" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_19" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FDOUBLE" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_21" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem%2Ftext" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_22" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FARRAY" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_24" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem%2Finteger" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_25" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FBOOLEAN" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_27" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FOBJECT" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_29" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem%2Fdate%2Ftime" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_30" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FDATE" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_32" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FTIMESTAMP" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_34" objectId="smd:com.informatica.metadata.seed.platform.Platform.typesystem%2Fstring" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_35" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FVARCHAR" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_37" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FINTEGER" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_39" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FString" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_41" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FFLOAT" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_43" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FVARIANT" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_45" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FTIME" type="typesystem:DataType" xsi:type="imx:proxy"/>
+<proxy imx:id="ID_47" objectId="smd:com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem.typesystem%2FNUMBER" type="typesystem:DataType" xsi:type="imx:proxy"/>
+</imx:proxies>
+</imx:IMX>

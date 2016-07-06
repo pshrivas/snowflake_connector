@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SnowflakeV2 Adapter Connection Adapter Bundle
+Bundle-SymbolicName: com.unicosolution.adapter.snowflakev2.connection.adapter;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Unicosolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .,
+ lib/snowflake_jdbc.jar
+Require-Bundle: com.informatica.sdk.connection,
+ com.informatica.sdk.connection.presentation,
+ org.eclipse.osgi,
+ com.unicosolution.adapter.snowflakev2.messages.design,
+ com.unicosolution.adapter.snowflakev2.connection.model,
+ com.informatica.sdk.i18n.messages,
+ com.informatica.sdk.exceptionMgr
+Export-Package: com.unicosolution.adapter.snowflakev2.connection.adapter
+Bundle-Localization: i18n/plugin

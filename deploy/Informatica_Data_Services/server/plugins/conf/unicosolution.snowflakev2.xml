@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="com.unicosolution.adapter.snowflakev2" label="SnowflakeV2 Adapter Feature" version="1.0.0" provider-name="Unicosolution" type="adapter">
+   <description url="http://www.example.com/description">description</description>
+   <copyright url="http://www.example.com/copyright">copyright</copyright>
+   <license url="http://www.example.com/license">license</license>
+   <plugin id="com.unicosolution.adapter.snowflakev2.adapter.contribution" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.connection.model" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.connection.adapter" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.seedprovider" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.typesystem" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.metadata.model" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.metadata.semantic" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.runtime.model" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.runtime.semantic" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.metamodel" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.metadata.adapter" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.modelattributes" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.licensechecker" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.libraryInfo" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.messages.design" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.messages.runtime" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+   <plugin id="com.unicosolution.adapter.snowflakev2.runtime.adapter" download-size="0" install-size="0" version="1.0.0" unpack="false"/>
+</feature>

@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+; replace 10.0.0 with the appropriate product version
+[HKEY_LOCAL_MACHINE\SOFTWARE\Informatica\PowerMart Client Tools\10.0.0\Plugins\Informatica\CloudAdapters\898ba5dc-1c68-491d-a27e-982f40c4ad70]
+"Flags"="3"
+"PluginId"="900100"
+"PluginName"="SnowflakeV2"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Informatica\PowerMart Client Tools\10.0.0\Plugins\Informatica]
+"PC_GENERIC"="pcclient.dll"
