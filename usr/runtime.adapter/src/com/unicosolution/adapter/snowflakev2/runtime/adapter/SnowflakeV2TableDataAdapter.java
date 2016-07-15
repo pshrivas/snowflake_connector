@@ -58,6 +58,7 @@ import com.informatica.sdk.exceptions.SDKException;
 import com.informatica.sdk.adapter.javasdk.dataadapter.ReadAttributes;
 import com.informatica.sdk.adapter.javasdk.dataadapter.WriteAttributes;
 import com.informatica.sdk.adapter.javasdk.dataaccess.DataAttributes;
+import com.snowflake.client.jdbc.internal.amazonaws.util.json.JSONObject;
 import com.snowflake.client.jdbc.internal.fasterxml.jackson.databind.Module.SetupContext;
 import com.unicosolution.adapter.snowflakev2.runtimemessages.*;
 import com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableWriteCapabilityAttributesExtension;
@@ -873,7 +874,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				List<Object> datarow = new ArrayList<Object>();
 				for (int i = 0; i < connectedFields.size(); i++) {
 					String dataType = connectedFields.get(i).field.getNativeFieldRef().getDataType();
-					if ("BOOLEAN".equalsIgnoreCase(dataType)) {
+					if ("BOOLEAN".equalsIgnoreCase(dataType) 
+							|| "OBJECT".equalsIgnoreCase(dataType)) {
 						datarow.add(rs.getString(i + 1));
 					} else {
 						datarow.add(rs.getObject(i + 1));
@@ -942,12 +944,34 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						pDataAttributes.setIndicator(EIndicator.NULL);
 					} else if ("BOOLEAN".equalsIgnoreCase(nativeType)) {
 						String boolValue = data.toString();
+
+						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								"setDataToPlatform:: boolValue : " + boolValue +
+								" pDataAttributes.getIndicator() : " + pDataAttributes.getIndicator());
+
 						if ("true".equalsIgnoreCase(boolValue) || "t".equalsIgnoreCase(boolValue)
 								|| "on".equalsIgnoreCase(boolValue) || "1".equalsIgnoreCase(boolValue)
-								|| "y".equalsIgnoreCase(boolValue) || "yes".equalsIgnoreCase(boolValue)) {
+								|| "y".equalsIgnoreCase(boolValue) || "yes".equalsIgnoreCase(boolValue)
+								|| "\"true\"".equalsIgnoreCase(boolValue)) {
 							data = "true";
 						} else {
 							data = "false";
+						}
+						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								"setDataToPlatform:: data : " + data);
+
+					} else if ("OBJECT".equalsIgnoreCase(nativeType)) {
+
+						String strData = (String) data;
+						try {
+							JSONObject jsonData = new JSONObject(strData);
+							data = jsonData.toString();
+
+						} catch (Exception e) {
+							data = ((String) data).replaceAll("\n", "");
+
+							//data = ((String) data).replaceAll("\n", "")
+							//	.replaceAll("\\\"", "\"");
 						}
 					} else {
 						String text = data.toString();
@@ -974,6 +998,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
                     	}
 					} else {
 						dataSession.setStringData((String) data, pDataAttributes);
+                		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								" After setting data to session, pDataAttributes.getIndicator() : " + 
+										pDataAttributes.getIndicator());
 					}
 				} else if (dataType.compareToIgnoreCase("double") == 0) {
 					if (data instanceof Double) {
@@ -1149,7 +1176,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		//Checking the first row is good enough
 		int operationType = runtimeMd.getRowIUDIndicator(0);
 		
-		//operationType = EIUDIndicator.INSERT; //Only for testing
+		//operationType = EIUDIndicator.UPDATE; //Only for testing
 		
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "Operation Type: " + operationType);
 
@@ -1371,6 +1398,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 
 			if (reject) { // Skip row query formation
+				rowsStatInfo.incrementRejected(1);
 				continue;
 			}
 
@@ -2374,14 +2402,21 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				if (pDataAttributes.getIndicator() == EIndicator.NULL) {
 					pstmt.setNull(index, Types.BOOLEAN);
 				} else {
+					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+							"setDataValueToNativeSink:: strDataValue : " + strDataValue);
+
 					if ("t".equalsIgnoreCase(strDataValue) || "true".equalsIgnoreCase(strDataValue)
 							|| "yes".equalsIgnoreCase(strDataValue) || "y".equalsIgnoreCase(strDataValue)
-							|| "on".equalsIgnoreCase(strDataValue) || "1".equalsIgnoreCase(strDataValue)) {
+							|| "on".equalsIgnoreCase(strDataValue) || "1".equalsIgnoreCase(strDataValue)
+							|| "\"true\"".equalsIgnoreCase(strDataValue)) {
 						boolValue = true;
 					} else {
 						boolValue = false;
 					}
 	
+					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+							"setDataValueToNativeSink:: boolValue : " + boolValue);
+
 					pstmt.setBoolean(index, boolValue);
 					pDataAttributes.setIndicator((short) 0);
 				}

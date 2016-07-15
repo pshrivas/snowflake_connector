@@ -65,7 +65,7 @@
          <NativeDataTypes>
             <NativeDataType semanticType="Length" name="String" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
                <NativeToPlatformDataTypeMaps>
-                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="String" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="String" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
                </NativeToPlatformDataTypeMaps>
             </NativeDataType>
             <NativeDataType semanticType="Integer" name="INTEGER" comments="" maxPrecision="10" defaultPrecision="10" editablePrecision="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticIntegerType">
@@ -130,9 +130,7 @@
             </NativeDataType>
             <NativeDataType semanticType="Length" name="BOOLEAN" comments="" maxLength="5" defaultLength="5" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
                <NativeToPlatformDataTypeMaps>
-                  <NativeToPlatformDataTypeMap platformDataType="integer" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
                   <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
-                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
                </NativeToPlatformDataTypeMaps>
             </NativeDataType>
             <NativeDataType semanticType="Date" name="TIME" comments="" yearSupported="false" monthSupported="false" daySupported="false" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="false" maxScale="6" defaultScale="6" editableScale="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">

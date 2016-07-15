@@ -371,7 +371,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		} else if (dType.startsWith("TIME")) {
 			field.setPrecision(38);
 		} else if (dType.equalsIgnoreCase("BOOLEAN")) {
-			field.setPrecision(5);
+			field.setPrecision(7);
 		} else if (dType.equalsIgnoreCase("OBJECT")) {
 			field.setPrecision(65536);
 		} else if (dType.equalsIgnoreCase("ARRAY")) {
