@@ -41,11 +41,6 @@ import java.util.Collections;
 public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtensionReadCapAttributes implements SL_Obj, SEMTableReadCapabilityAttributesExtension
 {
 
-    // Unique property IDs for use with generic versions of get/set/add/remove/(etc):
-    public static final int PRESQL_ID = 195095397;
-    public static final int POSTSQL_ID = 22973336;
-    public static final int ROWOFFSET_ID = 1787464580;
-    public static final int ROWLIMIT_ID = 1766751663;
 
     protected HashMap<IProperty, Integer> propMap = new HashMap<IProperty, Integer>();
     // get IProperty->propId map
@@ -56,14 +51,6 @@ public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtension
             for (IProperty prop : props) {
                 // create prop id string
                 String propIDStr = prop.getName().toUpperCase() + "_ID";
-                if (propIDStr.equalsIgnoreCase("PRESQL_ID"))
-                    propMap.put(prop,PRESQL_ID);
-                else if (propIDStr.equalsIgnoreCase("POSTSQL_ID"))
-                    propMap.put(prop,POSTSQL_ID);
-                else if (propIDStr.equalsIgnoreCase("ROWOFFSET_ID"))
-                    propMap.put(prop,ROWOFFSET_ID);
-                else if (propIDStr.equalsIgnoreCase("ROWLIMIT_ID"))
-                    propMap.put(prop,ROWLIMIT_ID);
 
             }
         }
@@ -138,162 +125,10 @@ public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtension
 
     }
 
-    /** 
-      * Get the 'preSQL' property.
-      */
-    public String getPreSQL()
-    {
-        return _get_imfObject().getPreSQL();
-    }
-
-    /** 
-      * Set the 'preSQL' property.
-      */
-    public final void setPreSQL(String newObj)throws SL_Exception
-    {
-        setPreSQL(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'preSQL' property.
-      */
-    public void setPreSQL(String newVal, ObjectChangeSink sink)
-    {
-        if(newVal!=null && newVal.equals(getPreSQL())) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_preSQL(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableReadCapabilityAttributesExtension)_imfObject).setPreSQL(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableReadCapabilityAttributesExtension.Properties.PRE_S_Q_L);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
-    /** 
-      * Get the 'postSQL' property.
-      */
-    public String getPostSQL()
-    {
-        return _get_imfObject().getPostSQL();
-    }
-
-    /** 
-      * Set the 'postSQL' property.
-      */
-    public final void setPostSQL(String newObj)throws SL_Exception
-    {
-        setPostSQL(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'postSQL' property.
-      */
-    public void setPostSQL(String newVal, ObjectChangeSink sink)
-    {
-        if(newVal!=null && newVal.equals(getPostSQL())) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_postSQL(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableReadCapabilityAttributesExtension)_imfObject).setPostSQL(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableReadCapabilityAttributesExtension.Properties.POST_S_Q_L);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
-    /** 
-      * Get the 'rowOffSet' property.
-      */
-    public int getRowOffSet()
-    {
-        return _get_imfObject().getRowOffSet();
-    }
-
-    /** 
-      * Set the 'rowOffSet' property.
-      */
-    public final void setRowOffSet(int newObj)throws SL_Exception
-    {
-        setRowOffSet(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'rowOffSet' property.
-      */
-    public void setRowOffSet(int newVal, ObjectChangeSink sink)
-    {
-        if(newVal==getRowOffSet()) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_rowOffSet(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableReadCapabilityAttributesExtension)_imfObject).setRowOffSet(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableReadCapabilityAttributesExtension.Properties.ROW_OFF_SET);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
-    /** 
-      * Get the 'rowLimit' property.
-      */
-    public int getRowLimit()
-    {
-        return _get_imfObject().getRowLimit();
-    }
-
-    /** 
-      * Set the 'rowLimit' property.
-      */
-    public final void setRowLimit(int newObj)throws SL_Exception
-    {
-        setRowLimit(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'rowLimit' property.
-      */
-    public void setRowLimit(int newVal, ObjectChangeSink sink)
-    {
-        if(newVal==getRowLimit()) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_rowLimit(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableReadCapabilityAttributesExtension)_imfObject).setRowLimit(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableReadCapabilityAttributesExtension.Properties.ROW_LIMIT);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
     /** Pretty-print this object: */
     public String toString()
     {
         String rc = "SATableReadCapabilityAttributesExtension " +" (hashCode="+hashCode()+")";
-        rc += " (preSQL="+getPreSQL()+")";
-        rc += " (postSQL="+getPostSQL()+")";
-        rc += " (rowOffSet="+getRowOffSet()+")";
-        rc += " (rowLimit="+getRowLimit()+")";
         return rc;
 
     }
@@ -329,14 +164,6 @@ public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtension
     {
             switch(propID)
             {
-            case PRESQL_ID:
-                return getPreSQL();
-            case POSTSQL_ID:
-                return getPostSQL();
-            case ROWOFFSET_ID:
-                return getRowOffSet();
-            case ROWLIMIT_ID:
-                return getRowLimit();
             default:
                 return super.get(propID);
             }
@@ -348,18 +175,6 @@ public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtension
     {
             switch(propID)
             {
-            case PRESQL_ID:
-                setPreSQL((String)obj);
-                return;
-            case POSTSQL_ID:
-                setPostSQL((String)obj);
-                return;
-            case ROWOFFSET_ID:
-                setRowOffSet((java.lang.Integer)obj);
-                return;
-            case ROWLIMIT_ID:
-                setRowLimit((java.lang.Integer)obj);
-                return;
             default:
                 super.set(propID, obj);
                 return;
@@ -418,14 +233,6 @@ public class SATableReadCapabilityAttributesExtension extends SAD_ModelExtension
     public  void _shallowCopyInternal(SL_Obj fromObjArg) {
         SATableReadCapabilityAttributesExtension fromObj = (SATableReadCapabilityAttributesExtension)fromObjArg;
         super._shallowCopyInternal((SL_Obj)fromObj);
-
-        setPreSQL(fromObj.getPreSQL());
-
-        setPostSQL(fromObj.getPostSQL());
-
-        setRowOffSet(fromObj.getRowOffSet());
-
-        setRowLimit(fromObj.getRowLimit());
     }
 
     /** 

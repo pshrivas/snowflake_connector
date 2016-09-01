@@ -72,4 +72,22 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     @Persistence( size = 8 )
     String port;
 
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Length( min = 0 ,  max = 255 )
+    @Persistence( size = 255 )
+    String SSL = "off";
+
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean useCustomURL = false;
+
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Length( min = 0 ,  max = 255 )
+    @Persistence( size = 255 )
+    String customURL;
+
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Length( min = 0 ,  max = 255 )
+    @Persistence( size = 255 )
+    String clientSessionKeepAlive = "true";
+
 }

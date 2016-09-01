@@ -11,6 +11,7 @@ import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -21,10 +22,13 @@ import java.util.logging.Logger;
 import com.informatica.sdk.adapter.metadata.common.Status;
 import com.informatica.sdk.adapter.metadata.common.StatusEnum;
 import com.informatica.sdk.adapter.metadata.provider.AbstractConnection;
+import com.snowflake.client.loader.Loader;
+import com.snowflake.client.loader.LoaderFactory;
+import com.snowflake.client.loader.LoaderProperty;
 
 public class SnowflakeV2Connection extends AbstractConnection {
 
-	private Connection conn;
+	private NativeConnectionHolder nativeConnectionHolder;
 
 	public String db;
 	
@@ -38,10 +42,95 @@ public class SnowflakeV2Connection extends AbstractConnection {
 	 * @return The Status of the connection.
 	 */
 	
-	
-	    @Override
+	@Override
+    public Status openConnection(Map<String, Object> connAttrs){
+
+    	String account = (String) connAttrs.get("account");
+    	String user = (String) connAttrs.get("user");
+		String password = (String) connAttrs.get("password");
+		
+		String warehouse = (String) connAttrs.get("warehouse");
+		db = (String) connAttrs.get("db");
+		schema = (String) connAttrs.get("schema");
+
+		String authenticator = (String) connAttrs.get("authenticator");
+		String role = (String) connAttrs.get("role");
+		String tracing = (String) connAttrs.get("tracing");
+		String passcode = (String) connAttrs.get("passcode");
+		boolean passcodeInPassword = (boolean) connAttrs.get("passcodeInPassword");
+		String SSL = (String) connAttrs.get("SSL");
+		boolean useCustomURL = (boolean) connAttrs.get("useCustomURL");
+		String customURL = (String) connAttrs.get("customURL");
+		String clientSessionKeepAlive = (String) connAttrs.get("clientSessionKeepAlive");
+		
+
+		String queryString = "";
+		String connectionURL = "";
+		
+		// warehouse, db & schema are mandatory parameters. Still checking to be sure 
+		if (null != warehouse  && !"".equals(warehouse)){
+			queryString = queryString + "warehouse=" + warehouse;
+		}
+		if (null != db  && !"".equals(db)){
+			queryString = queryString + "&db=" + db;
+		}
+		if (null != schema  && !"".equals(schema)){
+			queryString = queryString + "&schema=" + schema;
+		}		
+		
+		if (null != authenticator  && !"".equals(authenticator)){
+			queryString = queryString + "&authenticator=" + authenticator;
+		}		
+		if (null != role  && !"".equals(role)){
+			queryString = queryString + "&role=" + role;
+		}		
+		if (null != tracing  && !"".equals(tracing)){
+			queryString = queryString + "&tracing=" + tracing;
+		}		
+		if (null != passcode  && !"".equals(passcode)){
+			queryString = queryString + "&passcode=" + passcode;
+		}	
+		if (null != SSL  && !"".equals(SSL)){
+			queryString = queryString + "&SSL=" + SSL;
+		}	
+		if (null != clientSessionKeepAlive  && !"".equals(clientSessionKeepAlive)){
+			queryString = queryString + "&CLIENT_SESSION_KEEP_ALIVE=" + clientSessionKeepAlive;
+		}	
+		queryString = queryString + "&passcodeInPassword=" + String.valueOf(passcodeInPassword);
+
+		if(useCustomURL){
+			connectionURL = customURL;
+		}else{
+		    connectionURL = "jdbc:snowflake://" + account + ".snowflakecomputing.com" + "/?" 
+														+ queryString;
+		}
+			
+		String JDBC_DRIVER = "com.snowflake.client.jdbc.SnowflakeDriver";
+
+		try {
+			DriverClassLoader driverClassLoader = new DriverClassLoader(
+					com.snowflake.client.jdbc.SnowflakeConnection.class.getClassLoader());
+			Driver driver = (Driver) Class.forName(JDBC_DRIVER, true, driverClassLoader).newInstance();
+			DriverManager.registerDriver(new DriverWrapper(driver));
+
+			Connection conn1 = DriverManager.getConnection(connectionURL, user, password);
+			Connection conn2 = DriverManager.getConnection(connectionURL, user, password);
+
+			nativeConnectionHolder = new NativeConnectionHolder(conn1, conn2);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e.getMessage().contains("Communications link failure")) {
+				return new Status(StatusEnum.FAILURE, "Invalid hostname or port number");
+			}
+			return new Status(StatusEnum.FAILURE, e.getMessage());
+		}
+		return new Status(StatusEnum.SUCCESS, null);
+    }
+
+
 	    @SuppressWarnings("unused")
-	    public Status openConnection(Map<String, Object> connAttrs){
+	   /* public Status openConnection_v1_style(Map<String, Object> connAttrs){
 
 	    	String account = (String) connAttrs.get("account");
 	    	String user = (String) connAttrs.get("user");
@@ -59,7 +148,7 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 			String queryString = "";
 			
-			/* warehouse, db & schema are mandatory parameters. Still checking to be sure */
+			 warehouse, db & schema are mandatory parameters. Still checking to be sure 
 			if (null != warehouse  && !"".equals(warehouse)){
 				queryString = queryString + "warehouse=" + warehouse;
 			}
@@ -86,29 +175,35 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 			String connectionURL = "jdbc:snowflake://" + account + ".snowflakecomputing.com" + "/?" 
 															+ queryString;
-				
-			String JDBC_DRIVER = "com.snowflake.client.jdbc.SnowflakeDriver";
+			
+            try {
 
-			try {
-				DriverClassLoader driverClassLoader = new DriverClassLoader(com.snowflake.client.jdbc.SnowflakeConnection.class.getClassLoader());
-				Driver driver = (Driver) Class.forName(JDBC_DRIVER, true, driverClassLoader).newInstance();
-				DriverManager.registerDriver(new DriverWrapper(driver));
+                Properties connectionProperties = new Properties();
+                connectionProperties.put("user", user);
+                connectionProperties.put("password", password);
 
-				conn = DriverManager.getConnection(connectionURL, user, password);
-			} catch (Exception e) {
+                *//**
+                 * UNICO - 17-Aug-2016: Not using the JDBC DriverManager to get connection.
+                 * Instantiating a specific concrete implementation of the JDBC Connection i/f, 
+                 * because the Snowflake Bulk Loader utility expects this concrete class.
+                 * The JDBC DriveManager.getConnection(..) returns a different concrete class.
+                 *//*
+                Connection conn1 = new SnowflakeConnection(connectionURL, connectionProperties);
+                Connection conn2 = new SnowflakeConnection(connectionURL, connectionProperties);
+
+				nativeConnectionHolder = new NativeConnectionHolder(conn1, conn2);
+
+            } catch (Throwable e) {
 				e.printStackTrace();
 				if (e.getMessage().contains("Communications link failure")) {
 					return new Status(StatusEnum.FAILURE, "Invalid hostname or port number");
 				}
 				return new Status(StatusEnum.FAILURE, e.getMessage());
-			}
-			
-		    			
+            }
+
 			return new Status(StatusEnum.SUCCESS, null);
 	    }
-
-
-
+*/	    
 	    /**
 	     * Closes the connection of the data source.
 	     * 
@@ -118,7 +213,15 @@ public class SnowflakeV2Connection extends AbstractConnection {
 	    @Override
 	    public Status closeConnection(){
 			try {
-				conn.close();
+				Connection conn1 = nativeConnectionHolder.getPutConnection();
+				Connection conn2 = nativeConnectionHolder.getProcessConnection();
+
+				if (null != conn1 && !conn1.isClosed()) {
+					conn1.close();
+				}
+				if (null != conn2 && !conn2.isClosed()) {
+					conn2.close();
+				}
 			} catch (Exception e) {
 				return new Status(StatusEnum.FAILURE, e.getMessage());
 			}
@@ -134,10 +237,16 @@ public class SnowflakeV2Connection extends AbstractConnection {
 	     * @return The native connection object.
 	     */ 
 
+	    //Call this method for Metadata Read and Table Data Read operations
 	    public Connection getSnowflakeConnection(){
-	    	return conn;
+	    	return (Connection) nativeConnectionHolder.getProcessConnection();
 	    }
 	    
+	    //Call this method for Table Data Write (bulk)
+	    public NativeConnectionHolder getSnowflakeNativeConnectionHolder() {
+	    	return nativeConnectionHolder;
+	    }
+
 	    /**
 	     * 
 	     * @return the db name (catalog)
@@ -158,6 +267,30 @@ public class SnowflakeV2Connection extends AbstractConnection {
 		 * Custom driver class loader for loading the third party jar.
 		 * 
 		 */
+	    
+	    /**
+	     * Instantiates and returns the Loader
+	     * @param recordInfo
+	     * @return
+	     */
+	    public Loader getStreamLoader(RecordMeta recordInfo) {
+
+	    	Map<LoaderProperty, Object> prop = new EnumMap<LoaderProperty, Object>(LoaderProperty.class);
+	        prop.put(LoaderProperty.tableName, recordInfo.getRecordName());
+	        prop.put(LoaderProperty.schemaName, getSchema());
+	        prop.put(LoaderProperty.databaseName, getCatalog());
+	        prop.put(LoaderProperty.remoteStage, "~");
+	        prop.put(LoaderProperty.keys, recordInfo.getKeys());
+	        prop.put(LoaderProperty.columns, recordInfo.getColumns());
+	        
+	        Loader loader = LoaderFactory.createLoader(prop, 
+	        								nativeConnectionHolder.getPutConnection(),
+	        								nativeConnectionHolder.getProcessConnection());
+        
+	        return loader;
+	    	
+	    }
+	    
 
 		public static class DriverClassLoader extends URLClassLoader {
 
@@ -272,7 +405,5 @@ public class SnowflakeV2Connection extends AbstractConnection {
 				return this.driver.getParentLogger();
 			}
 		}
-
-
 
 }

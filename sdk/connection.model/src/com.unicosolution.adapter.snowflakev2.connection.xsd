@@ -6,6 +6,13 @@
 <xsd:complexType name="SnowflakeV2ConnectInfoExtension">
 <xsd:complexContent>
 <xsd:extension base="sdkmodelextension:SDKConnectInfoModelExtension">
+<xsd:attribute name="SSL">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
 <xsd:attribute name="account">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
@@ -14,6 +21,20 @@
 </xsd:simpleType>
 </xsd:attribute>
 <xsd:attribute name="authenticator">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="clientSessionKeepAlive">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="customURL">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
 <xsd:whiteSpace value="preserve"/>
@@ -70,6 +91,7 @@
 </xsd:restriction>
 </xsd:simpleType>
 </xsd:attribute>
+<xsd:attribute name="useCustomURL" type="xsd:boolean"/>
 <xsd:attribute name="user">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">

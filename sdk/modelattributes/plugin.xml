@@ -21,10 +21,6 @@
          <ModelProperty description="" displayName="Default Column Value" hidden="false" substitutable="false" name="defaultColValue" partitionOverrideable="false"/>
       </ModelClass>
       <ModelClass displayName="tableRead" name="com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableReadCapabilityAttributesExtension">
-         <ModelProperty description="" displayName="Pre SQL" hidden="false" substitutable="false" name="preSQL" partitionOverrideable="false"/>
-         <ModelProperty description="" displayName="Post SQL" hidden="false" substitutable="true" name="postSQL" partitionOverrideable="false"/>
-         <ModelProperty description="" displayName="Row Off Set" hidden="false" substitutable="true" name="rowOffSet" partitionOverrideable="false"/>
-         <ModelProperty description="" displayName="Row Limit" hidden="false" substitutable="true" name="rowLimit" partitionOverrideable="false"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_75x66.png" iconType="Banner"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_30x30.gif" iconType="Iconic"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_16x16.gif" iconType="Default"/>
@@ -33,6 +29,12 @@
          <ModelProperty description="" displayName="Truncate Target Table" hidden="false" substitutable="false" name="truncateTargetTable" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Bulk Load" hidden="false" substitutable="false" name="bulkLoad" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Partition ID" hidden="false" substitutable="true" name="partitionID" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Pre Sql" hidden="false" substitutable="true" name="preSql" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Post Sql" hidden="false" substitutable="true" name="postSql" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Abort On Errors" hidden="false" substitutable="false" name="abortOnErrors" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Propagate Data" hidden="false" substitutable="false" name="propagateData" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="One Batch" hidden="false" substitutable="false" name="oneBatch" partitionOverrideable="false"/>
+         <ModelProperty description="" displayName="Start Transaction For Jobs" hidden="false" substitutable="false" name="startTransactionForJobs" partitionOverrideable="false"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_75x66.png" iconType="Banner"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_30x30.gif" iconType="Iconic"/>
          <Icon icon="icons/Thick_DST_9_enterprise_table_16x16.gif" iconType="Default"/>

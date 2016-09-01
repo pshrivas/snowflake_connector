@@ -95,6 +95,32 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
         if (attribName.equalsIgnoreCase("port")) {
             attrib.setAttributeCLIDisplayName("port");
         }
+        else
+        if (attribName.equalsIgnoreCase("SSL")) {
+            attrib.setAttributeCLIDisplayName("SSL");
+            valuesList = new ArrayList<Object>();
+            valuesList.add("on");
+            valuesList.add("off");
+            attrib.setValidList(valuesList);
+
+        }
+        else
+        if (attribName.equalsIgnoreCase("useCustomURL")) {
+            attrib.setAttributeCLIDisplayName("useCustomURL");
+        }
+        else
+        if (attribName.equalsIgnoreCase("customURL")) {
+            attrib.setAttributeCLIDisplayName("customURL");
+        }
+        else
+        if (attribName.equalsIgnoreCase("clientSessionKeepAlive")) {
+            attrib.setAttributeCLIDisplayName("clientSessionKeepAlive");
+            valuesList = new ArrayList<Object>();
+            valuesList.add("true");
+            valuesList.add("false");
+            attrib.setValidList(valuesList);
+
+        }
 
         attributeMap.put(attribName, attrib);
 
@@ -232,6 +258,22 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("port", "PORT", "PORT_TOOLTIP",
+                	                            true, false, false));
+
+        group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("SSL", "SSL", "SSL_TOOLTIP",
+                	                            true, false, false));
+
+        group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("useCustomURL", "USECUSTOMURL", "USECUSTOMURL_TOOLTIP",
+                	                            true, false, true));
+
+        group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("customURL", "CUSTOMURL", "CUSTOMURL_TOOLTIP",
+                	                            true, false, false));
+
+        group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("clientSessionKeepAlive", "CLIENTSESSIONKEEPALIVE", "CLIENTSESSIONKEEPALIVE_TOOLTIP",
                 	                            true, false, false));
 
 

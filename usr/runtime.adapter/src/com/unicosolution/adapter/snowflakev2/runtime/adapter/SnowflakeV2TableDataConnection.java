@@ -1,8 +1,10 @@
 package com.unicosolution.adapter.snowflakev2.runtime.adapter;
 
 import com.informatica.sdk.adapter.javasdk.dataadapter.Connection;
+
 import java.util.Map;
 import java.util.HashMap;
+
 import com.informatica.sdk.adapter.javasdk.common.ELogLevel;
 import com.informatica.sdk.adapter.javasdk.common.EMessageLevel;
 import com.informatica.sdk.adapter.javasdk.common.EReturnStatus;
@@ -11,6 +13,7 @@ import com.informatica.sdk.adapter.javasdk.metadata.MetadataContext;
 import com.informatica.sdk.adapter.metadata.common.Status;
 import com.informatica.sdk.adapter.metadata.common.StatusEnum;
 import com.informatica.sdk.exceptions.SDKException;
+import com.unicosolution.adapter.snowflakev2.metadata.adapter.NativeConnectionHolder;
 import com.unicosolution.adapter.snowflakev2.metadata.adapter.SnowflakeV2Connection;
 
 public class SnowflakeV2TableDataConnection extends Connection {
@@ -52,6 +55,11 @@ public class SnowflakeV2TableDataConnection extends Connection {
 			attrMap.put("passcode", connHandle.getStringAttribute("passcode"));
 			attrMap.put("passcodeInPassword", connHandle.getBooleanAttribute("passcodeInPassword"));
 			attrMap.put("port", connHandle.getStringAttribute("port"));
+			attrMap.put("SSL", connHandle.getStringAttribute("SSL"));
+			attrMap.put("clientSessionKeepAlive", connHandle.getStringAttribute("clientSessionKeepAlive"));
+			attrMap.put("useCustomURL", connHandle.getBooleanAttribute("useCustomURL"));
+			attrMap.put("customURL", connHandle.getStringAttribute("customURL"));
+
 			Status status = metadataConn.openConnection(attrMap);
 			if (status.getStatus() == StatusEnum.SUCCESS) {
 				return EReturnStatus.SUCCESS;
@@ -87,6 +95,7 @@ public class SnowflakeV2TableDataConnection extends Connection {
 		if (status.getStatus() == StatusEnum.SUCCESS) {
 			return EReturnStatus.SUCCESS;
 		} else {
+
 			String msg = status.getMessage();
 			if (msg != null) {
 				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, msg);
@@ -105,8 +114,26 @@ public class SnowflakeV2TableDataConnection extends Connection {
 	 *         indicates the status of the get operation.
 	 */
 
+	//Call this method for Table Data Read
 	public Object getNativeConnection() {
 		return metadataConn.getSnowflakeConnection();
+		}
+
+	//Call this method for Table Data Write
+	public NativeConnectionHolder getNativeConnectionHolder() {
+		return metadataConn.getSnowflakeNativeConnectionHolder();
+		}
+	
+	public String getSchema() {
+		return metadataConn.getSchema();
+	}
+	
+	public String getCatalog() {
+		return metadataConn.getCatalog();
+	}
+	
+	public final SnowflakeV2Connection getMetadataConnection() {
+		return metadataConn;
 	}
 
 }

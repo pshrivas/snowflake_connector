@@ -42,46 +42,6 @@ public class MATableReadCapabilityAttributesExtension extends MD_ModelExtensionR
             rc = false;
         SATableReadCapabilityAttributesExtension semObj = (SATableReadCapabilityAttributesExtension)currentObj;
         SL_ContainerObj rootObj = semObj.getRootObj();
-        if(!validate_preSQL(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPreSQL(), semObj)) rc = false;
-        if(!validate_postSQL(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPostSQL(), semObj)) rc = false;
-        if(!validate_rowOffSet(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getRowOffSet(), semObj)) rc = false;
-        if(!validate_rowLimit(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getRowLimit(), semObj)) rc = false;
-        return rc;
-
-    }
-
-    /** Validate the 'preSQL' property  */
-    public boolean validate_preSQL(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableReadCapabilityAttributesExtension.Properties.PRE_S_Q_L);
-        return rc;
-
-    }
-
-    /** Validate the 'postSQL' property  */
-    public boolean validate_postSQL(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableReadCapabilityAttributesExtension.Properties.POST_S_Q_L);
-        return rc;
-
-    }
-
-    /** Validate the 'rowOffSet' property  */
-    public boolean validate_rowOffSet(ObjectManagerContext ctx, int newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
-        return rc;
-
-    }
-
-    /** Validate the 'rowLimit' property  */
-    public boolean validate_rowLimit(ObjectManagerContext ctx, int newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
         return rc;
 
     }

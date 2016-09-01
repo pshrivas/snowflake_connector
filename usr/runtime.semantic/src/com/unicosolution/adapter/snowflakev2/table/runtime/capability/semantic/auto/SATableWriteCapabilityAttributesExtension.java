@@ -45,6 +45,12 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     public static final int TRUNCATETARGETTABLE_ID = 2036646736;
     public static final int BULKLOAD_ID = 2097310645;
     public static final int PARTITIONID_ID = 1278439268;
+    public static final int PRESQL_ID = -937490449;
+    public static final int POSTSQL_ID = 265500770;
+    public static final int ABORTONERRORS_ID = 1873395073;
+    public static final int PROPAGATEDATA_ID = 1401041416;
+    public static final int ONEBATCH_ID = 296468278;
+    public static final int STARTTRANSACTIONFORJOBS_ID = 716940003;
 
     protected HashMap<IProperty, Integer> propMap = new HashMap<IProperty, Integer>();
     // get IProperty->propId map
@@ -61,6 +67,18 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                     propMap.put(prop,BULKLOAD_ID);
                 else if (propIDStr.equalsIgnoreCase("PARTITIONID_ID"))
                     propMap.put(prop,PARTITIONID_ID);
+                else if (propIDStr.equalsIgnoreCase("PRESQL_ID"))
+                    propMap.put(prop,PRESQL_ID);
+                else if (propIDStr.equalsIgnoreCase("POSTSQL_ID"))
+                    propMap.put(prop,POSTSQL_ID);
+                else if (propIDStr.equalsIgnoreCase("ABORTONERRORS_ID"))
+                    propMap.put(prop,ABORTONERRORS_ID);
+                else if (propIDStr.equalsIgnoreCase("PROPAGATEDATA_ID"))
+                    propMap.put(prop,PROPAGATEDATA_ID);
+                else if (propIDStr.equalsIgnoreCase("ONEBATCH_ID"))
+                    propMap.put(prop,ONEBATCH_ID);
+                else if (propIDStr.equalsIgnoreCase("STARTTRANSACTIONFORJOBS_ID"))
+                    propMap.put(prop,STARTTRANSACTIONFORJOBS_ID);
 
             }
         }
@@ -246,6 +264,228 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
 
     }
 
+    /** 
+      * Get the 'preSql' property.
+      */
+    public String getPreSql()
+    {
+        return _get_imfObject().getPreSql();
+    }
+
+    /** 
+      * Set the 'preSql' property.
+      */
+    public final void setPreSql(String newObj)throws SL_Exception
+    {
+        setPreSql(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'preSql' property.
+      */
+    public void setPreSql(String newVal, ObjectChangeSink sink)
+    {
+        if(newVal!=null && newVal.equals(getPreSql())) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_preSql(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setPreSql(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.PRE_SQL);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
+    /** 
+      * Get the 'postSql' property.
+      */
+    public String getPostSql()
+    {
+        return _get_imfObject().getPostSql();
+    }
+
+    /** 
+      * Set the 'postSql' property.
+      */
+    public final void setPostSql(String newObj)throws SL_Exception
+    {
+        setPostSql(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'postSql' property.
+      */
+    public void setPostSql(String newVal, ObjectChangeSink sink)
+    {
+        if(newVal!=null && newVal.equals(getPostSql())) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_postSql(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setPostSql(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.POST_SQL);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
+    /** 
+      * Get the 'abortOnErrors' property.
+      */
+    public boolean isAbortOnErrors()
+    {
+        return _get_imfObject().isAbortOnErrors();
+    }
+
+    /** 
+      * Set the 'abortOnErrors' property.
+      */
+    public final void setAbortOnErrors(boolean newObj)throws SL_Exception
+    {
+        setAbortOnErrors(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'abortOnErrors' property.
+      */
+    public void setAbortOnErrors(boolean newVal, ObjectChangeSink sink)
+    {
+        if(newVal==isAbortOnErrors()) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_abortOnErrors(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setAbortOnErrors(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.ABORT_ON_ERRORS);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
+    /** 
+      * Get the 'propagateData' property.
+      */
+    public boolean isPropagateData()
+    {
+        return _get_imfObject().isPropagateData();
+    }
+
+    /** 
+      * Set the 'propagateData' property.
+      */
+    public final void setPropagateData(boolean newObj)throws SL_Exception
+    {
+        setPropagateData(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'propagateData' property.
+      */
+    public void setPropagateData(boolean newVal, ObjectChangeSink sink)
+    {
+        if(newVal==isPropagateData()) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_propagateData(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setPropagateData(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.PROPAGATE_DATA);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
+    /** 
+      * Get the 'oneBatch' property.
+      */
+    public boolean isOneBatch()
+    {
+        return _get_imfObject().isOneBatch();
+    }
+
+    /** 
+      * Set the 'oneBatch' property.
+      */
+    public final void setOneBatch(boolean newObj)throws SL_Exception
+    {
+        setOneBatch(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'oneBatch' property.
+      */
+    public void setOneBatch(boolean newVal, ObjectChangeSink sink)
+    {
+        if(newVal==isOneBatch()) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_oneBatch(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setOneBatch(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.ONE_BATCH);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
+    /** 
+      * Get the 'startTransactionForJobs' property.
+      */
+    public boolean isStartTransactionForJobs()
+    {
+        return _get_imfObject().isStartTransactionForJobs();
+    }
+
+    /** 
+      * Set the 'startTransactionForJobs' property.
+      */
+    public final void setStartTransactionForJobs(boolean newObj)throws SL_Exception
+    {
+        setStartTransactionForJobs(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'startTransactionForJobs' property.
+      */
+    public void setStartTransactionForJobs(boolean newVal, ObjectChangeSink sink)
+    {
+        if(newVal==isStartTransactionForJobs()) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_startTransactionForJobs(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setStartTransactionForJobs(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.START_TRANSACTION_FOR_JOBS);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
     /** Pretty-print this object: */
     public String toString()
     {
@@ -253,6 +493,12 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         rc += " (truncateTargetTable="+isTruncateTargetTable()+")";
         rc += " (bulkLoad="+isBulkLoad()+")";
         rc += " (partitionID="+getPartitionID()+")";
+        rc += " (preSql="+getPreSql()+")";
+        rc += " (postSql="+getPostSql()+")";
+        rc += " (abortOnErrors="+isAbortOnErrors()+")";
+        rc += " (propagateData="+isPropagateData()+")";
+        rc += " (oneBatch="+isOneBatch()+")";
+        rc += " (startTransactionForJobs="+isStartTransactionForJobs()+")";
         return rc;
 
     }
@@ -294,6 +540,18 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return isBulkLoad();
             case PARTITIONID_ID:
                 return getPartitionID();
+            case PRESQL_ID:
+                return getPreSql();
+            case POSTSQL_ID:
+                return getPostSql();
+            case ABORTONERRORS_ID:
+                return isAbortOnErrors();
+            case PROPAGATEDATA_ID:
+                return isPropagateData();
+            case ONEBATCH_ID:
+                return isOneBatch();
+            case STARTTRANSACTIONFORJOBS_ID:
+                return isStartTransactionForJobs();
             default:
                 return super.get(propID);
             }
@@ -313,6 +571,24 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return;
             case PARTITIONID_ID:
                 setPartitionID((String)obj);
+                return;
+            case PRESQL_ID:
+                setPreSql((String)obj);
+                return;
+            case POSTSQL_ID:
+                setPostSql((String)obj);
+                return;
+            case ABORTONERRORS_ID:
+                setAbortOnErrors((java.lang.Boolean)obj);
+                return;
+            case PROPAGATEDATA_ID:
+                setPropagateData((java.lang.Boolean)obj);
+                return;
+            case ONEBATCH_ID:
+                setOneBatch((java.lang.Boolean)obj);
+                return;
+            case STARTTRANSACTIONFORJOBS_ID:
+                setStartTransactionForJobs((java.lang.Boolean)obj);
                 return;
             default:
                 super.set(propID, obj);
@@ -378,6 +654,18 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         setBulkLoad(fromObj.isBulkLoad());
 
         setPartitionID(fromObj.getPartitionID());
+
+        setPreSql(fromObj.getPreSql());
+
+        setPostSql(fromObj.getPostSql());
+
+        setAbortOnErrors(fromObj.isAbortOnErrors());
+
+        setPropagateData(fromObj.isPropagateData());
+
+        setOneBatch(fromObj.isOneBatch());
+
+        setStartTransactionForJobs(fromObj.isStartTransactionForJobs());
     }
 
     /** 

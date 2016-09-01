@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: Unicosolution
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
- lib/snowflake_jdbc.jar
+ lib/snowflake_jdbc_2908.jar
 Require-Bundle: com.informatica.sdk.connection,
  com.informatica.sdk.connection.presentation,
  org.eclipse.osgi,

@@ -45,6 +45,12 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         if(!validate_truncateTargetTable(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isTruncateTargetTable(), semObj)) rc = false;
         if(!validate_bulkLoad(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isBulkLoad(), semObj)) rc = false;
         if(!validate_partitionID(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPartitionID(), semObj)) rc = false;
+        if(!validate_preSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPreSql(), semObj)) rc = false;
+        if(!validate_postSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPostSql(), semObj)) rc = false;
+        if(!validate_abortOnErrors(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isAbortOnErrors(), semObj)) rc = false;
+        if(!validate_propagateData(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isPropagateData(), semObj)) rc = false;
+        if(!validate_oneBatch(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isOneBatch(), semObj)) rc = false;
+        if(!validate_startTransactionForJobs(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isStartTransactionForJobs(), semObj)) rc = false;
         return rc;
 
     }
@@ -71,6 +77,58 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         boolean rc = true;
         if(newVal.length()<0 || newVal.length()>255)
             rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D);
+        return rc;
+
+    }
+
+    /** Validate the 'preSql' property  */
+    public boolean validate_preSql(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        if(newVal.length()<0 || newVal.length()>255)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL);
+        return rc;
+
+    }
+
+    /** Validate the 'postSql' property  */
+    public boolean validate_postSql(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        if(newVal.length()<0 || newVal.length()>255)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL);
+        return rc;
+
+    }
+
+    /** Validate the 'abortOnErrors' property  */
+    public boolean validate_abortOnErrors(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        return rc;
+
+    }
+
+    /** Validate the 'propagateData' property  */
+    public boolean validate_propagateData(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        return rc;
+
+    }
+
+    /** Validate the 'oneBatch' property  */
+    public boolean validate_oneBatch(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        return rc;
+
+    }
+
+    /** Validate the 'startTransactionForJobs' property  */
+    public boolean validate_startTransactionForJobs(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
         return rc;
 
     }

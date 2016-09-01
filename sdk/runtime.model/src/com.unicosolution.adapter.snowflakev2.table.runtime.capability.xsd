@@ -16,34 +16,16 @@
 <xsd:element name="TableLookupCapabilityAttributesExtension" type="capability:TableLookupCapabilityAttributesExtension"/>
 <xsd:complexType name="TableReadCapabilityAttributesExtension">
 <xsd:complexContent>
-<xsd:extension base="asoextension:D_ModelExtensionReadCapAttributes">
-<xsd:attribute name="postSQL">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="postSQL." type="imx:idref"/>
-<xsd:attribute name="preSQL">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="rowLimit" type="xsd:int"/>
-<xsd:attribute name="rowLimit." type="imx:idref"/>
-<xsd:attribute name="rowOffSet" type="xsd:int"/>
-<xsd:attribute name="rowOffSet." type="imx:idref"/>
-</xsd:extension>
+<xsd:extension base="asoextension:D_ModelExtensionReadCapAttributes"/>
 </xsd:complexContent>
 </xsd:complexType>
 <xsd:element name="TableReadCapabilityAttributesExtension" type="capability:TableReadCapabilityAttributesExtension"/>
 <xsd:complexType name="TableWriteCapabilityAttributesExtension">
 <xsd:complexContent>
 <xsd:extension base="asoextension:D_ModelExtensionWriteCapAttributes">
+<xsd:attribute name="abortOnErrors" type="xsd:boolean"/>
 <xsd:attribute name="bulkLoad" type="xsd:boolean"/>
+<xsd:attribute name="oneBatch" type="xsd:boolean"/>
 <xsd:attribute name="partitionID">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
@@ -52,6 +34,24 @@
 </xsd:simpleType>
 </xsd:attribute>
 <xsd:attribute name="partitionID." type="imx:idref"/>
+<xsd:attribute name="postSql">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="postSql." type="imx:idref"/>
+<xsd:attribute name="preSql">
+<xsd:simpleType>
+<xsd:restriction base="xsd:string">
+<xsd:whiteSpace value="preserve"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:attribute>
+<xsd:attribute name="preSql." type="imx:idref"/>
+<xsd:attribute name="propagateData" type="xsd:boolean"/>
+<xsd:attribute name="startTransactionForJobs" type="xsd:boolean"/>
 <xsd:attribute name="truncateTargetTable" type="xsd:boolean"/>
 </xsd:extension>
 </xsd:complexContent>

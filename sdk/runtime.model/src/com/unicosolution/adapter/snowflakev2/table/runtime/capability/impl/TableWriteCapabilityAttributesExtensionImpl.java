@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-07-05 19:33:17
+ * Generation time: 2016-08-29 17:39:54
  */
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl;
 
@@ -19,17 +19,33 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     /**
      * The generated Serial Version UID.
      */
-    private static final long serialVersionUID = -8727365761583341033L;
+    private static final long serialVersionUID = 8296088267292128534L;
 
     private static int PROPERTY_ID;
 
-    protected boolean bulkLoad = true;
+    protected boolean abortOnErrors = false;
+
+    protected boolean bulkLoad = false;
+
+    protected boolean oneBatch = false;
 
     protected java.lang.String partitionID = "";
 
     protected com.informatica.metadata.common.parameter.Parameter partitionID$;
 
-    protected boolean truncateTargetTable = true;
+    protected java.lang.String postSql = "";
+
+    protected com.informatica.metadata.common.parameter.Parameter postSql$;
+
+    protected java.lang.String preSql = "";
+
+    protected com.informatica.metadata.common.parameter.Parameter preSql$;
+
+    protected boolean propagateData = false;
+
+    protected boolean startTransactionForJobs = false;
+
+    protected boolean truncateTargetTable = false;
 
 
     /**
@@ -40,6 +56,46 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
         iSetIClass(com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE
                 .getTableWriteCapabilityAttributesExtensionIClass());
     }
+
+
+     /**
+     * Retrieves the 'abortOnErrors' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isAbortOnErrors()
+     * @return the 'abortOnErrors' property value for this Object
+     */
+     public boolean isAbortOnErrors() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.abortOnErrors;
+     }
+
+    /**
+     * Sets the 'abortOnErrors' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setAbortOnErrors(boolean abortOnErrors)
+     * @param abortOnErrors is the new value for property 'abortOnErrors'
+     */public void setAbortOnErrors(boolean abortOnErrors) {
+    		if(this.abortOnErrors == abortOnErrors) {
+    			return;
+    		}
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            boolean oldVal = this.abortOnErrors;
+            this.abortOnErrors = abortOnErrors;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ABORT_ON_ERRORS, oldVal, abortOnErrors);
+            }
+        }
+     
 
 
      /**
@@ -77,6 +133,46 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
                 com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
                     this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.BULK_LOAD, oldVal, bulkLoad);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'oneBatch' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isOneBatch()
+     * @return the 'oneBatch' property value for this Object
+     */
+     public boolean isOneBatch() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.oneBatch;
+     }
+
+    /**
+     * Sets the 'oneBatch' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setOneBatch(boolean oneBatch)
+     * @param oneBatch is the new value for property 'oneBatch'
+     */public void setOneBatch(boolean oneBatch) {
+    		if(this.oneBatch == oneBatch) {
+    			return;
+    		}
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            boolean oldVal = this.oneBatch;
+            this.oneBatch = oneBatch;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ONE_BATCH, oldVal, oneBatch);
             }
         }
      
@@ -185,6 +281,290 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
 
 
      /**
+     * Retrieves the 'postSql' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPostSql()
+     * @return the 'postSql' property value for this Object
+     */
+     public java.lang.String getPostSql() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.postSql;
+     }
+
+    /**
+     * Sets the 'postSql' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPostSql(java.lang.String postSql)
+     * @param postSql is the new value for property 'postSql'
+     */public void setPostSql(java.lang.String postSql) {
+    		if(this.postSql.equals(postSql)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.postSql;
+            if(postSql == null) {
+                postSql = "";
+            }
+            this.postSql = postSql;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL, oldVal, postSql);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'postSql$' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPostSql$()
+     * @return the 'postSql$' property value for this Object
+     */
+     public com.informatica.metadata.common.parameter.Parameter getPostSql$() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.postSql$;
+     }
+
+    /**
+     * Sets the 'postSql$' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPostSql$(com.informatica.metadata.common.parameter.Parameter postSql$)
+     * @param postSql$ is the new value for property 'postSql$'
+     */public void setPostSql$(com.informatica.metadata.common.parameter.Parameter postSql$) {
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            com.informatica.metadata.common.parameter.Parameter actualObject = postSql$;
+            if(postSql$ != null) {
+              if(postSql$ instanceof com.informatica.imf.icore.IDelegatedObject ) {
+               actualObject = ((com.informatica.imf.icore.IDelegatedObject)postSql$).getDelegatee();
+                }
+            }
+    		if(this.postSql$ == actualObject) {
+    			return;
+    		}
+            if (actualObject == null) {
+               if (iGetSubstituteProperties()
+                           .containsKey(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL$))
+                     iRemoveSubstituteProperty(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL$);
+            } else {
+               iPutSubstituteProperty(
+                            com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL$,
+                            actualObject);
+            }
+            com.informatica.metadata.common.parameter.Parameter oldVal = (com.informatica.metadata.common.parameter.Parameter) this.postSql$;
+            this.postSql$ = actualObject;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL$, oldVal, actualObject);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'preSql' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPreSql()
+     * @return the 'preSql' property value for this Object
+     */
+     public java.lang.String getPreSql() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.preSql;
+     }
+
+    /**
+     * Sets the 'preSql' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPreSql(java.lang.String preSql)
+     * @param preSql is the new value for property 'preSql'
+     */public void setPreSql(java.lang.String preSql) {
+    		if(this.preSql.equals(preSql)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.preSql;
+            if(preSql == null) {
+                preSql = "";
+            }
+            this.preSql = preSql;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL, oldVal, preSql);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'preSql$' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPreSql$()
+     * @return the 'preSql$' property value for this Object
+     */
+     public com.informatica.metadata.common.parameter.Parameter getPreSql$() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.preSql$;
+     }
+
+    /**
+     * Sets the 'preSql$' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPreSql$(com.informatica.metadata.common.parameter.Parameter preSql$)
+     * @param preSql$ is the new value for property 'preSql$'
+     */public void setPreSql$(com.informatica.metadata.common.parameter.Parameter preSql$) {
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            com.informatica.metadata.common.parameter.Parameter actualObject = preSql$;
+            if(preSql$ != null) {
+              if(preSql$ instanceof com.informatica.imf.icore.IDelegatedObject ) {
+               actualObject = ((com.informatica.imf.icore.IDelegatedObject)preSql$).getDelegatee();
+                }
+            }
+    		if(this.preSql$ == actualObject) {
+    			return;
+    		}
+            if (actualObject == null) {
+               if (iGetSubstituteProperties()
+                           .containsKey(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL$))
+                     iRemoveSubstituteProperty(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL$);
+            } else {
+               iPutSubstituteProperty(
+                            com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL$,
+                            actualObject);
+            }
+            com.informatica.metadata.common.parameter.Parameter oldVal = (com.informatica.metadata.common.parameter.Parameter) this.preSql$;
+            this.preSql$ = actualObject;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL$, oldVal, actualObject);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'propagateData' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isPropagateData()
+     * @return the 'propagateData' property value for this Object
+     */
+     public boolean isPropagateData() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.propagateData;
+     }
+
+    /**
+     * Sets the 'propagateData' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPropagateData(boolean propagateData)
+     * @param propagateData is the new value for property 'propagateData'
+     */public void setPropagateData(boolean propagateData) {
+    		if(this.propagateData == propagateData) {
+    			return;
+    		}
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            boolean oldVal = this.propagateData;
+            this.propagateData = propagateData;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PROPAGATE_DATA, oldVal, propagateData);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'startTransactionForJobs' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isStartTransactionForJobs()
+     * @return the 'startTransactionForJobs' property value for this Object
+     */
+     public boolean isStartTransactionForJobs() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.startTransactionForJobs;
+     }
+
+    /**
+     * Sets the 'startTransactionForJobs' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setStartTransactionForJobs(boolean startTransactionForJobs)
+     * @param startTransactionForJobs is the new value for property 'startTransactionForJobs'
+     */public void setStartTransactionForJobs(boolean startTransactionForJobs) {
+    		if(this.startTransactionForJobs == startTransactionForJobs) {
+    			return;
+    		}
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            boolean oldVal = this.startTransactionForJobs;
+            this.startTransactionForJobs = startTransactionForJobs;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.START_TRANSACTION_FOR_JOBS, oldVal, startTransactionForJobs);
+            }
+        }
+     
+
+
+     /**
      * Retrieves the 'truncateTargetTable' property value for this Object.
      *
      * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isTruncateTargetTable()
@@ -246,12 +626,28 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     	return super.iGet(iProperty);
     	else
     	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.abortOnErrors":
+            return this.isAbortOnErrors();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.bulkLoad":
             return this.isBulkLoad();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
+            return this.isOneBatch();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
             return this.getPartitionID();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
             return this.getPartitionID$();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
+            return this.getPostSql();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
+            return this.getPostSql$();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql":
+            return this.getPreSql();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql$":
+            return this.getPreSql$();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.propagateData":
+            return this.isPropagateData();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.startTransactionForJobs":
+            return this.isStartTransactionForJobs();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
             return this.isTruncateTargetTable();
         default:
@@ -284,12 +680,28 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     	return super.iGet(iProperty,encrypted);
     	else
     	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.abortOnErrors":
+                return this.isAbortOnErrors();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.bulkLoad":
                 return this.isBulkLoad();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
+                return this.isOneBatch();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
                 return this.getPartitionID();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
                 return this.getPartitionID$();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
+                return this.getPostSql();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
+                return this.getPostSql$();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql":
+                return this.getPreSql();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql$":
+                return this.getPreSql$();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.propagateData":
+                return this.isPropagateData();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.startTransactionForJobs":
+                return this.isStartTransactionForJobs();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
                 return this.isTruncateTargetTable();
             default:
@@ -354,6 +766,16 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     	super.iSet(iProperty,newValue);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()) {
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.abortOnErrors":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setAbortOnErrors((java.lang.Boolean) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.bulkLoad":
 
                 if (newValue == null) {
@@ -364,11 +786,53 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setBulkLoad((java.lang.Boolean) newValue);
                 break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setOneBatch((java.lang.Boolean) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
                 this.setPartitionID((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
                 this.setPartitionID$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
+                this.setPostSql((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
+                this.setPostSql$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql":
+                this.setPreSql((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql$":
+                this.setPreSql$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.propagateData":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setPropagateData((java.lang.Boolean) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.startTransactionForJobs":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setStartTransactionForJobs((java.lang.Boolean) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
 
@@ -411,6 +875,16 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     	super.iSet(iProperty,newValue,encrypted);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.abortOnErrors":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setAbortOnErrors((java.lang.Boolean) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.bulkLoad":
 
                 if (newValue == null) {
@@ -421,11 +895,53 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setBulkLoad((java.lang.Boolean) newValue);
                 break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setOneBatch((java.lang.Boolean) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
                 this.setPartitionID((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
                 this.setPartitionID$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
+                this.setPostSql((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
+                this.setPostSql$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql":
+                this.setPreSql((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql$":
+                this.setPreSql$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.propagateData":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setPropagateData((java.lang.Boolean) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.startTransactionForJobs":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setStartTransactionForJobs((java.lang.Boolean) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
 
@@ -468,14 +984,38 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     	super.iInverseSet(iProperty,newValue);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()) {
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.abortOnErrors":
+               this.abortOnErrors = (java.lang.Boolean) newValue;
+               break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.bulkLoad":
                this.bulkLoad = (java.lang.Boolean) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
+               this.oneBatch = (java.lang.Boolean) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
                this.partitionID = (java.lang.String) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
                this.partitionID$ = (com.informatica.metadata.common.parameter.Parameter) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
+               this.postSql = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
+               this.postSql$ = (com.informatica.metadata.common.parameter.Parameter) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql":
+               this.preSql = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.preSql$":
+               this.preSql$ = (com.informatica.metadata.common.parameter.Parameter) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.propagateData":
+               this.propagateData = (java.lang.Boolean) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.startTransactionForJobs":
+               this.startTransactionForJobs = (java.lang.Boolean) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
                this.truncateTargetTable = (java.lang.Boolean) newValue;
@@ -503,14 +1043,38 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     }
 
     public static void initIProperties() {
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ABORT_ON_ERRORS;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ABORT_ON_ERRORS =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__BULK_LOAD;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.BULK_LOAD =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ONE_BATCH;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ONE_BATCH =
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D =
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D$;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$ =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL$;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL$ =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL$;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL$ =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PROPAGATE_DATA;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PROPAGATE_DATA =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__START_TRANSACTION_FOR_JOBS;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.START_TRANSACTION_FOR_JOBS =
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.TRUNCATE_TARGET_TABLE =

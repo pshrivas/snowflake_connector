@@ -33,4 +33,52 @@ public interface SEMTableWriteCapabilityAttributesExtension extends com.informat
       * Set the 'partitionID' property.
       */
     public void setPartitionID(String _newVal);
+    /** 
+      * Get the 'preSql' property.
+      */
+    public String getPreSql();
+    /** 
+      * Set the 'preSql' property.
+      */
+    public void setPreSql(String _newVal);
+    /** 
+      * Get the 'postSql' property.
+      */
+    public String getPostSql();
+    /** 
+      * Set the 'postSql' property.
+      */
+    public void setPostSql(String _newVal);
+    /** 
+      * Get the 'abortOnErrors' property.
+      */
+    public boolean isAbortOnErrors();
+    /** 
+      * Set the 'abortOnErrors' property.
+      */
+    public void setAbortOnErrors(boolean _newVal);
+    /** 
+      * Get the 'propagateData' property.
+      */
+    public boolean isPropagateData();
+    /** 
+      * Set the 'propagateData' property.
+      */
+    public void setPropagateData(boolean _newVal);
+    /** 
+      * Get the 'oneBatch' property.
+      */
+    public boolean isOneBatch();
+    /** 
+      * Set the 'oneBatch' property.
+      */
+    public void setOneBatch(boolean _newVal);
+    /** 
+      * Get the 'startTransactionForJobs' property.
+      */
+    public boolean isStartTransactionForJobs();
+    /** 
+      * Set the 'startTransactionForJobs' property.
+      */
+    public void setStartTransactionForJobs(boolean _newVal);
 }

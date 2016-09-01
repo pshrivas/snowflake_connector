@@ -58,7 +58,16 @@ import com.informatica.sdk.exceptions.SDKException;
 import com.informatica.sdk.adapter.javasdk.dataadapter.ReadAttributes;
 import com.informatica.sdk.adapter.javasdk.dataadapter.WriteAttributes;
 import com.informatica.sdk.adapter.javasdk.dataaccess.DataAttributes;
+import com.snowflake.client.jdbc.internal.amazonaws.util.json.JSONObject;
 import com.snowflake.client.jdbc.internal.fasterxml.jackson.databind.Module.SetupContext;
+import com.snowflake.client.loader.Loader;
+import com.snowflake.client.loader.LoaderProperty;
+import com.snowflake.client.loader.Operation;
+import com.snowflake.client.loader.StreamLoader;
+import com.unicosolution.adapter.snowflakev2.metadata.adapter.RecordMeta;
+import com.unicosolution.adapter.snowflakev2.metadata.adapter.SnowflakeV2Connection;
+import com.unicosolution.adapter.snowflakev2.runtime.adapter.utils.BulkLoadResultListener;
+import com.unicosolution.adapter.snowflakev2.runtime.adapter.utils.ResultStats;
 import com.unicosolution.adapter.snowflakev2.runtimemessages.*;
 import com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableWriteCapabilityAttributesExtension;
 import com.informatica.sdk.adapter.metadata.projection.projectionoperation.semantic.iface.ProjectionOperation;
@@ -71,6 +80,7 @@ import com.informatica.sdk.adapter.metadata.projection.semantic.iface.Projection
 import com.informatica.sdk.adapter.metadata.projection.simpleexpression.semantic.iface.SimpleBinaryExpression;
 import com.informatica.sdk.adapter.metadata.projection.simpleexpression.semantic.iface.SimpleSDKExpression;
 import com.informatica.sdk.adapter.metadata.common.datasourceoperation.semantic.iface.Capability;
+import com.informatica.sdk.adapter.metadata.common.datasourceoperation.semantic.iface.WriteCapability;
 import com.informatica.sdk.adapter.metadata.projection.semantic.iface.OperationBase;
 import com.informatica.sdk.adapter.metadata.common.datasourceoperation.semantic.iface.ReadCapability;
 import com.informatica.sdk.adapter.metadata.projection.semantic.iface.FieldBase;
@@ -117,6 +127,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	private String nativeFilterQuery;
 	private String nativeJoinQuery;
+	
+	private Loader loader;
+	private BulkLoadResultListener listener;
+	private Operation op;
 
 	/**
 	 * Initializes the data session. This method is called once for the current
@@ -203,10 +217,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
 				"SnowflakeV2TableDataAdapter:initDataSession:: end");
+		
+		Capability capability = runtimeMetadataHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
+		
+		if (capability instanceof WriteCapability) { //the operation is WRITE
+			initBulkLoader(dataSession);
+		}
 
 		return EReturnStatus.SUCCESS;
 	}
-
+	
 	/**
 	 * Builds the Join expression by resolving the table name and the column
 	 * name
@@ -584,6 +604,70 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	@Override
 	public int deinitDataSession(DataSession dataSession) {
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "deinitDataSession:: begin");
+
+		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
+				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
+
+		Capability capability = runtimeMetadataHandle
+				.getAdapterDataSourceOperation().getCapabilities().get(0);
+
+		if (capability instanceof WriteCapability) { //the operation is WRITE
+
+			try {
+				loader.finish();
+				loader.close();
+			} catch (Exception e1) {
+				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
+			}
+
+/*	        Unico 30-Aug-2016: The processing results captured and submitted to the Infa platform seems
+			to be discarded by the platform. So, commenting this out here and moving this to the "write" method
+
+ 			//BEGIN - Capture Processing Stats
+ 			int opInd = EIUDIndicator.INSERT; //default
+
+	        switch (op) {
+	        case INSERT:
+				opInd = EIUDIndicator.INSERT;
+				break;
+	        case MODIFY:
+				opInd = EIUDIndicator.UPDATE;
+				break;
+	        case DELETE:
+				opInd = EIUDIndicator.DELETE;
+				break;
+	        default:
+				opInd = EIUDIndicator.INSERT;
+				//Informatica does not support UPSERT
+	        }
+
+	        RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(opInd);
+
+	         try {
+	             //Get hold of the Listener from the Loader
+	             if (null != loader.getListener() && loader.getListener() instanceof BulkLoadResultListener) {
+
+		              listener = (BulkLoadResultListener)loader.getListener();
+
+		              logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+				          "deinitDataSession:: from listener LOADER: " +
+				          "\nlistener.getProcessedRecordCount(op) -> " + listener.getProcessedRecordCount(op) +
+				          "\nlistener.getOperationRecordCount(op) -> " + listener.getOperationRecordCount(op) +
+				          "\nlistener.getRejectedRecordCount(op) -> " + listener.getRejectedRecordCount(op));
+
+	             }
+			     rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); //(Local->No. of Rows Written)
+			     rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
+			     rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
+
+	         } catch (Exception e1) {
+		       logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+		         "deinitDataSession:: SDKException while setting processing status - " + e1.getMessage());
+		      }
+		      //END - Capture Processing Stats*/
+
+		}
+
 		try {
 			// Close result set
 			if (rs != null) {
@@ -594,6 +678,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			e.printStackTrace();
 		}
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "deinitDataSession:: end");
+
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -873,7 +958,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				List<Object> datarow = new ArrayList<Object>();
 				for (int i = 0; i < connectedFields.size(); i++) {
 					String dataType = connectedFields.get(i).field.getNativeFieldRef().getDataType();
-					if ("BOOLEAN".equalsIgnoreCase(dataType)) {
+					if ("BOOLEAN".equalsIgnoreCase(dataType) 
+							|| "OBJECT".equalsIgnoreCase(dataType)) {
 						datarow.add(rs.getString(i + 1));
 					} else {
 						datarow.add(rs.getObject(i + 1));
@@ -942,12 +1028,34 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						pDataAttributes.setIndicator(EIndicator.NULL);
 					} else if ("BOOLEAN".equalsIgnoreCase(nativeType)) {
 						String boolValue = data.toString();
+
+						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								"setDataToPlatform:: boolValue : " + boolValue +
+								" pDataAttributes.getIndicator() : " + pDataAttributes.getIndicator());
+
 						if ("true".equalsIgnoreCase(boolValue) || "t".equalsIgnoreCase(boolValue)
 								|| "on".equalsIgnoreCase(boolValue) || "1".equalsIgnoreCase(boolValue)
-								|| "y".equalsIgnoreCase(boolValue) || "yes".equalsIgnoreCase(boolValue)) {
+								|| "y".equalsIgnoreCase(boolValue) || "yes".equalsIgnoreCase(boolValue)
+								|| "\"true\"".equalsIgnoreCase(boolValue)) {
 							data = "true";
 						} else {
 							data = "false";
+						}
+						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								"setDataToPlatform:: data : " + data);
+
+					} else if ("OBJECT".equalsIgnoreCase(nativeType)) {
+
+						String strData = (String) data;
+						try {
+							JSONObject jsonData = new JSONObject(strData);
+							data = jsonData.toString();
+
+						} catch (Exception e) {
+							data = ((String) data).replaceAll("\n", "");
+
+							//data = ((String) data).replaceAll("\n", "")
+							//	.replaceAll("\\\"", "\"");
 						}
 					} else {
 						String text = data.toString();
@@ -974,6 +1082,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
                     	}
 					} else {
 						dataSession.setStringData((String) data, pDataAttributes);
+                		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								" After setting data to session, pDataAttributes.getIndicator() : " + 
+										pDataAttributes.getIndicator());
 					}
 				} else if (dataType.compareToIgnoreCase("double") == 0) {
 					if (data instanceof Double) {
@@ -1149,25 +1260,29 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		//Checking the first row is good enough
 		int operationType = runtimeMd.getRowIUDIndicator(0);
 		
-		//operationType = EIUDIndicator.INSERT; //Only for testing
+	  //  operationType = EIUDIndicator.UPDATE; //Only for testing
 		
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "Operation Type: " + operationType);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "write:begin Operation Type: " + operationType);
 
 		int returnStatus = EReturnStatus.FAILURE;
 
 		switch (operationType) {
 		case EIUDIndicator.INSERT:
-			returnStatus = writeInsert(dataSession, writeAttr);
+			op = Operation.INSERT;
+			//returnStatus = writeInsert(dataSession, writeAttr);
 			break;
 		case EIUDIndicator.DELETE:
-			returnStatus = writeDelete(dataSession, writeAttr);
+			op = Operation.DELETE;
+			//returnStatus = writeDelete(dataSession, writeAttr);
 			break;
 		case EIUDIndicator.UPDATE:
-			returnStatus = writeUpdate(dataSession, writeAttr);
+			op = Operation.MODIFY;
+			//returnStatus = writeUpdate(dataSession, writeAttr);
 			break;
 
 		default: // Default is INSERT
-			returnStatus = writeInsert(dataSession, writeAttr);
+			op = Operation.INSERT;
+			//returnStatus = writeInsert(dataSession, writeAttr);
 			
 			//returnStatus = writeUpsert(dataSession, writeAttr);
 			//Will enable UPSERT when Infa starts supporting the operation
@@ -1176,6 +1291,62 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		}
 
+		returnStatus = submitDataToLoader(dataSession, writeAttr.getNumRowsToWrite());
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+				"write: " + writeAttr.getNumRowsToWrite() + " submitted to loader");
+		
+		//BEGIN - Capture Processing Stats
+		try {
+			//UNICO-30-Aug-2016: Calling finish() in here could deteriorate performance.
+			//However, this is the place where we can capture the processing reults and hand-off to the platform.
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+					"write: About to wait for loader to complete current set of rows...");
+			loader.finish();
+			//loader.close(); //This would close the connections, so we don't want to call close() now
+		} catch (Exception e1) {
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
+		}
+
+		//Capture the processing stats from the loader's listener
+		RowsStatInfo rowsStatInfo = runtimeMd.getRowsStatInfo(operationType);
+		
+		listener = (BulkLoadResultListener)loader.getListener();
+		rowsStatInfo.incrementRequested(writeAttr.getNumRowsToWrite());
+		rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); //(Local->No. of Rows Written)
+	    rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
+	    rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
+
+	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+	    		"write: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> " +
+	    		listener.getProcessedRecordCount(op));
+	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+	    		"rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> " +
+	    		listener.getOperationRecordCount(op));
+	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+	    		"rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> " +
+	    		listener.getRejectedRecordCount(op));
+
+	    //Restart the loader, for potentially subsequent calls to "write" method by the platform
+	    listener = new BulkLoadResultListener(this);
+	    loader.setListener(listener);
+	    try {
+	    	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+	    			"About to restart the loader with a new instance of the listener");
+	    	loader.start();
+	    } catch(Exception e) {
+        	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"SnowflakeV2TableDataAdapter::initBulkLoader: Loader failed to start: " + e.getMessage());
+			
+        	//Loader failed to start. So, cannot proceed further... Throw SDKException
+        	final String eMsg = e.getMessage();
+			throw (new SDKException() {
+				private static final long serialVersionUID = 1L;
+				public String getMessage() {return eMsg;}
+			});
+	    }
+	    //END - Capture Processing Stats
+
+	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "write: end");
 		return returnStatus;
 	}
 
@@ -1371,6 +1542,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 
 			if (reject) { // Skip row query formation
+				rowsStatInfo.incrementRejected(1);
 				continue;
 			}
 
@@ -2374,14 +2546,21 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				if (pDataAttributes.getIndicator() == EIndicator.NULL) {
 					pstmt.setNull(index, Types.BOOLEAN);
 				} else {
+					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+							"setDataValueToNativeSink:: strDataValue : " + strDataValue);
+
 					if ("t".equalsIgnoreCase(strDataValue) || "true".equalsIgnoreCase(strDataValue)
 							|| "yes".equalsIgnoreCase(strDataValue) || "y".equalsIgnoreCase(strDataValue)
-							|| "on".equalsIgnoreCase(strDataValue) || "1".equalsIgnoreCase(strDataValue)) {
+							|| "on".equalsIgnoreCase(strDataValue) || "1".equalsIgnoreCase(strDataValue)
+							|| "\"true\"".equalsIgnoreCase(strDataValue)) {
 						boolValue = true;
 					} else {
 						boolValue = false;
 					}
 	
+					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+							"setDataValueToNativeSink:: boolValue : " + boolValue);
+
 					pstmt.setBoolean(index, boolValue);
 					pDataAttributes.setIndicator((short) 0);
 				}
@@ -2905,5 +3084,246 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		NOP			//Request cannot be processed. Applicable when user opts for Bulk Write
 					//but uses a table that has Semi-Structured data types (Object, Array or Variant)
 	}
+	
+	//------------------------Bulk Loader related methods---------------------------------------//
 
+	public void logDebugMessage(String caller, String method, String message) {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+				caller + ":" + method + ":: " + message);
+	}
+	
+	/**
+	 * Kicks off the bulk loader process (threads) 
+	 */
+	private void initBulkLoader(DataSession dataSession) throws SDKException {
+		
+		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
+		
+		String db = conn.getCatalog();
+		String schema = conn.getSchema();
+		
+		String tableName = fr.getName();
+		
+		List<String> columnsList = new ArrayList<>();
+		for (FieldInfo fieldInfo : connectedFields) {
+			columnsList.add(fieldInfo.field.getName());
+		}
+		
+		List<Field> pkFields = new ArrayList<>();
+		PrimaryKey pk = fr.getPrimaryKey();
+		
+		if (null != pk && null != pk.getFieldList() && !pk.getFieldList().isEmpty()) {
+			pkFields.addAll(pk.getFieldList());
+		}
+		
+		List<String> pkColumns = new ArrayList<>();
+		for (Field pkField : pkFields) {
+			pkColumns.add(pkField.getName());
+		}
+		
+		SnowflakeV2Connection metadataConnection = conn.getMetadataConnection();
+		
+		RecordMeta recordMeta = new RecordMeta();
+		recordMeta.setCatalogName(db);
+		recordMeta.setRecordName(tableName);
+		recordMeta.setColumns(columnsList);
+		recordMeta.setKeys(pkColumns);
+		
+		loader = metadataConnection.getStreamLoader(recordMeta);
+		
+		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
+				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
+		
+		ASOOperation m_asoOperation = runtimeMetadataHandle.getAdapterDataSourceOperation();
+		WriteCapabilityAttributes writeCapAttr = m_asoOperation.getWriteCapabilityAttributes();
+		
+		String preSql = null;
+		String postSql = null;
+		boolean abortOnErrors = false;
+		boolean propagateData = false;
+		boolean oneBatch = false;
+		boolean truncateTable = false;
+
+		if (writeCapAttr != null) {
+			SEMTableWriteCapabilityAttributesExtension writeAttribs = 
+					(SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
+					.getExtensions();
+
+			preSql = writeAttribs.getPreSql();
+			postSql = writeAttribs.getPostSql();
+			abortOnErrors = writeAttribs.isAbortOnErrors();
+			propagateData = writeAttribs.isPropagateData();
+			oneBatch = writeAttribs.isOneBatch();
+			truncateTable = writeAttribs.isTruncateTargetTable();
+		}
+		
+		if (preSql != null && !preSql.trim().isEmpty()) {
+            loader.setProperty(LoaderProperty.executeBefore, preSql); 
+        }
+        if(db != null && !db.trim().isEmpty()) {
+        	loader.setProperty(LoaderProperty.databaseName, db);
+        }		
+        if(schema != null && !schema.trim().isEmpty()) {
+        	loader.setProperty(LoaderProperty.schemaName, schema);
+        }
+
+        loader.setProperty(LoaderProperty.oneBatch, true);
+
+        if (postSql != null && !postSql.trim().isEmpty()) {
+            loader.setProperty(LoaderProperty.executeAfter, postSql);
+        }
+
+        loader.setProperty(LoaderProperty.truncateTable, truncateTable);
+
+        // safe to set, delayed OP change will be a no-ops
+        loader.setProperty(LoaderProperty.operation, Operation.INSERT);
+        op = Operation.INSERT;
+
+		listener = new BulkLoadResultListener(this);
+        listener.setAbortOnErrors(abortOnErrors);
+        listener.setPropagate(propagateData);
+
+		loader.setListener(listener);
+
+		try {
+
+        	loader.start();
+
+        } catch (Exception e) {
+
+        	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"SnowflakeV2TableDataAdapter::initBulkLoader: Loader failed to start: " + e.getMessage());
+			
+        	//Loader failed to start. So, cannot proceed further... Throw SDKException
+        	final String eMsg = e.getMessage();
+			throw (new SDKException() {
+				private static final long serialVersionUID = 1L;
+				public String getMessage() {return eMsg;}
+			});
+        }
+
+	}
+	
+	private int submitDataToLoader(DataSession dataSession, int noOfRows) throws SDKException {
+
+		loader.resetOperation(op);
+		((BulkLoadResultListener)loader.getListener()).setOperation(op);
+		
+		int noOfCols = connectedFields.size();
+		List<Object[]> rows = new ArrayList<>();
+		Object fieldData =  null;
+
+		for (int row = 0; row < noOfRows; row++) {
+
+			try {
+			Object[] rowData = new Object[noOfCols];
+			
+			for (int fieldIndex = 0; fieldIndex < noOfCols; fieldIndex++) {
+
+				BasicProjectionField field = connectedFields.get(fieldIndex).field;
+
+				DataAttributes pDataAttributes = new DataAttributes();
+				pDataAttributes.setRowIndex(row);
+				pDataAttributes.setColumnIndex(connectedFields.get(fieldIndex).index);
+				pDataAttributes.setDataSetId(0); // currently 0
+
+				fieldData = getDataObjectValueFromPlatform(dataSession, pDataAttributes, field);
+
+				rowData[fieldIndex] = fieldData;
+			}
+
+			loader.submitRow(rowData);
+
+			} catch (Exception e) {
+
+				if (loader instanceof StreamLoader) {
+					if (((StreamLoader)loader).getListener() instanceof BulkLoadResultListener) {
+						//The Loader and LoadResultListener APIs do not provide a way to track rejected count
+						//So, need to do this hack
+						((BulkLoadResultListener)((StreamLoader)loader).getListener())
+																.addRejectedRecordCount(op, 1);
+					}
+				}
+				
+				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NORMAL,
+						"SnowflakeV2TableDataAdapter::submitDataToLoader: Rejecting row-" + row + 
+						"for " + op + " operation on table " + fr.getName() + " Cause: " + e.getMessage());
+			}
+		}
+		
+		return EReturnStatus.SUCCESS;
+
+	}
+	
+	
+	private Object getDataObjectValueFromPlatform(DataSession dataSession, DataAttributes pDataAttributes,
+			BasicProjectionField field) throws SDKException {
+
+		String dataValue = "";
+		Object objValue = null;
+
+		switch (field.getDataType().toLowerCase()) {
+		case "string":
+		case "text":
+			String nativeType = field.getNativeFieldRef().getDataType();
+			
+			switch (nativeType) {
+			case "BIT":
+				if (dataSession.getStringData(pDataAttributes).equalsIgnoreCase("true")) {
+					dataValue += "1";
+				} else {
+					dataValue += "0";
+				}
+				objValue = new String(dataValue);
+				break;
+			case "BOOLEAN":
+				dataValue = dataSession.getStringData(pDataAttributes);
+				if ("t".equalsIgnoreCase(dataValue) || "true".equalsIgnoreCase(dataValue)
+						|| "yes".equalsIgnoreCase(dataValue) || "y".equalsIgnoreCase(dataValue)
+						|| "on".equalsIgnoreCase(dataValue) || "1".equalsIgnoreCase(dataValue)) {
+					dataValue = "true";
+				} else {
+					dataValue = "false";
+				}
+				objValue = Boolean.valueOf(dataValue);
+				break;
+			
+			case "OBJECT":
+			case "ARRAY":
+			case "VARIANT":
+			default:
+				dataValue += dataSession.getStringData(pDataAttributes);
+				//dataValue += "\'" + dataSession.getStringData(pDataAttributes) + "\'";
+				objValue = new String(dataValue);
+				break;
+			}
+			break;
+			
+		case "integer":
+			objValue = new Integer(dataSession.getIntData(pDataAttributes));
+			break;
+		case "bigint":
+			objValue = new Long(dataSession.getLongData(pDataAttributes));
+			break;
+		case "double":
+			objValue = new Double(dataSession.getDoubleData(pDataAttributes));
+			break;
+		case "date/time":
+			objValue = dataSession.getDateTimeData(pDataAttributes);
+			break;
+		case "decimal":
+			objValue = dataSession.getBigDecimalData(pDataAttributes);
+			break;
+		case "binary":
+			objValue = dataSession.getBinaryData(pDataAttributes) + "";
+			break;
+		}
+		//Preventing primitives to be set as 0
+		if (pDataAttributes.getIndicator() == EIndicator.NULL) {
+			objValue = null;
+		}
+
+		return objValue;
+
+	}
 }

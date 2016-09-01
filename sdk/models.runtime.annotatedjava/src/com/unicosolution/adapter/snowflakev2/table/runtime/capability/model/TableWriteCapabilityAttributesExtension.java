@@ -15,14 +15,36 @@ import com.informatica.adapter.sdkadapter.logical.model.L_ModelExtensionNode;
 public class TableWriteCapabilityAttributesExtension extends D_ModelExtensionWriteCapAttributes  {
 
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
-    boolean truncateTargetTable = true;
+    boolean truncateTargetTable = false;
 
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
-    boolean bulkLoad = true;
+    boolean bulkLoad = false;
 
     @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
     @Length( min = 0 ,  max = 255 )
     @Persistence( size = 255 )
     String partitionID;
+
+    @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
+    @Length( min = 0 ,  max = 255 )
+    @Persistence( size = 255 )
+    String preSql;
+
+    @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
+    @Length( min = 0 ,  max = 255 )
+    @Persistence( size = 255 )
+    String postSql;
+
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean abortOnErrors = false;
+
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean propagateData = false;
+
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean oneBatch = false;
+
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean startTransactionForJobs = false;
 
 }

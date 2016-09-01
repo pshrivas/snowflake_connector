@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-07-05 19:32:48
+ * Generation time: 2016-08-29 17:39:12
  */
 
 package com.unicosolution.adapter.snowflakev2.connection;

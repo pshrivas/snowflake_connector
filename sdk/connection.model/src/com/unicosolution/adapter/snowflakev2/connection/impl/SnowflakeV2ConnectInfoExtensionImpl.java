@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-07-05 19:32:48
+ * Generation time: 2016-08-29 17:39:11
  */
 package com.unicosolution.adapter.snowflakev2.connection.impl;
 
@@ -19,13 +19,23 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     /**
      * The generated Serial Version UID.
      */
-    private static final long serialVersionUID = 8092504962135580691L;
+    private static final long serialVersionUID = 3744665912219469552L;
 
     private static int PROPERTY_ID;
+
+    private static final String DEFAULT_SSL = "off";
+
+    protected java.lang.String aSSL = DEFAULT_SSL;
 
     protected java.lang.String account = "";
 
     protected java.lang.String authenticator = "";
+
+    private static final String DEFAULT_CLIENTSESSIONKEEPALIVE = "true";
+
+    protected java.lang.String clientSessionKeepAlive = DEFAULT_CLIENTSESSIONKEEPALIVE;
+
+    protected java.lang.String customURL = "";
 
     protected java.lang.String db = "";
 
@@ -43,6 +53,8 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
 
     protected java.lang.String tracing = "";
 
+    protected boolean useCustomURL = false;
+
     protected java.lang.String user = "";
 
     protected java.lang.String warehouse = "";
@@ -56,6 +68,52 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
         iSetIClass(com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE
                 .getSnowflakeV2ConnectInfoExtensionIClass());
     }
+
+
+     /**
+     * Retrieves the 'SSL' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getSSL()
+     * @return the 'SSL' property value for this Object
+     */
+     public java.lang.String getSSL() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.aSSL;
+     }
+
+    /**
+     * Sets the 'SSL' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#setSSL(java.lang.String aSSL)
+     * @param aSSL is the new value for property 'SSL'
+     */public void setSSL(java.lang.String aSSL) {
+    		if(this.aSSL.equals(aSSL)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.aSSL;
+            if(aSSL == null) {
+                aSSL = "";
+            }
+            this.aSSL = aSSL;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.S_S_L, oldVal, aSSL);
+            }
+        }
+     
 
 
      /**
@@ -145,6 +203,98 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
             if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
                 com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
                     this, com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.AUTHENTICATOR, oldVal, authenticator);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'clientSessionKeepAlive' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getClientSessionKeepAlive()
+     * @return the 'clientSessionKeepAlive' property value for this Object
+     */
+     public java.lang.String getClientSessionKeepAlive() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.clientSessionKeepAlive;
+     }
+
+    /**
+     * Sets the 'clientSessionKeepAlive' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#setClientSessionKeepAlive(java.lang.String clientSessionKeepAlive)
+     * @param clientSessionKeepAlive is the new value for property 'clientSessionKeepAlive'
+     */public void setClientSessionKeepAlive(java.lang.String clientSessionKeepAlive) {
+    		if(this.clientSessionKeepAlive.equals(clientSessionKeepAlive)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.clientSessionKeepAlive;
+            if(clientSessionKeepAlive == null) {
+                clientSessionKeepAlive = "";
+            }
+            this.clientSessionKeepAlive = clientSessionKeepAlive;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.CLIENT_SESSION_KEEP_ALIVE, oldVal, clientSessionKeepAlive);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'customURL' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getCustomURL()
+     * @return the 'customURL' property value for this Object
+     */
+     public java.lang.String getCustomURL() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.customURL;
+     }
+
+    /**
+     * Sets the 'customURL' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#setCustomURL(java.lang.String customURL)
+     * @param customURL is the new value for property 'customURL'
+     */public void setCustomURL(java.lang.String customURL) {
+    		if(this.customURL.equals(customURL)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.customURL;
+            if(customURL == null) {
+                customURL = "";
+            }
+            this.customURL = customURL;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.CUSTOM_U_R_L, oldVal, customURL);
             }
         }
      
@@ -568,6 +718,46 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
 
 
      /**
+     * Retrieves the 'useCustomURL' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#isUseCustomURL()
+     * @return the 'useCustomURL' property value for this Object
+     */
+     public boolean isUseCustomURL() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.useCustomURL;
+     }
+
+    /**
+     * Sets the 'useCustomURL' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#setUseCustomURL(boolean useCustomURL)
+     * @param useCustomURL is the new value for property 'useCustomURL'
+     */public void setUseCustomURL(boolean useCustomURL) {
+    		if(this.useCustomURL == useCustomURL) {
+    			return;
+    		}
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            boolean oldVal = this.useCustomURL;
+            this.useCustomURL = useCustomURL;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.USE_CUSTOM_U_R_L, oldVal, useCustomURL);
+            }
+        }
+     
+
+
+     /**
      * Retrieves the 'user' property value for this Object.
      *
      * @see com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getUser()
@@ -681,10 +871,16 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     	return super.iGet(iProperty);
     	else
     	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+        case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.SSL":
+            return this.getSSL();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.account":
             return this.getAccount();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.authenticator":
             return this.getAuthenticator();
+        case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.clientSessionKeepAlive":
+            return this.getClientSessionKeepAlive();
+        case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.customURL":
+            return this.getCustomURL();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.db":
             return this.getDb();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.passcode":
@@ -701,6 +897,8 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
             return this.getSchema();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.tracing":
             return this.getTracing();
+        case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.useCustomURL":
+            return this.isUseCustomURL();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.user":
             return this.getUser();
         case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.warehouse":
@@ -735,10 +933,16 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     	return super.iGet(iProperty,encrypted);
     	else
     	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.SSL":
+                return this.getSSL();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.account":
                 return this.getAccount();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.authenticator":
                 return this.getAuthenticator();
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.clientSessionKeepAlive":
+                return this.getClientSessionKeepAlive();
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.customURL":
+                return this.getCustomURL();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.db":
                 return this.getDb();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.passcode":
@@ -755,6 +959,8 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
                 return this.getSchema();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.tracing":
                 return this.getTracing();
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.useCustomURL":
+                return this.isUseCustomURL();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.user":
                 return this.getUser();
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.warehouse":
@@ -821,11 +1027,20 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     	super.iSet(iProperty,newValue);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()) {
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.SSL":
+                this.setSSL((java.lang.String) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.account":
                 this.setAccount((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.authenticator":
                 this.setAuthenticator((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.clientSessionKeepAlive":
+                this.setClientSessionKeepAlive((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.customURL":
+                this.setCustomURL((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.db":
                 this.setDb((java.lang.String) newValue);
@@ -857,6 +1072,16 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.tracing":
                 this.setTracing((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.useCustomURL":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setUseCustomURL((java.lang.Boolean) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.user":
                 this.setUser((java.lang.String) newValue);
@@ -895,11 +1120,20 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     	super.iSet(iProperty,newValue,encrypted);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()){
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.SSL":
+                this.setSSL((java.lang.String) newValue);
+                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.account":
                 this.setAccount((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.authenticator":
                 this.setAuthenticator((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.clientSessionKeepAlive":
+                this.setClientSessionKeepAlive((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.customURL":
+                this.setCustomURL((java.lang.String) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.db":
                 this.setDb((java.lang.String) newValue);
@@ -931,6 +1165,16 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.tracing":
                 this.setTracing((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.useCustomURL":
+
+                if (newValue == null) {
+                        throw new com.informatica.core.exception.IllegalArgumentException(
+                               com.informatica.imf.ImfMsg.MANDATORY_PROPERTY_property_OF_class_CANNOT_BE_SET_TO_NULL,
+                               iProperty.getName(),
+                               this.iGetIClass());
+                 }
+                this.setUseCustomURL((java.lang.Boolean) newValue);
                 break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.user":
                 this.setUser((java.lang.String) newValue);
@@ -969,11 +1213,20 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     	super.iInverseSet(iProperty,newValue);
     	else
         	switch (((com.informatica.imf.icore.internal.IPropertyInternal) iProperty).getQualifiedName()) {
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.SSL":
+               this.aSSL = (java.lang.String) newValue;
+               break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.account":
                this.account = (java.lang.String) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.authenticator":
                this.authenticator = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.clientSessionKeepAlive":
+               this.clientSessionKeepAlive = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.customURL":
+               this.customURL = (java.lang.String) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.db":
                this.db = (java.lang.String) newValue;
@@ -998,6 +1251,9 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.tracing":
                this.tracing = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.useCustomURL":
+               this.useCustomURL = (java.lang.Boolean) newValue;
                break;
             case "com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.user":
                this.user = (java.lang.String) newValue;
@@ -1028,11 +1284,20 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
     }
 
     public static void initIProperties() {
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__S_S_L;
+        		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.S_S_L =
+        			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__ACCOUNT;
         		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.ACCOUNT =
         			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__AUTHENTICATOR;
         		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.AUTHENTICATOR =
+        			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__CLIENT_SESSION_KEEP_ALIVE;
+        		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.CLIENT_SESSION_KEEP_ALIVE =
+        			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__CUSTOM_U_R_L;
+        		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.CUSTOM_U_R_L =
         			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__DB;
         		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.DB =
@@ -1057,6 +1322,9 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
         			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__TRACING;
         		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.TRACING =
+        			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__USE_CUSTOM_U_R_L;
+        		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.USE_CUSTOM_U_R_L =
         			com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.connection.impl.ConnectionIPackageImpl.SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__USER;
         		com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension.Properties.USER =

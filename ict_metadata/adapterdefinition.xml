@@ -16,6 +16,16 @@
                <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="STRING" name="passcode" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcode" defaultDisplayName="Passcode" description=""/>
                <ConnectionAttribute defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="25" minLength="0" type="BOOLEAN" name="passcodeInPassword" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="passcodeInPassword" defaultDisplayName="PasscodeInPassword" description=""/>
                <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="8" minLength="0" type="STRING" name="port" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="port" defaultDisplayName="Port" description=""/>
+               <ConnectionAttribute defaultValue="off" isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="SSL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="SSL" defaultDisplayName="SSL" description="">
+                  <valuesList value="on" displayValue="on"/>
+                  <valuesList value="off" displayValue="off"/>
+               </ConnectionAttribute>
+               <ConnectionAttribute defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="useCustomURL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="useCustomURL" defaultDisplayName="Use Custom URL" description=""/>
+               <ConnectionAttribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="customURL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="customURL" defaultDisplayName="Custom URL" description=""/>
+               <ConnectionAttribute defaultValue="true" isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="clientSessionKeepAlive" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="clientSessionKeepAlive" defaultDisplayName="Client Session Keep Alive" description="">
+                  <valuesList value="true" displayValue="true"/>
+                  <valuesList value="false" displayValue="false"/>
+               </ConnectionAttribute>
             </ConnectionAttributes>
             <ConnectionDisplayDefinitions displayType="DEFAULT">
                <pageList pageName="Connection Page" pageDescription="Connection Page">
@@ -56,6 +66,24 @@
                      <displayAttributeList displayName="Port" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
                         <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="8" minLength="0" type="STRING" name="port" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="port" defaultDisplayName="Port" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
                      </displayAttributeList>
+                     <displayAttributeList displayName="SSL" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute defaultValue="off" isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="SSL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="SSL" defaultDisplayName="SSL" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute">
+                           <valuesList value="on" displayValue="on"/>
+                           <valuesList value="off" displayValue="off"/>
+                        </attribute>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Use Custom URL" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="true">
+                        <attribute defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="useCustomURL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="useCustomURL" defaultDisplayName="Use Custom URL" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Custom URL" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="customURL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="customURL" defaultDisplayName="Custom URL" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute"/>
+                     </displayAttributeList>
+                     <displayAttributeList displayName="Client Session Keep Alive" toolTip="" hasDepAttr="false" isHidden="false" isEnabled="true" isMandatory="false">
+                        <attribute defaultValue="true" isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="255" minLength="0" type="STRING" name="clientSessionKeepAlive" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" cliDisplayName="clientSessionKeepAlive" defaultDisplayName="Client Session Keep Alive" description="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="connectionAttribute">
+                           <valuesList value="true" displayValue="true"/>
+                           <valuesList value="false" displayValue="false"/>
+                        </attribute>
+                     </displayAttributeList>
                   </groupList>
                </pageList>
             </ConnectionDisplayDefinitions>
@@ -65,7 +93,7 @@
          <NativeDataTypes>
             <NativeDataType semanticType="Length" name="String" comments="" maxLength="65536" defaultLength="255" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
                <NativeToPlatformDataTypeMaps>
-                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="String" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
+                  <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="String" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
                </NativeToPlatformDataTypeMaps>
             </NativeDataType>
             <NativeDataType semanticType="Integer" name="INTEGER" comments="" maxPrecision="10" defaultPrecision="10" editablePrecision="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticIntegerType">
@@ -130,9 +158,7 @@
             </NativeDataType>
             <NativeDataType semanticType="Length" name="BOOLEAN" comments="" maxLength="5" defaultLength="5" lengthUnit="characters" editableLength="true" variableAllocation="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticLengthType">
                <NativeToPlatformDataTypeMaps>
-                  <NativeToPlatformDataTypeMap platformDataType="integer" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
                   <NativeToPlatformDataTypeMap platformDataType="string" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="true" bestMapFromForeign="false"/>
-                  <NativeToPlatformDataTypeMap platformDataType="text" nativeDataType="BOOLEAN" lossyToNative="false" lossyToForeign="false" bestMapFromNative="false" bestMapFromForeign="false"/>
                </NativeToPlatformDataTypeMaps>
             </NativeDataType>
             <NativeDataType semanticType="Date" name="TIME" comments="" yearSupported="false" monthSupported="false" daySupported="false" hourSupported="true" minuteSupported="true" secondSupported="true" timezoneSupported="false" maxScale="6" defaultScale="6" editableScale="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="semanticGDateType">
@@ -182,10 +208,6 @@
                <operationTypes implicitlyCreated="false" interactionPattern="Connections" multiCapabilitySupport="single" name="tableRead">
                   <readCapability displayName="tableRead">
                      <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
-                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="preSQL" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Pre SQL" description="" hidden="false" editable="false" partitionOverrideable="false"/>
-                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="postSQL" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Post SQL" description="" hidden="false" editable="false" partitionOverrideable="false"/>
-                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="INTEGER" name="rowOffSet" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Row Off Set" description="" hidden="false" editable="false" partitionOverrideable="false"/>
-                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="INTEGER" name="rowLimit" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Row Limit" description="" hidden="false" editable="false" partitionOverrideable="false"/>
                      <inputProjectSupport name="tableRead">
                         <filterOperation supportsNativeFilter="true" supportsInfaFilter="SnowflakeV2ExpressionSupport"/>
                         <joinOperation supportsNativeJoin="true" supportsInfaJoin="SnowflakeV2ExpressionSupport" implicitJoin="false"/>
@@ -213,9 +235,15 @@
                <operationTypes implicitlyCreated="false" interactionPattern="Connections" multiCapabilitySupport="single" name="tableWrite">
                   <writeCapability displayName="tableWrite">
                      <iconSet bannerIconName="Thick_DST_9_enterprise_table_75x66.png" iconicIconName="Thick_DST_9_enterprise_table_30x30.gif" dfltIconName="Thick_DST_9_enterprise_table_16x16.gif" defaultSet="false"/>
-                     <attributes defaultValue="true" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="truncateTargetTable" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Truncate Target Table" description="" hidden="false" editable="false" partitionOverrideable="false"/>
-                     <attributes defaultValue="true" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="bulkLoad" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Bulk Load" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="truncateTargetTable" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Truncate Target Table" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="bulkLoad" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Bulk Load" description="" hidden="false" editable="false" partitionOverrideable="false"/>
                      <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="partitionID" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Partition ID" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="preSql" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Pre Sql" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes isMandatory="false" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="255" maxLength="255" minLength="0" type="STRING" name="postSql" hasDependentAttr="false" isHidden="false" isSubstitutable="true" isParameterizable="false" displayName="Post Sql" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="abortOnErrors" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Abort On Errors" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="propagateData" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Propagate Data" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="oneBatch" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="One Batch" description="" hidden="false" editable="false" partitionOverrideable="false"/>
+                     <attributes defaultValue="false" isMandatory="true" isEncrypted="false" maxOccurs="0" minOccurs="0" persistSize="0" maxLength="0" minLength="0" type="BOOLEAN" name="startTransactionForJobs" hasDependentAttr="false" isHidden="false" isSubstitutable="false" isParameterizable="false" displayName="Start Transaction For Jobs" description="" hidden="false" editable="false" partitionOverrideable="false"/>
                      <outputProjectSupport name="tableWrite">
                         <projectionOperation dropFields="true" projectionAtNativeSource="false" projectionAtPlatform="false"/>
                      </outputProjectSupport>
@@ -283,8 +311,68 @@
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
             </DepenendentTasks>
          </WorkflowTask>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
             <DepenendentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
                <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
                <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
                <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
@@ -303,12 +391,12 @@
       <BuildConfigurations>
          <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake_jdbc" canShip="true"/>
+               <JavaLibraryReference file="snowflake_jdbc_2908" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
          <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake_jdbc" canShip="true"/>
+               <JavaLibraryReference file="snowflake_jdbc_2908" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
       </BuildConfigurations>

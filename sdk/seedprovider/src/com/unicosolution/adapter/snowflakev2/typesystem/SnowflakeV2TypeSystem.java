@@ -135,14 +135,12 @@ public class SnowflakeV2TypeSystem  {
                                                       false, true);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampDT, Platform.dateDT, false, false, 
                                                       true, false);
-            DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, stringDT, Platform.textDT, false, false, true, 
-                                                      false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampntzDT, Platform.dateDT, false, false, 
-                                                      false, false);
-            DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, booleanDT, Platform.integerDT, false, false, 
                                                       false, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, objectDT, Platform.textDT, false, false, false, 
                                                       false);
+            DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, stringDT, Platform.stringDT, false, false, 
+                                                      true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, booleanDT, Platform.stringDT, false, false, 
                                                       true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, floatDT, Platform.doubleDT, false, false, 
@@ -153,8 +151,6 @@ public class SnowflakeV2TypeSystem  {
                                                       true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, numberDT, Platform.integerDT, false, false, 
                                                       true, false);
-            DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, booleanDT, Platform.textDT, false, false, 
-                                                      false, false);
     }
 
     static {
