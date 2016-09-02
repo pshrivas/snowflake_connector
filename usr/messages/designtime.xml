@@ -1,5 +1,13 @@
 <!-- Use this file to define user interface messages and error messages for the connection and metadata components of the adapter. -->
 <!--Note for Cpp runtime: To use the updated messages in your RuntimeAdapter code, use Informatica Connector Toolkit to generate Messages.h -->
 <group id="SnowflakeV2" prefix="SnowflakeV2">
-   <message id="CONN_SUCC" code="200" severity="Info" text="Connection User [%s], Port %d. Connected in %fms"/>
+   <message id="CONN_SUCC" code="200" severity="Info" text="SnowflakeV2_CONN_SUCC_200"/>
+   <message id="CONN_ERROR" code="201" severity="Info" text="Connection properties cannot be null or empty"/>
+   <message id="INVALID_PASSCODE" code="905" severity="Error" text="INVALID_PASSCODE"/>
+   <message id="EMPTY_USER" code="900" severity="Error" text="Empty username"/>
+   <message id="EMPTY_PASSWORD" code="901" severity="Error" text="Empty Password"/>
+   <message id="EMPTY_DB" code="902" severity="Error" text="Empty DB"/>
+   <message id="EMPTY_SCHEMA" code="903" severity="Error" text="Empty Schema"/>
+   <message id="EMPTY_WAREHOUSE" code="904" severity="Error" text="Empty warehouse"/>
+   <message id="EMPTY_ACCOUNT" code="905" severity="Error" text="Empty account"/>
 </group>

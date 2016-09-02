@@ -35,42 +35,42 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 		if (null == user || "".equalsIgnoreCase(user.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_USER_900);
+					Messages.SnowflakeV2_EMPTY_USER_900);
 		}
 		
 		String password = (String) attrNameValmap.get("password");
 		if (null == password || "".equalsIgnoreCase(password.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_PASSWORD_901);
+					Messages.SnowflakeV2_EMPTY_PASSWORD_901);
 		}
 		
 		String db = (String) attrNameValmap.get("db");
 		if (null == db || "".equalsIgnoreCase(db.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_DB_902);
+					Messages.SnowflakeV2_EMPTY_DB_902);
 		}
 		
 		String schema = (String) attrNameValmap.get("schema");
 		if (null == schema || "".equalsIgnoreCase(schema.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_SCHEMA_903);
+					Messages.SnowflakeV2_EMPTY_SCHEMA_903);
 		}
 		
 		String warehouse = (String) attrNameValmap.get("warehouse");
 		if (null == warehouse || "".equalsIgnoreCase(warehouse.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_WAREHOUSE_904);
+					Messages.SnowflakeV2_EMPTY_WAREHOUSE_904);
 		}
 		
 		String account = (String) attrNameValmap.get("account");
 		if (null == account || "".equalsIgnoreCase(account.trim())) {
 			ExceptionManager.createNlsAdapterSDKException(
 					MessageBundle.getInstance(),
-					Messages.EMPTY_ACCOUNT_905);
+					Messages.SnowflakeV2_EMPTY_ACCOUNT_905);
 		}
 
 		/*String pCode = (String) attrNameValmap.get("passcode");
