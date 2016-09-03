@@ -4,6 +4,13 @@
    <extension point="com.informatica.sdk.i18n.messages" id="SnowflakeV2designtime">
       <group id="SnowflakeV2" prefix="SnowflakeV2">
          <message id="CONN_SUCC" code="200" severity="Info" text="%SnowflakeV2_CONN_SUCC_200.text" cause="%SnowflakeV2_CONN_SUCC_200.cause" action="%SnowflakeV2_CONN_SUCC_200.action"/>
+         <message id="CONN_ERROR" code="201" severity="Info" text="%SnowflakeV2_CONN_ERROR_201.text" cause="%SnowflakeV2_CONN_ERROR_201.cause" action="%SnowflakeV2_CONN_ERROR_201.action"/>
+         <message id="EMPTY_USER" code="900" severity="Error" text="%SnowflakeV2_EMPTY_USER_900.text" cause="%SnowflakeV2_EMPTY_USER_900.cause" action="%SnowflakeV2_EMPTY_USER_900.action"/>
+         <message id="EMPTY_PASSWORD" code="901" severity="Error" text="%SnowflakeV2_EMPTY_PASSWORD_901.text" cause="%SnowflakeV2_EMPTY_PASSWORD_901.cause" action="%SnowflakeV2_EMPTY_PASSWORD_901.action"/>
+         <message id="EMPTY_DB" code="902" severity="Error" text="%SnowflakeV2_EMPTY_DB_902.text" cause="%SnowflakeV2_EMPTY_DB_902.cause" action="%SnowflakeV2_EMPTY_DB_902.action"/>
+         <message id="EMPTY_SCHEMA" code="903" severity="Error" text="%SnowflakeV2_EMPTY_SCHEMA_903.text" cause="%SnowflakeV2_EMPTY_SCHEMA_903.cause" action="%SnowflakeV2_EMPTY_SCHEMA_903.action"/>
+         <message id="EMPTY_WAREHOUSE" code="904" severity="Error" text="%SnowflakeV2_EMPTY_WAREHOUSE_904.text" cause="%SnowflakeV2_EMPTY_WAREHOUSE_904.cause" action="%SnowflakeV2_EMPTY_WAREHOUSE_904.action"/>
+         <message id="EMPTY_ACCOUNT" code="905" severity="Error" text="%SnowflakeV2_EMPTY_ACCOUNT_905.text" cause="%SnowflakeV2_EMPTY_ACCOUNT_905.cause" action="%SnowflakeV2_EMPTY_ACCOUNT_905.action"/>
       </group>
    </extension>
 </plugin>

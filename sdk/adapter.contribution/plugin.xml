@@ -10,6 +10,7 @@
             <patternAttributes name="FlatRecords" value="true"/>
             <patternAttributes name="Fields" value="true"/>
             <patternAttributes name="RecordRelationships" value="false"/>
+            <classLoaderPattern loaderType="Custom" classLoadOrder="ParentFirst"/>
          </metaDataPattern>
          <nativeMetaDataObjectType InfaLicenseCheckerClass="com.unicosolution.adapter.snowflakev2.licensechecker.SnowflakeV2LicenseChecker" metaDataPatternName="SnowflakeV2SnowflakeV2_table_Pattern" name="table" nullConnectionAllowed="false" supportsAnonDSO="false" supportsCDO="false" supportsComplexASO="false" supportsSimpleASO="false">
             <importDialogOptions allowMultiSelect="true" displayFilterByDesc="false" displayFilterByName="true" displayFilterByPath="false" showEntity="true" showHierarchy="always" showRelatedRecords="never" displaySkipDescriptions="false"/>
