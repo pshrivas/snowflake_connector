@@ -391,7 +391,7 @@
       <BuildConfigurations>
          <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake_jdbc_2908" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-2.7.90" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
          <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
