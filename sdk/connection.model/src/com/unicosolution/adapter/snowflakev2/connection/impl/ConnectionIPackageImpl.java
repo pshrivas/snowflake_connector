@@ -115,11 +115,11 @@ implements com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage {
     private com.informatica.imf.icore.IClass snowflakeV2ConnectInfoExtensionIClass = null;
     private com.informatica.imf.icore.IClass snowflakeV2ConnectInfoIClass = null;
     private static com.informatica.metadata.infasdk.connectinfo.sdkadapter.impl.SdkadapterIPackageImpl theComInformaticaMetadataInfasdkConnectinfoSdkadapterIPackage = (com.informatica.metadata.infasdk.connectinfo.sdkadapter.impl.SdkadapterIPackageImpl)com.informatica.metadata.infasdk.connectinfo.sdkadapter.SdkadapterIPackage.I_INSTANCE;
-    private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
+    private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl theComInformaticaMetadataCommonConnectinfoIPackage = (com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl)com.informatica.metadata.common.connectinfo.ConnectinfoIPackage.I_INSTANCE;
     private static com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl theComInformaticaMetadataInfasdkConnectinfoCommonSdkmodelextensionIPackage = (com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl)com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.SdkmodelextensionIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
     private ConnectionIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.connection.ConnectionIFactory.I_INSTANCE);
         // set all the package-info
@@ -329,7 +329,7 @@ implements com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage {
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
         initIProperty(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__CUSTOM_U_R_L), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "customURL",
-        	"", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
+        	"jdbc:snowflake://", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
         initIProperty(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__DB), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "db",
@@ -345,7 +345,7 @@ implements com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage {
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
         initIProperty(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__SCHEMA), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "schema",
-        	"", BOUNDS_VALUE_ONE, BOUNDS_VALUE_ONE, null,
+        	"", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
         initIProperty(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__USE_CUSTOM_U_R_L), com.informatica.imf.icore.ICoreDatatypes.I_BOOLEAN, "useCustomURL",
@@ -409,13 +409,13 @@ implements com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage {
       					new com.informatica.imf.annotations.constraints.impl.LengthImpl();
       		snowflakev2connectinfoextensionCustomurlLength.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getLengthIClass());
       		snowflakev2connectinfoextensionCustomurlLength.setLengthType(com.informatica.imf.annotations.constraints.LengthType.OTHER);
-      		snowflakev2connectinfoextensionCustomurlLength.setMax(255);
+      		snowflakev2connectinfoextensionCustomurlLength.setMax(1024);
       		snowflakev2connectinfoextensionCustomurlLength.setMin(0);
       		this.addAnnotationToElement(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__CUSTOM_U_R_L), snowflakev2connectinfoextensionCustomurlLength);
       		com.informatica.imf.annotations.constraints.impl.PersistenceImpl snowflakev2connectinfoextensionCustomurlPersistence = 
       					new com.informatica.imf.annotations.constraints.impl.PersistenceImpl();
       		snowflakev2connectinfoextensionCustomurlPersistence.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getPersistenceIClass());
-      		snowflakev2connectinfoextensionCustomurlPersistence.setSize(255);
+      		snowflakev2connectinfoextensionCustomurlPersistence.setSize(1024);
       		this.addAnnotationToElement(this.snowflakeV2ConnectInfoExtensionIClass.getAllProperties(true).get(SNOWFLAKE_V2_CONNECT_INFO_EXTENSION__CUSTOM_U_R_L), snowflakev2connectinfoextensionCustomurlPersistence);
 
       		//initialization of annotations for property db

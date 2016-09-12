@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-09-10 18:24:02
+ * Generation time: 2016-09-12 06:57:32
  */
 package com.unicosolution.adapter.snowflakev2.connection.impl;
 
@@ -27,7 +27,9 @@ implements com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectIn
 
     protected boolean clientSessionKeepAlive = true;
 
-    protected java.lang.String customURL = "";
+    private static final String DEFAULT_CUSTOMURL = "jdbc:snowflake://";
+
+    protected java.lang.String customURL = DEFAULT_CUSTOMURL;
 
     protected java.lang.String db = "";
 

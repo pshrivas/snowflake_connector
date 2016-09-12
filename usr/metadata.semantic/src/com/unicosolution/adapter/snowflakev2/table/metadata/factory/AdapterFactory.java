@@ -62,26 +62,11 @@ public class AdapterFactory extends SP_Factory implements SEMFactory
     // Strings are used for delayed class loading in DxT
     static {
         MapEntry entry;
-        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.metadata.semantic.auto.SATableFieldExtensions", "com.unicosolution.adapter.snowflakev2.table.metadata.objectmanager.auto.MATableFieldExtensions");
-        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.metadata.TableFieldExtensions", entry);
         entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.metadata.semantic.auto.SATableRecordExtensions", "com.unicosolution.adapter.snowflakev2.table.metadata.objectmanager.auto.MATableRecordExtensions");
         addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.metadata.TableRecordExtensions", entry);
+        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.metadata.semantic.auto.SATableFieldExtensions", "com.unicosolution.adapter.snowflakev2.table.metadata.objectmanager.auto.MATableFieldExtensions");
+        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.metadata.TableFieldExtensions", entry);
     }
-    /** Create a new instance of SEMTableFieldExtensions */
-    public SEMTableFieldExtensions newSEMTableFieldExtensions(Catalog catalog)
-    {
-        return (SEMTableFieldExtensions)SATableFieldExtensions.newObj((com.informatica.adapter.sdkadapter.patternblocks.catalog.semantic.auto.SAP_Catalog)catalog);
-    }
-
-    /** Create a new instance of Field */
-    public Field newField(Catalog catalog)
-    {
-        Field newObj = (Field)SAP_Field.newObj((com.informatica.adapter.sdkadapter.patternblocks.catalog.semantic.auto.SAP_Catalog)catalog);
-        SEMTableFieldExtensions newExtnObj = newSEMTableFieldExtensions(catalog);
-        newObj.setExtensions(newExtnObj);
-        return newObj;
-    }
-
     /** Create a new instance of SEMTableRecordExtensions */
     public SEMTableRecordExtensions newSEMTableRecordExtensions(Catalog catalog)
     {
@@ -93,6 +78,21 @@ public class AdapterFactory extends SP_Factory implements SEMFactory
     {
         FlatRecord newObj = (FlatRecord)SAP_FlatRecord.newObj((com.informatica.adapter.sdkadapter.patternblocks.catalog.semantic.auto.SAP_Catalog)catalog);
         SEMTableRecordExtensions newExtnObj = newSEMTableRecordExtensions(catalog);
+        newObj.setExtensions(newExtnObj);
+        return newObj;
+    }
+
+    /** Create a new instance of SEMTableFieldExtensions */
+    public SEMTableFieldExtensions newSEMTableFieldExtensions(Catalog catalog)
+    {
+        return (SEMTableFieldExtensions)SATableFieldExtensions.newObj((com.informatica.adapter.sdkadapter.patternblocks.catalog.semantic.auto.SAP_Catalog)catalog);
+    }
+
+    /** Create a new instance of Field */
+    public Field newField(Catalog catalog)
+    {
+        Field newObj = (Field)SAP_Field.newObj((com.informatica.adapter.sdkadapter.patternblocks.catalog.semantic.auto.SAP_Catalog)catalog);
+        SEMTableFieldExtensions newExtnObj = newSEMTableFieldExtensions(catalog);
         newObj.setExtensions(newExtnObj);
         return newObj;
     }

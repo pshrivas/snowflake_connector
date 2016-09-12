@@ -11,10 +11,10 @@ public interface SEMFactory extends com.informatica.sdk.adapter.metadata.pattern
 
 
 
-    /** Create a new instance of SEMTableFieldExtensions */
-    public com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions newSEMTableFieldExtensions(com.informatica.sdk.adapter.metadata.patternblocks.catalog.semantic.iface.Catalog catalog );
-
     /** Create a new instance of SEMTableRecordExtensions */
     public com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableRecordExtensions newSEMTableRecordExtensions(com.informatica.sdk.adapter.metadata.patternblocks.catalog.semantic.iface.Catalog catalog );
+
+    /** Create a new instance of SEMTableFieldExtensions */
+    public com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions newSEMTableFieldExtensions(com.informatica.sdk.adapter.metadata.patternblocks.catalog.semantic.iface.Catalog catalog );
 
 }

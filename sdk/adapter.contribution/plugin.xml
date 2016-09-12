@@ -13,7 +13,7 @@
             <classLoaderPattern loaderType="Custom" classLoadOrder="ParentFirst"/>
          </metaDataPattern>
          <nativeMetaDataObjectType InfaLicenseCheckerClass="com.unicosolution.adapter.snowflakev2.licensechecker.SnowflakeV2LicenseChecker" metaDataPatternName="SnowflakeV2SnowflakeV2_table_Pattern" name="table" nullConnectionAllowed="false" supportsAnonDSO="false" supportsCDO="false" supportsComplexASO="false" supportsSimpleASO="false">
-            <importDialogOptions allowMultiSelect="false" displayFilterByDesc="true" displayFilterByName="true" displayFilterByPath="true" showEntity="true" showHierarchy="always" showRelatedRecords="always" displaySkipDescriptions="true"/>
+            <importDialogOptions allowMultiSelect="true" displayFilterByDesc="true" displayFilterByName="true" displayFilterByPath="true" showEntity="true" showHierarchy="always" showRelatedRecords="always" displaySkipDescriptions="true"/>
             <metadataWriteOptions supportCreate="true" supportUpdate="true" supportDelete="true">
                <writeDialogOptions displayUpdateElseCreate="true" displayDropAndCreate="true"/>
             </metadataWriteOptions>

@@ -44,7 +44,7 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     @Persistence( size = 50 )
     String role;
 
-    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
     @Length( min = 0 ,  max = 25 )
     @Persistence( size = 25 )
     String schema;
@@ -53,9 +53,9 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     boolean useCustomURL = false;
 
     @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 255 )
-    @Persistence( size = 255 )
-    String customURL;
+    @Length( min = 0 ,  max = 1024 )
+    @Persistence( size = 1024 )
+    String customURL = "jdbc:snowflake://";
 
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
     boolean clientSessionKeepAlive = true;

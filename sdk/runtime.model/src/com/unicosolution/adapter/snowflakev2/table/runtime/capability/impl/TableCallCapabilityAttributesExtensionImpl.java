@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-09-12 04:42:16
+ * Generation time: 2016-09-12 06:07:28
  */
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl;
 

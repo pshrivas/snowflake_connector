@@ -179,6 +179,10 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
     	group.setGroupTooltip("PAGE_1_GROUP_1_TOOLTIP");
 
         group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("account", "ACCOUNT", "ACCOUNT_TOOLTIP",
+                	                            true, false, true));
+
+        group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("user", "USER", "USER_TOOLTIP",
                 	                            true, false, true));
 
@@ -191,20 +195,16 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
                 	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
+                	createAttributePresentation("schema", "SCHEMA", "SCHEMA_TOOLTIP",
+                	                            true, false, false));
+
+        group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("warehouse", "WAREHOUSE", "WAREHOUSE_TOOLTIP",
                 	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("account", "ACCOUNT", "ACCOUNT_TOOLTIP",
-                	                            true, false, true));
-
-        group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("role", "ROLE", "ROLE_TOOLTIP",
                 	                            true, false, false));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("schema", "SCHEMA", "SCHEMA_TOOLTIP",
-                	                            true, false, true));
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("useCustomURL", "USECUSTOMURL", "USECUSTOMURL_TOOLTIP",

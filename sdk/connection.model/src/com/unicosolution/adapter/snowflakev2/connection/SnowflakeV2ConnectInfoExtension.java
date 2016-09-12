@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-09-10 18:24:01
+ * Generation time: 2016-09-12 06:57:32
  */
 
 package com.unicosolution.adapter.snowflakev2.connection;
@@ -157,7 +157,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
     /**
      * Retrieves the 'schema' property value for this IObject.
      * @return the 'schema' property value for this IObject.
-     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
      */
     java.lang.String getSchema();
 
