@@ -24,14 +24,14 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     @Persistence( size = 50 )
     String password;
 
-    @Property( minOccurs = 1 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 25 )
-    @Persistence( size = 25 )
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Length( min = 0 ,  max = 100 )
+    @Persistence( size = 100 )
     String db;
 
-    @Property( minOccurs = 1 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 25 )
-    @Persistence( size = 25 )
+    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Length( min = 0 ,  max = 100 )
+    @Persistence( size = 100 )
     String warehouse;
 
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
@@ -42,40 +42,12 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     @Property( minOccurs = 0 ,  maxOccurs = 1 )
     @Length( min = 0 ,  max = 50 )
     @Persistence( size = 50 )
-    String authenticator;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 25 )
-    @Persistence( size = 25 )
     String role;
 
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
     @Length( min = 0 ,  max = 25 )
     @Persistence( size = 25 )
     String schema;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 20 )
-    @Persistence( size = 20 )
-    String tracing;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 25 )
-    @Persistence( size = 25 )
-    String passcode;
-
-    @Property( minOccurs = 1 ,  maxOccurs = 1 )
-    boolean passcodeInPassword = false;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 8 )
-    @Persistence( size = 8 )
-    String port;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 255 )
-    @Persistence( size = 255 )
-    String SSL = "off";
 
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
     boolean useCustomURL = false;
@@ -85,9 +57,7 @@ public class SnowflakeV2ConnectInfoExtension extends SDKConnectInfoModelExtensio
     @Persistence( size = 255 )
     String customURL;
 
-    @Property( minOccurs = 0 ,  maxOccurs = 1 )
-    @Length( min = 0 ,  max = 255 )
-    @Persistence( size = 255 )
-    String clientSessionKeepAlive = "true";
+    @Property( minOccurs = 1 ,  maxOccurs = 1 )
+    boolean clientSessionKeepAlive = true;
 
 }

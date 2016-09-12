@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-08-29 17:39:54
+ * Generation time: 2016-09-12 04:42:17
  */
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl;
 
@@ -19,7 +19,7 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     /**
      * The generated Serial Version UID.
      */
-    private static final long serialVersionUID = 8296088267292128534L;
+    private static final long serialVersionUID = -116467259375983265L;
 
     private static int PROPERTY_ID;
 
@@ -28,10 +28,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     protected boolean bulkLoad = false;
 
     protected boolean oneBatch = false;
-
-    protected java.lang.String partitionID = "";
-
-    protected com.informatica.metadata.common.parameter.Parameter partitionID$;
 
     protected java.lang.String postSql = "";
 
@@ -173,108 +169,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
                 com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
                     this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ONE_BATCH, oldVal, oneBatch);
-            }
-        }
-     
-
-
-     /**
-     * Retrieves the 'partitionID' property value for this Object.
-     *
-     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPartitionID()
-     * @return the 'partitionID' property value for this Object
-     */
-     public java.lang.String getPartitionID() {
-         if (this.iIsProxy()) {
-             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
-                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
-                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
-             }
-         }
-         return this.partitionID;
-     }
-
-    /**
-     * Sets the 'partitionID' property value for this IObject.
-     * If a <code>null</code> is specified as the value for this property,
-     * the default value of the String, i.e., empty string('""') will be set.
-     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPartitionID(java.lang.String partitionID)
-     * @param partitionID is the new value for property 'partitionID'
-     */public void setPartitionID(java.lang.String partitionID) {
-    		if(this.partitionID.equals(partitionID)) {
-    			return;
-    		}
-
-    		if (this.iIsProxy()) {
-    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
-    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
-    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
-    			}
-    		}
-            java.lang.String oldVal = this.partitionID;
-            if(partitionID == null) {
-                partitionID = "";
-            }
-            this.partitionID = partitionID;
-            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
-                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
-                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D, oldVal, partitionID);
-            }
-        }
-     
-
-
-     /**
-     * Retrieves the 'partitionID$' property value for this Object.
-     *
-     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPartitionID$()
-     * @return the 'partitionID$' property value for this Object
-     */
-     public com.informatica.metadata.common.parameter.Parameter getPartitionID$() {
-         if (this.iIsProxy()) {
-             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
-                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
-                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
-             }
-         }
-         return this.partitionID$;
-     }
-
-    /**
-     * Sets the 'partitionID$' property value for this IObject.
-     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setPartitionID$(com.informatica.metadata.common.parameter.Parameter partitionID$)
-     * @param partitionID$ is the new value for property 'partitionID$'
-     */public void setPartitionID$(com.informatica.metadata.common.parameter.Parameter partitionID$) {
-
-    		if (this.iIsProxy()) {
-    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
-    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
-    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
-    			}
-    		}
-            com.informatica.metadata.common.parameter.Parameter actualObject = partitionID$;
-            if(partitionID$ != null) {
-              if(partitionID$ instanceof com.informatica.imf.icore.IDelegatedObject ) {
-               actualObject = ((com.informatica.imf.icore.IDelegatedObject)partitionID$).getDelegatee();
-                }
-            }
-    		if(this.partitionID$ == actualObject) {
-    			return;
-    		}
-            if (actualObject == null) {
-               if (iGetSubstituteProperties()
-                           .containsKey(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$))
-                     iRemoveSubstituteProperty(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$);
-            } else {
-               iPutSubstituteProperty(
-                            com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$,
-                            actualObject);
-            }
-            com.informatica.metadata.common.parameter.Parameter oldVal = (com.informatica.metadata.common.parameter.Parameter) this.partitionID$;
-            this.partitionID$ = actualObject;
-            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
-                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
-                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$, oldVal, actualObject);
             }
         }
      
@@ -632,10 +526,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             return this.isBulkLoad();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
             return this.isOneBatch();
-        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
-            return this.getPartitionID();
-        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
-            return this.getPartitionID$();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
             return this.getPostSql();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
@@ -686,10 +576,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                 return this.isBulkLoad();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
                 return this.isOneBatch();
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
-                return this.getPartitionID();
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
-                return this.getPartitionID$();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
                 return this.getPostSql();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql$":
@@ -796,12 +682,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setOneBatch((java.lang.Boolean) newValue);
                 break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
-                this.setPartitionID((java.lang.String) newValue);
-                break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
-                this.setPartitionID$((com.informatica.metadata.common.parameter.Parameter) newValue);
-                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
                 this.setPostSql((java.lang.String) newValue);
                 break;
@@ -905,12 +785,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setOneBatch((java.lang.Boolean) newValue);
                 break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
-                this.setPartitionID((java.lang.String) newValue);
-                break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
-                this.setPartitionID$((com.informatica.metadata.common.parameter.Parameter) newValue);
-                break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
                 this.setPostSql((java.lang.String) newValue);
                 break;
@@ -993,12 +867,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.oneBatch":
                this.oneBatch = (java.lang.Boolean) newValue;
                break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID":
-               this.partitionID = (java.lang.String) newValue;
-               break;
-            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.partitionID$":
-               this.partitionID$ = (com.informatica.metadata.common.parameter.Parameter) newValue;
-               break;
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.postSql":
                this.postSql = (java.lang.String) newValue;
                break;
@@ -1051,12 +919,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ONE_BATCH;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.ONE_BATCH =
-        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
-        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D;
-        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D =
-        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
-        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D$;
-        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D$ =
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL =

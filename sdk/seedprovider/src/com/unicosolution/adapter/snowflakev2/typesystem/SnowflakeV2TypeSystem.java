@@ -21,37 +21,41 @@ public class SnowflakeV2TypeSystem  {
                                                                                           "SNOWFLAKEV2", "SnowflakeV2 Adapter Type System");
 
     public static final DataType stringDT = StorageSemanticsUtils.INSTANCE.createLengthSemanticsDataType(typesystem, "String", 
-                                                                                                         "", 65536, 255, 
+                                                                                                         "", 16777216, 255, 
                                                                                                          LengthUnitKind.characters, 
                                                                                                          true, true);
 
     public static final DataType integerDT = StorageSemanticsUtils.INSTANCE.createIntegralSemanticsDataType(typesystem, 
                                                                                                             "INTEGER", "", 
-                                                                                                            10, 10, false);
+                                                                                                            38, 38, true);
 
     public static final DataType timestampDT = StorageSemanticsUtils.INSTANCE.createGDateSemanticsDataType(typesystem, "TIMESTAMP", 
                                                                                                            "", true, true, 
                                                                                                            true, true, true, 
                                                                                                            true, false, 
-                                                                                                           6, 6, true);
+                                                                                                           9, 9, true);
 
     public static final DataType doubleDT = StorageSemanticsUtils.INSTANCE.createFloatSemanticsDataType(typesystem, "DOUBLE", 
-                                                                                                        "", 15, 15, true, 
+                                                                                                        "", 52, 52, false, 
                                                                                                         RadixKind.binary, 
-                                                                                                        252, 252, RadixKind.decimal);
+                                                                                                        11, 11, RadixKind.binary);
 
-    public static final DataType timestampntzDT = StorageSemanticsUtils.INSTANCE.createLengthSemanticsDataType(typesystem, 
-                                                                                                               "TIMESTAMPNTZ", 
-                                                                                                               "", 65536, 
-                                                                                                               255, LengthUnitKind.characters, 
-                                                                                                               true, true);
+    public static final DataType timestampntzDT = StorageSemanticsUtils.INSTANCE.createGDateSemanticsDataType(typesystem, 
+                                                                                                              "TIMESTAMPNTZ", 
+                                                                                                              "", true, 
+                                                                                                              true, true, 
+                                                                                                              true, true, 
+                                                                                                              true, false, 
+                                                                                                              9, 9, true);
 
-    public static final DataType numberDT = StorageSemanticsUtils.INSTANCE.createIntegralSemanticsDataType(typesystem, "NUMBER", 
-                                                                                                           "", 38, 38, true);
+    public static final DataType numberDT = StorageSemanticsUtils.INSTANCE.createSciDecimalSemanticsDataType(typesystem, 
+                                                                                                             "NUMBER", "", 
+                                                                                                             38, 38, true, 
+                                                                                                             10, 0, 0, true);
 
     public static final DataType varcharDT = StorageSemanticsUtils.INSTANCE.createLengthSemanticsDataType(typesystem, "VARCHAR", 
-                                                                                                          "", 65536, 255, 
-                                                                                                          LengthUnitKind.characters, 
+                                                                                                          "", 16777216, 
+                                                                                                          255, LengthUnitKind.characters, 
                                                                                                           true, true);
 
     public static final DataType dateDT = StorageSemanticsUtils.INSTANCE.createGDateSemanticsDataType(typesystem, "DATE", 
@@ -60,17 +64,17 @@ public class SnowflakeV2TypeSystem  {
                                                                                                       false, 10, 10, false);
 
     public static final DataType floatDT = StorageSemanticsUtils.INSTANCE.createFloatSemanticsDataType(typesystem, "FLOAT", 
-                                                                                                       "", 15, 15, false, 
-                                                                                                       RadixKind.decimal, 
-                                                                                                       11, 0, RadixKind.binary);
+                                                                                                       "", 52, 52, false, 
+                                                                                                       RadixKind.binary, 
+                                                                                                       11, 11, RadixKind.binary);
 
     public static final DataType variantDT = StorageSemanticsUtils.INSTANCE.createLengthSemanticsDataType(typesystem, "VARIANT", 
-                                                                                                          "", 65536, 255, 
-                                                                                                          LengthUnitKind.characters, 
+                                                                                                          "", 16777216, 
+                                                                                                          255, LengthUnitKind.characters, 
                                                                                                           true, true);
 
     public static final DataType objectDT = StorageSemanticsUtils.INSTANCE.createLengthSemanticsDataType(typesystem, "OBJECT", 
-                                                                                                         "", 65536, 255, 
+                                                                                                         "", 16777216, 255, 
                                                                                                          LengthUnitKind.characters, 
                                                                                                          true, true);
 
@@ -86,7 +90,7 @@ public class SnowflakeV2TypeSystem  {
     public static final DataType timeDT = StorageSemanticsUtils.INSTANCE.createGDateSemanticsDataType(typesystem, "TIME", 
                                                                                                       "", false, false, 
                                                                                                       false, true, true, 
-                                                                                                      true, false, 6, 6, 
+                                                                                                      true, false, 9, 9, 
                                                                                                       false);
 
     public static final DataType timestampltzDT = StorageSemanticsUtils.INSTANCE.createGDateSemanticsDataType(typesystem, 
@@ -124,7 +128,9 @@ public class SnowflakeV2TypeSystem  {
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, dateDT, Platform.dateDT, false, false, true, 
                                                       true);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampntzDT, Platform.stringDT, false, 
-                                                      false, true, false);
+                                                      false, false, false);
+            DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, numberDT, Platform.decimalDT, false, false, 
+                                                      true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestamptzDT, Platform.dateDT, false, false, 
                                                       true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampntzDT, Platform.textDT, false, false, 
@@ -136,7 +142,7 @@ public class SnowflakeV2TypeSystem  {
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampDT, Platform.dateDT, false, false, 
                                                       true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampntzDT, Platform.dateDT, false, false, 
-                                                      false, false);
+                                                      true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, objectDT, Platform.textDT, false, false, false, 
                                                       false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, stringDT, Platform.stringDT, false, false, 
@@ -150,7 +156,7 @@ public class SnowflakeV2TypeSystem  {
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, timestampltzDT, Platform.dateDT, false, false, 
                                                       true, false);
             DirectMapUtils.INSTANCE.createDataTypeMap(snowflakev2PlatformMap, numberDT, Platform.integerDT, false, false, 
-                                                      true, false);
+                                                      false, false);
     }
 
     static {

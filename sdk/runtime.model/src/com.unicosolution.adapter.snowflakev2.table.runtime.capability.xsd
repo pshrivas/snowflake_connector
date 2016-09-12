@@ -26,14 +26,6 @@
 <xsd:attribute name="abortOnErrors" type="xsd:boolean"/>
 <xsd:attribute name="bulkLoad" type="xsd:boolean"/>
 <xsd:attribute name="oneBatch" type="xsd:boolean"/>
-<xsd:attribute name="partitionID">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="partitionID." type="imx:idref"/>
 <xsd:attribute name="postSql">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">

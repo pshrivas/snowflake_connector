@@ -13,39 +13,27 @@
             <classLoaderPattern loaderType="Custom" classLoadOrder="ParentFirst"/>
          </metaDataPattern>
          <nativeMetaDataObjectType InfaLicenseCheckerClass="com.unicosolution.adapter.snowflakev2.licensechecker.SnowflakeV2LicenseChecker" metaDataPatternName="SnowflakeV2SnowflakeV2_table_Pattern" name="table" nullConnectionAllowed="false" supportsAnonDSO="false" supportsCDO="false" supportsComplexASO="false" supportsSimpleASO="false">
-            <importDialogOptions allowMultiSelect="true" displayFilterByDesc="false" displayFilterByName="true" displayFilterByPath="false" showEntity="true" showHierarchy="always" showRelatedRecords="never" displaySkipDescriptions="false"/>
+            <importDialogOptions allowMultiSelect="false" displayFilterByDesc="true" displayFilterByName="true" displayFilterByPath="true" showEntity="true" showHierarchy="always" showRelatedRecords="always" displaySkipDescriptions="true"/>
             <metadataWriteOptions supportCreate="true" supportUpdate="true" supportDelete="true">
                <writeDialogOptions displayUpdateElseCreate="true" displayDropAndCreate="true"/>
             </metadataWriteOptions>
             <operationType implicitlyCreated="false" interactionPattern="Connections" libraryExtensionID="com.unicosolution.adapter.snowflakev2.libraryInfo.TABLESNOWFLAKEV2LIBRARYINFO" multiCapabilitySupport="single" name="tableRead">
-               <ReadCapability inputProjectionSupport="tableRead" partitioningSupport="TableReadPartitioning"/>
-               <LookupCapability inputProjectionSupport="tableRead"/>
+               <ReadCapability inputProjectionSupport="tableRead"/>
             </operationType>
             <operationType implicitlyCreated="false" interactionPattern="Connections" libraryExtensionID="com.unicosolution.adapter.snowflakev2.libraryInfo.TABLESNOWFLAKEV2LIBRARYINFO" multiCapabilitySupport="single" name="tableWrite">
-               <WriteCapability outputProjectionSupport="tableWrite" partitioningSupport="TableWritePartitioning"/>
+               <WriteCapability outputProjectionSupport="tableWrite"/>
             </operationType>
             <connectionType connectionExtensionID="com.unicosolution.adapter.snowflakev2.connection.adapter.SNOWFLAKEV2CONNECTIONADAPTER"/>
          </nativeMetaDataObjectType>
          <InputProjectionSupport name="tableRead">
             <FilterOperation nativeFilterExpression="true" expressionSupport="SnowflakeV2ExpressionSupport" supportPushdown="true"/>
             <JoinOperation nativeJoinExpression="true" expressionSupport="SnowflakeV2ExpressionSupport" implicitJoin="false"/>
-            <ProjectionOperation dropFields="true" projectionAtNativeSource="false" projectionAtPlatform="true">
-               <ProjectionOperationEnums enums="ALL"/>
-               <ProjectionOperationEnums enums="DISTINCT"/>
-               <ProjectionOperationEnums enums="ANY"/>
-               <ProjectionOperationEnums enums="FIRST ROW"/>
-               <ProjectionOperationEnums enums="LAST ROW"/>
-            </ProjectionOperation>
-            <SortOperation sortAtNativeSource="false" sortAtPlatform="true"/>
+            <ProjectionOperation dropFields="true" projectionAtNativeSource="false" projectionAtPlatform="false"/>
+            <SortOperation sortAtNativeSource="false" sortAtPlatform="false"/>
          </InputProjectionSupport>
          <OutputProjectionSupport name="tableWrite">
             <ProjectionOperation dropFields="true"/>
          </OutputProjectionSupport>
-         <PartitioningSupport userPartitioning="true" autoPartitioning="true" name="TableReadPartitioning" partitioningHelperClass="com.unicosolution.adapter.snowflakev2.metadata.adapter.TableAutoPartitioningMetadataAdapter">
-            <PartitioningStrategy strategy="ArbitraryPartitioning"/>
-            <PartitioningStrategy strategy="RangePartitioning"/>
-         </PartitioningSupport>
-         <PartitioningSupport userPartitioning="false" autoPartitioning="true" name="TableWritePartitioning" partitioningHelperClass="com.unicosolution.adapter.snowflakev2.metadata.adapter.TableAutoPartitioningMetadataAdapter"/>
          <SimpleExpressionSupport name="SnowflakeV2ExpressionSupport" LogicalOperator="And">
             <SimpleExpressionOperator operator="Equals"/>
             <SimpleExpressionOperator operator="Greater"/>

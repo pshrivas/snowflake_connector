@@ -28,7 +28,6 @@
       <ModelClass displayName="tableWrite" name="com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.iface.SEMTableWriteCapabilityAttributesExtension">
          <ModelProperty description="" displayName="Truncate Target Table" hidden="false" substitutable="false" name="truncateTargetTable" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Bulk Load" hidden="false" substitutable="false" name="bulkLoad" partitionOverrideable="false"/>
-         <ModelProperty description="" displayName="Partition ID" hidden="false" substitutable="true" name="partitionID" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Pre Sql" hidden="false" substitutable="true" name="preSql" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Post Sql" hidden="false" substitutable="true" name="postSql" partitionOverrideable="false"/>
          <ModelProperty description="" displayName="Abort On Errors" hidden="false" substitutable="false" name="abortOnErrors" partitionOverrideable="false"/>

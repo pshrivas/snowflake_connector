@@ -44,7 +44,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     // Unique property IDs for use with generic versions of get/set/add/remove/(etc):
     public static final int TRUNCATETARGETTABLE_ID = 2036646736;
     public static final int BULKLOAD_ID = 2097310645;
-    public static final int PARTITIONID_ID = 1278439268;
     public static final int PRESQL_ID = -937490449;
     public static final int POSTSQL_ID = 265500770;
     public static final int ABORTONERRORS_ID = 1873395073;
@@ -65,8 +64,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                     propMap.put(prop,TRUNCATETARGETTABLE_ID);
                 else if (propIDStr.equalsIgnoreCase("BULKLOAD_ID"))
                     propMap.put(prop,BULKLOAD_ID);
-                else if (propIDStr.equalsIgnoreCase("PARTITIONID_ID"))
-                    propMap.put(prop,PARTITIONID_ID);
                 else if (propIDStr.equalsIgnoreCase("PRESQL_ID"))
                     propMap.put(prop,PRESQL_ID);
                 else if (propIDStr.equalsIgnoreCase("POSTSQL_ID"))
@@ -221,43 +218,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         Utils.setBitCascade(sink, getAdaptee());
         if (sink != null) {
             ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.BULK_LOAD);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
-    /** 
-      * Get the 'partitionID' property.
-      */
-    public String getPartitionID()
-    {
-        return _get_imfObject().getPartitionID();
-    }
-
-    /** 
-      * Set the 'partitionID' property.
-      */
-    public final void setPartitionID(String newObj)throws SL_Exception
-    {
-        setPartitionID(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'partitionID' property.
-      */
-    public void setPartitionID(String newVal, ObjectChangeSink sink)
-    {
-        if(newVal!=null && newVal.equals(getPartitionID())) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_partitionID(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableWriteCapabilityAttributesExtension)_imfObject).setPartitionID(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D);
             sink.addObjectChange(getAdaptee(), change);
         }
 
@@ -492,7 +452,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         String rc = "SATableWriteCapabilityAttributesExtension " +" (hashCode="+hashCode()+")";
         rc += " (truncateTargetTable="+isTruncateTargetTable()+")";
         rc += " (bulkLoad="+isBulkLoad()+")";
-        rc += " (partitionID="+getPartitionID()+")";
         rc += " (preSql="+getPreSql()+")";
         rc += " (postSql="+getPostSql()+")";
         rc += " (abortOnErrors="+isAbortOnErrors()+")";
@@ -538,8 +497,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return isTruncateTargetTable();
             case BULKLOAD_ID:
                 return isBulkLoad();
-            case PARTITIONID_ID:
-                return getPartitionID();
             case PRESQL_ID:
                 return getPreSql();
             case POSTSQL_ID:
@@ -568,9 +525,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return;
             case BULKLOAD_ID:
                 setBulkLoad((java.lang.Boolean)obj);
-                return;
-            case PARTITIONID_ID:
-                setPartitionID((String)obj);
                 return;
             case PRESQL_ID:
                 setPreSql((String)obj);
@@ -652,8 +606,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         setTruncateTargetTable(fromObj.isTruncateTargetTable());
 
         setBulkLoad(fromObj.isBulkLoad());
-
-        setPartitionID(fromObj.getPartitionID());
 
         setPreSql(fromObj.getPreSql());
 

@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-08-29 17:39:54
+ * Generation time: 2016-09-12 04:42:17
  */
 
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
@@ -28,8 +28,6 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isAbortOnErrors() <em>abortOnErrors</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isBulkLoad() <em>bulkLoad</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isOneBatch() <em>oneBatch</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPartitionID() <em>partitionID</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPartitionID$() <em>partitionID$</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPostSql() <em>postSql</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPostSql$() <em>postSql$</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getPreSql() <em>preSql</em>} </li>
@@ -91,38 +89,6 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
      * @see #getOneBatch
      */
     void setOneBatch(boolean oneBatch);
-
-
-    /**
-     * Retrieves the 'partitionID' property value for this IObject.
-     * @return the 'partitionID' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getPartitionID();
-
-
-    /**
-     * Sets the 'partitionID' property value for this IObject.
-     * @param partitionID is the new property value for this IObject
-     * @see #getPartitionID
-     */
-    void setPartitionID(java.lang.String partitionID);
-
-
-    /**
-     * Retrieves the 'partitionID$' property value for this IObject.
-     * @return the 'partitionID$' property value for this IObject.
-     * @Property (redefines="", containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.EXTERNAL, containmentType=com.informatica.imf.annotations.ContainmentType.UNSET, isUnique=false, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    com.informatica.metadata.common.parameter.Parameter getPartitionID$();
-
-
-    /**
-     * Sets the 'partitionID$' property value for this IObject.
-     * @param partitionID$ is the new property value for this IObject
-     * @see #getPartitionID$
-     */
-    void setPartitionID$(com.informatica.metadata.common.parameter.Parameter partitionID$);
 
 
     /**
@@ -246,10 +212,6 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
         public static com.informatica.imf.icore.IProperty BULK_LOAD = null;
 
         public static com.informatica.imf.icore.IProperty ONE_BATCH = null;
-
-        public static com.informatica.imf.icore.IProperty PARTITION_I_D = null;
-
-        public static com.informatica.imf.icore.IProperty PARTITION_I_D$ = null;
 
         public static com.informatica.imf.icore.IProperty POST_SQL = null;
 

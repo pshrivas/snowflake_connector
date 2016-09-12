@@ -26,14 +26,6 @@ public interface SEMTableWriteCapabilityAttributesExtension extends com.informat
       */
     public void setBulkLoad(boolean _newVal);
     /** 
-      * Get the 'partitionID' property.
-      */
-    public String getPartitionID();
-    /** 
-      * Set the 'partitionID' property.
-      */
-    public void setPartitionID(String _newVal);
-    /** 
       * Get the 'preSql' property.
       */
     public String getPreSql();

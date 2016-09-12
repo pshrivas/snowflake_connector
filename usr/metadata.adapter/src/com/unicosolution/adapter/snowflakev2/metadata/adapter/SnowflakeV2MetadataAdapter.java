@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import com.informatica.sdk.adapter.metadata.common.CDetailImportOpts;
 import com.informatica.sdk.adapter.metadata.common.Option;
@@ -23,6 +25,7 @@ import com.informatica.sdk.adapter.metadata.patternblocks.index.semantic.iface.I
 import com.informatica.sdk.adapter.metadata.patternblocks.recordrelationship.semantic.iface.RecordRelationship;
 import com.informatica.sdk.adapter.metadata.patternblocks.semantic.iface.Factory;
 import com.informatica.sdk.adapter.metadata.patternblocks.shared.semantic.iface.ImportableObject;
+import com.informatica.sdk.adapter.metadata.patternblocks.shared.semantic.iface.RecordTypeEnum;
 import com.informatica.sdk.adapter.metadata.provider.AbstractMetadataAdapter;
 import com.informatica.sdk.adapter.metadata.provider.Connection;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteOptions;
@@ -33,7 +36,8 @@ import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTa
 
 @SuppressWarnings("unused")
 public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
-	private HashMap<String, Boolean> tabVisited = new HashMap<>();
+	private final static Logger LOGGER = Logger.getLogger(SnowflakeV2MetadataAdapter.class.getName());
+
 	private Package tabSchema = null;
 	private Factory sdkFactory = null;
 
@@ -48,19 +52,25 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 * @return INFASDKConnection object that is the adapter specific connection
 	 *         instance.
 	 */
-
 	@Override
 	public Connection getMetadataConnection(List<Option> options, Map<String, Object> connAttrs) {
+		if (LOGGER.isLoggable(Level.FINER)) {
+			Map<String, Object> tmpConnAttrs = new HashMap<>(connAttrs);
+			if (tmpConnAttrs.containsKey("password")) {
+				tmpConnAttrs.remove("password");
+			}
+			LOGGER.finer(String.format("Options: %s, ConnAttrs: %s", options, tmpConnAttrs));
+		}
 		return new SnowflakeV2Connection();
 	}
 
-	/*
+	/**
 	 * Used to filter Records during metadata import.
 	 * Implement the filtering logic to push the filter request to source.
 	 * Not Used.
 	 */
-
 	private Boolean isRespectFilter(String objectName, String nameFilter) {
+		LOGGER.finer(String.format("%s, %s", objectName, nameFilter));
 		if (null == nameFilter)
 			return true;
 		return objectName.matches(nameFilter);
@@ -93,13 +103,21 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 * @return true if the adapter applies the filter options, false if the SDK
 	 *         applies the filers on the adapter's behalf.
 	 */
-
 	@Override
 	public Boolean populateObjectCatalog(Connection connection, List<Option> options, Catalog catalog) {
+		if (LOGGER.isLoggable(Level.FINER)) {
+			final List<String> optionStrings = new ArrayList<>();
+			for (Option option : options) {
+				optionStrings.add(String.format("%s", option.getValue()));
+			}
+			LOGGER.finer(String.format("Connection: %s, Options: %s, Catalog: %s",
+					connection != null, optionStrings, catalog));
+		}
 		Factory sdkFactory = catalog.getFactory();
 		this.sdkFactory = sdkFactory;
 		// Use the startFolder for incremental browsing of metadata
 		Package startFolder = MetadataUtils.getStartFolder(options);
+		LOGGER.finer(String.format("Start Folder: %s", startFolder));
 
 		String nameFilter = MetadataUtils.getNameFilter(options);
 		String catName = ((SnowflakeV2Connection) connection).getCatalog();
@@ -108,53 +126,84 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			DatabaseMetaData metadata = ((SnowflakeV2Connection) connection).getSnowflakeConnection().getMetaData();
 
 			if (startFolder == null) {
-				// handle root folders/schemas
+				// handle DB list
+				List<Package> foundCatalogList = new ArrayList<>();
 				ResultSet resultIter = metadata.getCatalogs();
 				while (resultIter.next()) {
-					if (resultIter.getString(1).equalsIgnoreCase(catName)) {
-						Package pack = sdkFactory.newPackage(catalog);
-						pack.setName(resultIter.getString(1));
+					String foundCatalogName = resultIter.getString(1);
+					Package pack = sdkFactory.newPackage(catalog);
+					pack.setName(foundCatalogName);
+					foundCatalogList.add(pack);
+					if (foundCatalogName.equals(catName)) { // case sensitive
 						catalog.addRootPackage(pack);
 					}
 				}
 				resultIter.close();
-
+				
+				if (catalog.getRootPackages().size() == 0) {
+					// If none of them matches, add all DB names to the list
+					for (Package pack: foundCatalogList) {
+						catalog.addRootPackage(pack);
+					}
+				}
+				LOGGER.finer(String.format(
+						"Total number of Catalogs: %s, Detected Root Packages: %s",
+						foundCatalogList.size(), catalog.getRootPackages().size()));
 			} else {
 				/*
 				 * Get tables of schema. Use name filter if applicable. If name
 				 * filter is not applicable, it should be null
 				 */
-				tabVisited.clear();
 				tabSchema = startFolder;
-				// String tableTypeFilters[] = {"TABLE"}; //Fetch only User tables
-				ResultSet tablesIter = metadata.getTables(tabSchema.getName(), schemaName,
-						nameFilter == null ? "%" : "%" + nameFilter + "%", null);
+
+				boolean foundSchema = false;
+				ResultSet schemaResultSet = metadata.getSchemas(tabSchema.getName(), "%");
+				while (schemaResultSet.next()) {
+					String targetSchema = schemaResultSet.getString(1);
+					String taretCatalog = schemaResultSet.getString(2);
+					if (targetSchema.equals(schemaName)) {
+						foundSchema = true;
+					}
+					LOGGER.finer(String.format("Catalog: %s, Schema: %s", taretCatalog, targetSchema));
+				}
+				schemaResultSet.close();
+				
+				ResultSet tablesIter = metadata.getTables(
+						tabSchema.getName(),
+						foundSchema ? schemaName : "%", // use schema if found otherwise all schemas
+						nameFilter == null ? "%" : "%" + nameFilter + "%",
+								null);
 
 				while (tablesIter.next()) {
 					FlatRecord flatRecord = sdkFactory.newFlatRecord(catalog);
+					String targetSchema = tablesIter.getString(2);
 					String tableName = tablesIter.getString(3);
 					String tableType = tablesIter.getString(4);
+
 					flatRecord.setName(tableName);
 					flatRecord.setNmoType("table");
-					flatRecord.setNativeName(startFolder.getName() + "." + tableName);
-
-					// Set the record access type
-					/*
-					 * if (!tableName.toLowerCase().contains("tgt"))
-					 * flatRecord.setRecordTypeEnum(RecordTypeEnum.OUT_TYPE);
-					 */
+					flatRecord.setNativeName(
+							SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(
+									startFolder.getName(), targetSchema, tableName));
+					
+					LOGGER.finer(String.format("Table Type: %s", tableType));
+					if ("TABLE".equals(tableType)) {
+						flatRecord.setRecordTypeEnum(RecordTypeEnum.INOUT_TYPE);
+					} else {
+						flatRecord.setRecordTypeEnum(RecordTypeEnum.IN_TYPE);
+					}
 
 					SEMTableRecordExtensions mRecExts = (SEMTableRecordExtensions) flatRecord.getExtensions();
 					mRecExts.setTableType(tableType);
 
 					startFolder.addChildRecord(flatRecord);
-					tabVisited.put(tableName, true);
 				}
 
 				tablesIter.close();
 			}
 
 		} catch (SQLException e) {
+			LOGGER.severe(String.format("Failed to get metadata: %s", e.getMessage()));
 			return false;
 		}
 
@@ -181,15 +230,23 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 * @param catalog
 	 *            SDKCatalog that contains the retrieved metadata.
 	 */
-
 	@Override
 	public void populateObjectDetails(Connection connection, List<Option> options,
 			List<ImportableObject> importableObjects, Catalog catalog) {
+		if (LOGGER.isLoggable(Level.FINER)) {
+			final List<String> optionStrings = new ArrayList<>();
+			for (Option option : options) {
+				optionStrings.add(String.format("%s", option.getValue()));
+			}
+			LOGGER.finer(String.format("Connection: %s, Options: %s, ImportableObjects: %s, Catalog: %s",
+					connection != null, optionStrings, importableObjects, catalog));
+		}
 
 		try {
 			int optionID;
 			boolean isgetRelated = false;
 			for (Option opt : options) {
+				// TODO: what is this?
 				optionID = opt.getDescription().getEffectiveDefinition().getOptionID();
 				if (optionID == CDetailImportOpts.GET_NON_CONTAINED_SHARED_DATA_RELS) {
 					isgetRelated = true;
@@ -197,7 +254,6 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			}
 
 			SnowflakeV2Connection sfConnection = (SnowflakeV2Connection) connection;
-			String schemaName = sfConnection.getSchema();
 
 			DatabaseMetaData metaData = sfConnection.getSnowflakeConnection().getMetaData();
 			for (ImportableObject obj : importableObjects) {
@@ -244,7 +300,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 
 				} else {
 					// add columns
-					addColumns(metaData, catalog, schemaName, record);
+					addColumns(metaData, catalog, record);
 				}
 			}
 		} catch (SQLException e) {
@@ -269,36 +325,39 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 *            {@link populateField} method
 	 * @throws SQLException
 	 */
-	protected void addColumns(DatabaseMetaData metaData, Catalog catalog, String schemaName, FlatRecord record)
+	protected void addColumns(DatabaseMetaData metaData, Catalog catalog, FlatRecord record)
 			throws SQLException {
+		LOGGER.finer(String.format("Metadata: %s, Catalog: %s, Record: %s",
+				metaData, catalog, record));
 		Factory sdkFactory = catalog.getFactory();
-		String[] nameSplit = record.getNativeName().split("\\.");
-		ResultSet columnsIter = metaData.getColumns(nameSplit[0], schemaName, record.getName(), null);
+		List<String>fullQualifiedNameList = SnowflakeV2MetadataAdapter.decodeFullyQualifiedTableName(
+				record.getNativeName());	
+		String catalogName = fullQualifiedNameList.get(0);
+		String schemaName = fullQualifiedNameList.get(1);
+		String tableName = fullQualifiedNameList.get(2);
+		
+		ResultSet columnsIter = metaData.getColumns(
+				catalogName, schemaName, tableName, null);
 
 		// Adding index, package, uniquekeys
 		Index ind = sdkFactory.newIndex(catalog);
 		PrimaryKey pk = sdkFactory.newPrimaryKey(catalog);
 		UniqueKey uk = sdkFactory.newUniqueKey(catalog);
-		ArrayList<String> pkNames = new ArrayList<>();
-		// ResultSet primaryKeys = metaData.getPrimaryKeys(null,
-		// tabSchema.getName(), record.getName());
+		List<String> pkNames = new ArrayList<>();
 
 		//First parameter to be set to catalog.getName() if restricting search to catalog
-		ResultSet primaryKeys = metaData.getPrimaryKeys(null, schemaName, record.getName());
-		
-		/*
-		 * if (primaryKeys.isFirst()) { do {
-		 * pkNames.add(primaryKeys.getString(4)); } while (primaryKeys.next());
-		 * }
-		 */
+		ResultSet primaryKeys = metaData.getPrimaryKeys(
+				catalogName, schemaName, tableName);
 
 		while (primaryKeys.next()) {
+			LOGGER.finer(String.format("Primary Key: %s",primaryKeys.getString(4)));
 			pkNames.add(primaryKeys.getString(4));
 		}
+		LOGGER.finer(String.format("Number of PkNames: %s", pkNames.size()));
 
 		while (columnsIter.next()) {
 			Field field = sdkFactory.newField(catalog);
-			populateField(field, columnsIter);
+			populateField(field, columnsIter, catalogName, schemaName, tableName);
 
 			// Checking if primary and then adding the keys
 			if (pkNames.contains(field.getName())) {
@@ -333,26 +392,36 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 *            object
 	 * @param columnsIter
 	 *            A ResultSet object containing the result of a query obtained
-	 *            from MySQL
+	 *            from metadata.getColumns() for Snowflake DB
 	 * @throws SQLException
 	 *             if any ResultSet exception occurs
 	 */
 
-	protected void populateField(Field field, ResultSet columnsIter)
+	protected void populateField(Field field, ResultSet columnsIter,
+			String catalogName, String schemaName, String tableName)
 			throws SQLException {
 		String name = columnsIter.getString(4);
 		String dType = columnsIter.getString(6);
 		int length = columnsIter.getInt(16);
 		int scale = columnsIter.getInt(9);
 		int precision = columnsIter.getInt(7);
-		String[] datatype = dType.split(" ");
 
+		if (LOGGER.isLoggable(Level.FINER)) {
+			LOGGER.finer(String.format(
+					"Field: %s, Name: %s, Type: %s,"
+					+ " Length: %s, Precision: %s, Scale: %s",
+					field, name, dType, length, scale, precision));
+		}
 		field.setName(name);
-		field.setNativeName(name);
+		field.setNativeName(
+				SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(
+						catalogName, schemaName, tableName)
+				+ "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(name));
 		field.setLength(length);
 
+		String[] datatype = dType.split(" ");
 		if (datatype.length > 1) {
-			if ((datatype[1].equalsIgnoreCase("UNSIGNED"))) {
+			if ((datatype[1].equals("UNSIGNED"))) {
 				dType = datatype[0];
 			}
 		}
@@ -386,15 +455,16 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		 * //Set the field access type if(!name.toLowerCase().contains("tgt"))
 		 * field.setFieldTypeEnum(FieldTypeEnum.OUT_TYPE);
 		 */
+		// TODO: do we need to set Field Type Enum? IN/OUT/INOUT
 
 		// Populating the field extensions: Default value, isNullable
 		String defValue = columnsIter.getString(13);
-		boolean isNullable = "0".equals(columnsIter.getString(11)) ? false : true;
+		boolean isNullable = !"0".equals(columnsIter.getString(11));
 
+		// TODO: why field.setNullable or field.setDefaultColValue cannot be used here
 		SEMTableFieldExtensions mFieldExts = (SEMTableFieldExtensions) field.getExtensions();
 		mFieldExts.setDefaultColValue(defValue);
 		mFieldExts.setIsNullable(isNullable);
-
 	}
 
 	/**
@@ -416,6 +486,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	@Override
 	public Status writeObjects(Connection connection, MetadataWriteSession writeSession,
 			MetadataWriteOptions defOptions) {
+		LOGGER.finer(String.format("Connection: %s, Session: %s, Options: %s",
+				connection != null, writeSession, defOptions));
 		// retrieve the options
 		/*
 		 * int optionID; List<Option> options = defOptions.getOptions(); Boolean
@@ -472,7 +544,56 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 
 		// return success if writeback succeeded
 		return new Status(StatusEnum.SUCCESS, "");
-
 	}
 
+	/**
+	 * Encodes a string with double quotes. Note the object name cannot 
+	 * include double quotes, so it is safe to surround the name with
+	 * double quotes without escaping characters.
+	 * 
+	 * @param objectName
+	 * @return a object name surrounded by double quotes
+	 */
+    private static final String encodeFullyQualifiedName(String objectName) {
+        return "\"" + objectName + "\"";
+    }
+
+    /**
+     * Encodes catalog, schema and table names into a fully qualified name
+     * @param catalog
+     * @param schema
+     * @param table
+     * @return a fully qualified table name
+     */
+    private static final String encodeFullyQualifiedTableName(String catalog, String schema, String table) {
+        return SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(catalog)
+                + "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(schema)
+                + "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(table);
+    }
+
+    /**
+     * Decodes a fully qualified name into catalog, schema and table.
+     * @param fullyQualifiedTableName
+     * @return
+     */
+    private static final List<String> decodeFullyQualifiedTableName(String fullyQualifiedTableName) {
+        List<String> ret = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        for (int idx =1; idx < fullyQualifiedTableName.length();) {
+            char ch = fullyQualifiedTableName.charAt(idx);
+            if (ch == '"') {
+                ret.add(sb.toString());
+                sb = new StringBuffer();
+                idx += 3; // skip '.' and the next '"'
+            } else {
+                sb.append(ch);
+                if (ch == '"') {
+                    ++idx;
+                    sb.append(ch);
+                }
+                ++idx;
+            }
+        }
+        return ret;
+    }
 }

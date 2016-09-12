@@ -44,7 +44,6 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         SL_ContainerObj rootObj = semObj.getRootObj();
         if(!validate_truncateTargetTable(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isTruncateTargetTable(), semObj)) rc = false;
         if(!validate_bulkLoad(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isBulkLoad(), semObj)) rc = false;
-        if(!validate_partitionID(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPartitionID(), semObj)) rc = false;
         if(!validate_preSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPreSql(), semObj)) rc = false;
         if(!validate_postSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPostSql(), semObj)) rc = false;
         if(!validate_abortOnErrors(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isAbortOnErrors(), semObj)) rc = false;
@@ -67,16 +66,6 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
     public boolean validate_bulkLoad(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        return rc;
-
-    }
-
-    /** Validate the 'partitionID' property  */
-    public boolean validate_partitionID(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PARTITION_I_D);
         return rc;
 
     }

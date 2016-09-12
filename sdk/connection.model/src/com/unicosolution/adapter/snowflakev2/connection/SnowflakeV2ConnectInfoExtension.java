@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-08-29 17:39:10
+ * Generation time: 2016-09-10 18:24:01
  */
 
 package com.unicosolution.adapter.snowflakev2.connection;
@@ -25,19 +25,13 @@ package com.unicosolution.adapter.snowflakev2.connection;
  * <p>
  * The following features (Attributes/references) are supported:
  * <ul>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getSSL() <em>SSL</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getAccount() <em>account</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getAuthenticator() <em>authenticator</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getClientSessionKeepAlive() <em>clientSessionKeepAlive</em>} </li>
+ *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#isClientSessionKeepAlive() <em>clientSessionKeepAlive</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getCustomURL() <em>customURL</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getDb() <em>db</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getPasscode() <em>passcode</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#isPasscodeInPassword() <em>passcodeInPassword</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getPassword() <em>password</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getPort() <em>port</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getRole() <em>role</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getSchema() <em>schema</em>} </li>
- *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getTracing() <em>tracing</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#isUseCustomURL() <em>useCustomURL</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getUser() <em>user</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.connection.SnowflakeV2ConnectInfoExtension#getWarehouse() <em>warehouse</em>} </li>
@@ -49,22 +43,6 @@ package com.unicosolution.adapter.snowflakev2.connection;
 
     /** A constant that references the IClass for this generated Java Class. */
     com.informatica.imf.icore.IClass ICLASS = ConnectionIPackage.I_INSTANCE.getSnowflakeV2ConnectInfoExtensionIClass();
-    /**
-     * Retrieves the 'SSL' property value for this IObject.
-     * @return the 'SSL' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getSSL();
-
-
-    /**
-     * Sets the 'SSL' property value for this IObject.
-     * @param aSSL is the new property value for this IObject
-     * @see #getSSL
-     */
-    void setSSL(java.lang.String aSSL);
-
-
     /**
      * Retrieves the 'account' property value for this IObject.
      * @return the 'account' property value for this IObject.
@@ -82,27 +60,11 @@ package com.unicosolution.adapter.snowflakev2.connection;
 
 
     /**
-     * Retrieves the 'authenticator' property value for this IObject.
-     * @return the 'authenticator' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getAuthenticator();
-
-
-    /**
-     * Sets the 'authenticator' property value for this IObject.
-     * @param authenticator is the new property value for this IObject
-     * @see #getAuthenticator
-     */
-    void setAuthenticator(java.lang.String authenticator);
-
-
-    /**
      * Retrieves the 'clientSessionKeepAlive' property value for this IObject.
      * @return the 'clientSessionKeepAlive' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
      */
-    java.lang.String getClientSessionKeepAlive();
+    boolean isClientSessionKeepAlive();
 
 
     /**
@@ -110,7 +72,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
      * @param clientSessionKeepAlive is the new property value for this IObject
      * @see #getClientSessionKeepAlive
      */
-    void setClientSessionKeepAlive(java.lang.String clientSessionKeepAlive);
+    void setClientSessionKeepAlive(boolean clientSessionKeepAlive);
 
 
     /**
@@ -132,7 +94,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
     /**
      * Retrieves the 'db' property value for this IObject.
      * @return the 'db' property value for this IObject.
-     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
      */
     java.lang.String getDb();
 
@@ -143,38 +105,6 @@ package com.unicosolution.adapter.snowflakev2.connection;
      * @see #getDb
      */
     void setDb(java.lang.String db);
-
-
-    /**
-     * Retrieves the 'passcode' property value for this IObject.
-     * @return the 'passcode' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getPasscode();
-
-
-    /**
-     * Sets the 'passcode' property value for this IObject.
-     * @param passcode is the new property value for this IObject
-     * @see #getPasscode
-     */
-    void setPasscode(java.lang.String passcode);
-
-
-    /**
-     * Retrieves the 'passcodeInPassword' property value for this IObject.
-     * @return the 'passcodeInPassword' property value for this IObject.
-     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    boolean isPasscodeInPassword();
-
-
-    /**
-     * Sets the 'passcodeInPassword' property value for this IObject.
-     * @param passcodeInPassword is the new property value for this IObject
-     * @see #getPasscodeInPassword
-     */
-    void setPasscodeInPassword(boolean passcodeInPassword);
 
 
     /**
@@ -209,22 +139,6 @@ package com.unicosolution.adapter.snowflakev2.connection;
     void setPassword(java.lang.String password, boolean encrypted);
 
     /**
-     * Retrieves the 'port' property value for this IObject.
-     * @return the 'port' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getPort();
-
-
-    /**
-     * Sets the 'port' property value for this IObject.
-     * @param port is the new property value for this IObject
-     * @see #getPort
-     */
-    void setPort(java.lang.String port);
-
-
-    /**
      * Retrieves the 'role' property value for this IObject.
      * @return the 'role' property value for this IObject.
      * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
@@ -243,7 +157,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
     /**
      * Retrieves the 'schema' property value for this IObject.
      * @return the 'schema' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
      */
     java.lang.String getSchema();
 
@@ -254,22 +168,6 @@ package com.unicosolution.adapter.snowflakev2.connection;
      * @see #getSchema
      */
     void setSchema(java.lang.String schema);
-
-
-    /**
-     * Retrieves the 'tracing' property value for this IObject.
-     * @return the 'tracing' property value for this IObject.
-     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
-     */
-    java.lang.String getTracing();
-
-
-    /**
-     * Sets the 'tracing' property value for this IObject.
-     * @param tracing is the new property value for this IObject
-     * @see #getTracing
-     */
-    void setTracing(java.lang.String tracing);
 
 
     /**
@@ -307,7 +205,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
     /**
      * Retrieves the 'warehouse' property value for this IObject.
      * @return the 'warehouse' property value for this IObject.
-     * @Property (redefines="", minOccurs=1, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
      */
     java.lang.String getWarehouse();
 
@@ -324,11 +222,7 @@ package com.unicosolution.adapter.snowflakev2.connection;
      */
     static class Properties {
 
-        public static com.informatica.imf.icore.IProperty S_S_L = null;
-
         public static com.informatica.imf.icore.IProperty ACCOUNT = null;
-
-        public static com.informatica.imf.icore.IProperty AUTHENTICATOR = null;
 
         public static com.informatica.imf.icore.IProperty CLIENT_SESSION_KEEP_ALIVE = null;
 
@@ -336,19 +230,11 @@ package com.unicosolution.adapter.snowflakev2.connection;
 
         public static com.informatica.imf.icore.IProperty DB = null;
 
-        public static com.informatica.imf.icore.IProperty PASSCODE = null;
-
-        public static com.informatica.imf.icore.IProperty PASSCODE_IN_PASSWORD = null;
-
         public static com.informatica.imf.icore.IProperty PASSWORD = null;
-
-        public static com.informatica.imf.icore.IProperty PORT = null;
 
         public static com.informatica.imf.icore.IProperty ROLE = null;
 
         public static com.informatica.imf.icore.IProperty SCHEMA = null;
-
-        public static com.informatica.imf.icore.IProperty TRACING = null;
 
         public static com.informatica.imf.icore.IProperty USE_CUSTOM_U_R_L = null;
 

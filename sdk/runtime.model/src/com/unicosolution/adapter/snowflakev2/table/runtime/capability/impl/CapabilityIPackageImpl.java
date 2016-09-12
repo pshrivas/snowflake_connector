@@ -95,64 +95,46 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
     public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ONE_BATCH =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+2;
 
     /**
-     * Constant for property 'TableWriteCapabilityAttributesExtension.partitionID'.
-     */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+3;
-
-    /**
-     * Constant for property 'TableWriteCapabilityAttributesExtension.partitionID$'.
-     */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+4;
-
-    /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.postSql'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+5;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+3;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.postSql$'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+6;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+4;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.preSql'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+7;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+5;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.preSql$'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+8;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+6;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.propagateData'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PROPAGATE_DATA =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+9;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PROPAGATE_DATA =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+7;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.startTransactionForJobs'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__START_TRANSACTION_FOR_JOBS =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+10;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__START_TRANSACTION_FOR_JOBS =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+8;
 
     /**
      * Constant for property 'TableWriteCapabilityAttributesExtension.truncateTargetTable'.
      */
-    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+11;
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+9;
 
     /**
      * Constant for feature constant in class 'TableWriteCapabilityAttributesExtension'.
      */
-    private static final int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION_FEATURE_COUNT = com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+12;
+    private static final int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION_FEATURE_COUNT = com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+10;
 
 
-    /**
-     * Lower bound constant for TableWriteCapabilityAttributesExtension.partitionID$.
-     */
-    private static final int TABLEWRITECAPABILITYATTRIBUTESEXTENSION_PARTITIONID$_LOWER = -2147483648;
-    /**
-     * Upper bound constant for TableWriteCapabilityAttributesExtension.partitionID$.
-     */
-    private static final int TABLEWRITECAPABILITYATTRIBUTESEXTENSION_PARTITIONID$_UPPER = -2147483648;
     /**
      * Lower bound constant for TableWriteCapabilityAttributesExtension.postSql$.
      */
@@ -175,11 +157,11 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
     private com.informatica.imf.icore.IClass tableLookupCapabilityAttributesExtensionIClass = null;
     private com.informatica.imf.icore.IClass tableReadCapabilityAttributesExtensionIClass = null;
     private com.informatica.imf.icore.IClass tableWriteCapabilityAttributesExtensionIClass = null;
+    private static com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl theComInformaticaMetadataCommonParameterIPackage = (com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl)com.informatica.metadata.common.parameter.ParameterIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
+    private static com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl theComInformaticaAdapterSdkadapterAsoextensionIPackage = (com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl)com.informatica.adapter.sdkadapter.asoextension.AsoextensionIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.types.impl.TypesIPackageImpl theComInformaticaMetadataCommonTypesIPackage = (com.informatica.metadata.common.types.impl.TypesIPackageImpl)com.informatica.metadata.common.types.TypesIPackage.I_INSTANCE;
-    private static com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl theComInformaticaAdapterSdkadapterAsoextensionIPackage = (com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl)com.informatica.adapter.sdkadapter.asoextension.AsoextensionIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl theComInformaticaMetadataCommonParameterIPackage = (com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl)com.informatica.metadata.common.parameter.ParameterIPackage.I_INSTANCE;
     private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
     private CapabilityIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIFactory.I_INSTANCE);
@@ -369,8 +351,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ABORT_ON_ERRORS);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__BULK_LOAD);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__ONE_BATCH);
-         createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D);
-         createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D$);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL$);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL);
@@ -450,14 +430,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
         	false, BOUNDS_VALUE_ONE, BOUNDS_VALUE_ONE, null,
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
-        initIProperty(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "partitionID",
-        	"", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
-        	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
-        	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
-        initIProperty(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D$), theComInformaticaMetadataCommonParameterIPackage.getParameterIClass(), "partitionID$",
-        	DEFAULT_PROPERTY_VALUE, DEFAULT_BOUNDS_VALUE, DEFAULT_BOUNDS_VALUE, null,
-        	!IS_CONTAINMENT, IS_NO, IS_EXTERNAL, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
-        	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D));
         initIProperty(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__POST_SQL), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "postSql",
         	"", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
@@ -542,20 +514,6 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
       		TableWriteCapabilityAttributesExtensionCppSerializeAsGeneric.setSerializedExtensionClass("com.informatica.adapter.sdkadapter.asoextension.D_GenericModelExtensionWriteCapAttributes");
       		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass, TableWriteCapabilityAttributesExtensionCppSerializeAsGeneric);
 
-
-      		//initialization of annotations for property partitionID
-      		com.informatica.imf.annotations.constraints.impl.LengthImpl tablewritecapabilityattributesextensionPartitionidLength = 
-      					new com.informatica.imf.annotations.constraints.impl.LengthImpl();
-      		tablewritecapabilityattributesextensionPartitionidLength.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getLengthIClass());
-      		tablewritecapabilityattributesextensionPartitionidLength.setLengthType(com.informatica.imf.annotations.constraints.LengthType.OTHER);
-      		tablewritecapabilityattributesextensionPartitionidLength.setMax(255);
-      		tablewritecapabilityattributesextensionPartitionidLength.setMin(0);
-      		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D), tablewritecapabilityattributesextensionPartitionidLength);
-      		com.informatica.imf.annotations.constraints.impl.PersistenceImpl tablewritecapabilityattributesextensionPartitionidPersistence = 
-      					new com.informatica.imf.annotations.constraints.impl.PersistenceImpl();
-      		tablewritecapabilityattributesextensionPartitionidPersistence.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getPersistenceIClass());
-      		tablewritecapabilityattributesextensionPartitionidPersistence.setSize(255);
-      		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PARTITION_I_D), tablewritecapabilityattributesextensionPartitionidPersistence);
 
       		//initialization of annotations for property postSql
       		com.informatica.imf.annotations.constraints.impl.LengthImpl tablewritecapabilityattributesextensionPostsqlLength = 

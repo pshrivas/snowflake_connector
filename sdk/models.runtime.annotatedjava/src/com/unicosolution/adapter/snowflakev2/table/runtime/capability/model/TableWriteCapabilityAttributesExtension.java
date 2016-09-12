@@ -23,11 +23,6 @@ public class TableWriteCapabilityAttributesExtension extends D_ModelExtensionWri
     @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
     @Length( min = 0 ,  max = 255 )
     @Persistence( size = 255 )
-    String partitionID;
-
-    @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
-    @Length( min = 0 ,  max = 255 )
-    @Persistence( size = 255 )
     String preSql;
 
     @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )

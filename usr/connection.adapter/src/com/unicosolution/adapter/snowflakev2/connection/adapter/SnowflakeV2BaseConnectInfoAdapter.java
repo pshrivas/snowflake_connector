@@ -68,41 +68,12 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
             attrib.setAttributeCLIDisplayName("account");
         }
         else
-        if (attribName.equalsIgnoreCase("authenticator")) {
-            attrib.setAttributeCLIDisplayName("authenticator");
-        }
-        else
         if (attribName.equalsIgnoreCase("role")) {
             attrib.setAttributeCLIDisplayName("role");
         }
         else
         if (attribName.equalsIgnoreCase("schema")) {
             attrib.setAttributeCLIDisplayName("schema");
-        }
-        else
-        if (attribName.equalsIgnoreCase("tracing")) {
-            attrib.setAttributeCLIDisplayName("tracing");
-        }
-        else
-        if (attribName.equalsIgnoreCase("passcode")) {
-            attrib.setAttributeCLIDisplayName("passcode");
-        }
-        else
-        if (attribName.equalsIgnoreCase("passcodeInPassword")) {
-            attrib.setAttributeCLIDisplayName("passcodeInPassword");
-        }
-        else
-        if (attribName.equalsIgnoreCase("port")) {
-            attrib.setAttributeCLIDisplayName("port");
-        }
-        else
-        if (attribName.equalsIgnoreCase("SSL")) {
-            attrib.setAttributeCLIDisplayName("SSL");
-            valuesList = new ArrayList<Object>();
-            valuesList.add("on");
-            valuesList.add("off");
-            attrib.setValidList(valuesList);
-
         }
         else
         if (attribName.equalsIgnoreCase("useCustomURL")) {
@@ -115,11 +86,6 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
         else
         if (attribName.equalsIgnoreCase("clientSessionKeepAlive")) {
             attrib.setAttributeCLIDisplayName("clientSessionKeepAlive");
-            valuesList = new ArrayList<Object>();
-            valuesList.add("true");
-            valuesList.add("false");
-            attrib.setValidList(valuesList);
-
         }
 
         attributeMap.put(attribName, attrib);
@@ -222,19 +188,15 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("db", "DB", "DB_TOOLTIP",
-                	                            true, false, true));
+                	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("warehouse", "WAREHOUSE", "WAREHOUSE_TOOLTIP",
-                	                            true, false, true));
+                	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("account", "ACCOUNT", "ACCOUNT_TOOLTIP",
                 	                            true, false, true));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("authenticator", "AUTHENTICATOR", "AUTHENTICATOR_TOOLTIP",
-                	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("role", "ROLE", "ROLE_TOOLTIP",
@@ -242,27 +204,7 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("schema", "SCHEMA", "SCHEMA_TOOLTIP",
-                	                            true, false, false));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("tracing", "TRACING", "TRACING_TOOLTIP",
-                	                            true, false, false));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("passcode", "PASSCODE", "PASSCODE_TOOLTIP",
-                	                            true, false, false));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("passcodeInPassword", "PASSCODEINPASSWORD", "PASSCODEINPASSWORD_TOOLTIP",
                 	                            true, false, true));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("port", "PORT", "PORT_TOOLTIP",
-                	                            true, false, false));
-
-        group.getConnInfoPresentationControls().add(
-                	createAttributePresentation("SSL", "SSL", "SSL_TOOLTIP",
-                	                            true, false, false));
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("useCustomURL", "USECUSTOMURL", "USECUSTOMURL_TOOLTIP",
@@ -274,7 +216,7 @@ public class SnowflakeV2BaseConnectInfoAdapter extends AbstractINFASDKAdapter  {
 
         group.getConnInfoPresentationControls().add(
                 	createAttributePresentation("clientSessionKeepAlive", "CLIENTSESSIONKEEPALIVE", "CLIENTSESSIONKEEPALIVE_TOOLTIP",
-                	                            true, false, false));
+                	                            true, false, true));
 
 
     	return group;

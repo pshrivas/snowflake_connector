@@ -6,13 +6,6 @@
 <xsd:complexType name="SnowflakeV2ConnectInfoExtension">
 <xsd:complexContent>
 <xsd:extension base="sdkmodelextension:SDKConnectInfoModelExtension">
-<xsd:attribute name="SSL">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
 <xsd:attribute name="account">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
@@ -20,20 +13,7 @@
 </xsd:restriction>
 </xsd:simpleType>
 </xsd:attribute>
-<xsd:attribute name="authenticator">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="clientSessionKeepAlive">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
+<xsd:attribute name="clientSessionKeepAlive" type="xsd:boolean"/>
 <xsd:attribute name="customURL">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
@@ -48,22 +28,7 @@
 </xsd:restriction>
 </xsd:simpleType>
 </xsd:attribute>
-<xsd:attribute name="passcode">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="passcodeInPassword" type="xsd:boolean"/>
 <xsd:attribute name="password">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="port">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
 <xsd:whiteSpace value="preserve"/>
@@ -78,13 +43,6 @@
 </xsd:simpleType>
 </xsd:attribute>
 <xsd:attribute name="schema">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-<xsd:whiteSpace value="preserve"/>
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:attribute>
-<xsd:attribute name="tracing">
 <xsd:simpleType>
 <xsd:restriction base="xsd:string">
 <xsd:whiteSpace value="preserve"/>

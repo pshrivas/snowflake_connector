@@ -4,6 +4,7 @@ import com.informatica.sdk.adapter.javasdk.dataadapter.Connection;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import com.informatica.sdk.adapter.javasdk.common.ELogLevel;
 import com.informatica.sdk.adapter.javasdk.common.EMessageLevel;
@@ -17,6 +18,8 @@ import com.unicosolution.adapter.snowflakev2.metadata.adapter.NativeConnectionHo
 import com.unicosolution.adapter.snowflakev2.metadata.adapter.SnowflakeV2Connection;
 
 public class SnowflakeV2TableDataConnection extends Connection {
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(
+			SnowflakeV2TableDataConnection.class.getName());
 
 	private Logger logger = null;
 
@@ -40,6 +43,7 @@ public class SnowflakeV2TableDataConnection extends Connection {
 	 */
 
 	public int connect(MetadataContext connHandle) {
+		LOGGER.finer(String.format("MetadataContext: %s", connHandle));
 		Map<String, Object> attrMap = new HashMap<String, Object>();
 
 		try {
@@ -48,15 +52,9 @@ public class SnowflakeV2TableDataConnection extends Connection {
 			attrMap.put("db", connHandle.getStringAttribute("db"));
 			attrMap.put("warehouse", connHandle.getStringAttribute("warehouse"));
 			attrMap.put("account", connHandle.getStringAttribute("account"));
-			attrMap.put("authenticator", connHandle.getStringAttribute("authenticator"));
 			attrMap.put("role", connHandle.getStringAttribute("role"));
 			attrMap.put("schema", connHandle.getStringAttribute("schema"));
-			attrMap.put("tracing", connHandle.getStringAttribute("tracing"));
-			attrMap.put("passcode", connHandle.getStringAttribute("passcode"));
-			attrMap.put("passcodeInPassword", connHandle.getBooleanAttribute("passcodeInPassword"));
-			attrMap.put("port", connHandle.getStringAttribute("port"));
-			attrMap.put("SSL", connHandle.getStringAttribute("SSL"));
-			attrMap.put("clientSessionKeepAlive", connHandle.getStringAttribute("clientSessionKeepAlive"));
+			attrMap.put("clientSessionKeepAlive", connHandle.getBooleanAttribute("clientSessionKeepAlive"));
 			attrMap.put("useCustomURL", connHandle.getBooleanAttribute("useCustomURL"));
 			attrMap.put("customURL", connHandle.getStringAttribute("customURL"));
 
@@ -68,10 +66,13 @@ public class SnowflakeV2TableDataConnection extends Connection {
 				if (msg != null) {
 					logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, msg);
 				}
+				LOGGER.log(Level.SEVERE,
+						String.format("Failed to open connection to Snowflake DB: %s", msg));
 				return EReturnStatus.FAILURE;
 			}
 
 		} catch (SDKException e) {
+			LOGGER.log(Level.SEVERE, "Failed to open connection to Snowflake DB", e);
 			logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, e.getMessage());
 		}
 
@@ -91,6 +92,7 @@ public class SnowflakeV2TableDataConnection extends Connection {
 	 */
 
 	public int disConnect(MetadataContext connHandle) {
+		LOGGER.finer(String.format("MetadataContext: %s", connHandle));
 		Status status = metadataConn.closeConnection();
 		if (status.getStatus() == StatusEnum.SUCCESS) {
 			return EReturnStatus.SUCCESS;
@@ -100,6 +102,8 @@ public class SnowflakeV2TableDataConnection extends Connection {
 			if (msg != null) {
 				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, msg);
 			}
+			LOGGER.log(Level.SEVERE,
+					String.format("Failed to close connection to Snowflake DB: %s", msg));
 			return EReturnStatus.FAILURE;
 		}
 	}
@@ -117,12 +121,12 @@ public class SnowflakeV2TableDataConnection extends Connection {
 	//Call this method for Table Data Read
 	public Object getNativeConnection() {
 		return metadataConn.getSnowflakeConnection();
-		}
+    }
 
 	//Call this method for Table Data Write
 	public NativeConnectionHolder getNativeConnectionHolder() {
 		return metadataConn.getSnowflakeNativeConnectionHolder();
-		}
+    }
 	
 	public String getSchema() {
 		return metadataConn.getSchema();
