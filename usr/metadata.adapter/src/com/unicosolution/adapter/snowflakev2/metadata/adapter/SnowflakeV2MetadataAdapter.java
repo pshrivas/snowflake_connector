@@ -65,9 +65,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	}
 
 	/**
-	 * Used to filter Records during metadata import.
-	 * Implement the filtering logic to push the filter request to source.
-	 * Not Used.
+	 * Used to filter Records during metadata import. Implement the filtering
+	 * logic to push the filter request to source. Not Used.
 	 */
 	private Boolean isRespectFilter(String objectName, String nameFilter) {
 		LOGGER.finer(String.format("%s, %s", objectName, nameFilter));
@@ -110,8 +109,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			for (Option option : options) {
 				optionStrings.add(String.format("%s", option.getValue()));
 			}
-			LOGGER.finer(String.format("Connection: %s, Options: %s, Catalog: %s",
-					connection != null, optionStrings, catalog));
+			LOGGER.finer(String.format("Connection: %s, Options: %s, Catalog: %s", connection != null, optionStrings,
+					catalog));
 		}
 		Factory sdkFactory = catalog.getFactory();
 		this.sdkFactory = sdkFactory;
@@ -139,15 +138,14 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					}
 				}
 				resultIter.close();
-				
+
 				if (catalog.getRootPackages().size() == 0) {
 					// If none of them matches, add all DB names to the list
-					for (Package pack: foundCatalogList) {
+					for (Package pack : foundCatalogList) {
 						catalog.addRootPackage(pack);
 					}
 				}
-				LOGGER.finer(String.format(
-						"Total number of Catalogs: %s, Detected Root Packages: %s",
+				LOGGER.finer(String.format("Total number of Catalogs: %s, Detected Root Packages: %s",
 						foundCatalogList.size(), catalog.getRootPackages().size()));
 			} else {
 				/*
@@ -167,12 +165,15 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					LOGGER.finer(String.format("Catalog: %s, Schema: %s", taretCatalog, targetSchema));
 				}
 				schemaResultSet.close();
-				
-				ResultSet tablesIter = metadata.getTables(
-						tabSchema.getName(),
-						foundSchema ? schemaName : "%", // use schema if found otherwise all schemas
-						nameFilter == null ? "%" : "%" + nameFilter + "%",
-								null);
+
+				ResultSet tablesIter = metadata.getTables(tabSchema.getName(), foundSchema ? schemaName : "%", // use
+																												// schema
+																												// if
+																												// found
+																												// otherwise
+																												// all
+																												// schemas
+						nameFilter == null ? "%" : "%" + nameFilter + "%", null);
 
 				while (tablesIter.next()) {
 					FlatRecord flatRecord = sdkFactory.newFlatRecord(catalog);
@@ -182,10 +183,9 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 
 					flatRecord.setName(tableName);
 					flatRecord.setNmoType("table");
-					flatRecord.setNativeName(
-							SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(
-									startFolder.getName(), targetSchema, tableName));
-					
+					flatRecord.setNativeName(SnowflakeV2MetadataAdapter
+							.encodeFullyQualifiedTableName(startFolder.getName(), targetSchema, tableName));
+
 					LOGGER.finer(String.format("Table Type: %s", tableType));
 					if ("TABLE".equals(tableType)) {
 						flatRecord.setRecordTypeEnum(RecordTypeEnum.INOUT_TYPE);
@@ -278,7 +278,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 							relRecord.setName(PKImportTableName);
 							relRecord.setNativeName(tabSchema.getName() + "." + PKImportTableName);
 
-							// Set the record access type 
+							// Set the record access type
 							/*
 							 * if
 							 * (!PKImportTableName.toLowerCase().contains("tgt")
@@ -325,19 +325,16 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 *            {@link populateField} method
 	 * @throws SQLException
 	 */
-	protected void addColumns(DatabaseMetaData metaData, Catalog catalog, FlatRecord record)
-			throws SQLException {
-		LOGGER.finer(String.format("Metadata: %s, Catalog: %s, Record: %s",
-				metaData, catalog, record));
+	protected void addColumns(DatabaseMetaData metaData, Catalog catalog, FlatRecord record) throws SQLException {
+		LOGGER.finer(String.format("Metadata: %s, Catalog: %s, Record: %s", metaData, catalog, record));
 		Factory sdkFactory = catalog.getFactory();
-		List<String>fullQualifiedNameList = SnowflakeV2MetadataAdapter.decodeFullyQualifiedTableName(
-				record.getNativeName());	
+		List<String> fullQualifiedNameList = SnowflakeV2MetadataAdapter
+				.decodeFullyQualifiedTableName(record.getNativeName());
 		String catalogName = fullQualifiedNameList.get(0);
 		String schemaName = fullQualifiedNameList.get(1);
 		String tableName = fullQualifiedNameList.get(2);
-		
-		ResultSet columnsIter = metaData.getColumns(
-				catalogName, schemaName, tableName, null);
+
+		ResultSet columnsIter = metaData.getColumns(catalogName, schemaName, tableName, null);
 
 		// Adding index, package, uniquekeys
 		Index ind = sdkFactory.newIndex(catalog);
@@ -345,12 +342,12 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		UniqueKey uk = sdkFactory.newUniqueKey(catalog);
 		List<String> pkNames = new ArrayList<>();
 
-		//First parameter to be set to catalog.getName() if restricting search to catalog
-		ResultSet primaryKeys = metaData.getPrimaryKeys(
-				catalogName, schemaName, tableName);
+		// First parameter to be set to catalog.getName() if restricting search
+		// to catalog
+		ResultSet primaryKeys = metaData.getPrimaryKeys(catalogName, schemaName, tableName);
 
 		while (primaryKeys.next()) {
-			LOGGER.finer(String.format("Primary Key: %s",primaryKeys.getString(4)));
+			LOGGER.finer(String.format("Primary Key: %s", primaryKeys.getString(4)));
 			pkNames.add(primaryKeys.getString(4));
 		}
 		LOGGER.finer(String.format("Number of PkNames: %s", pkNames.size()));
@@ -397,9 +394,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 *             if any ResultSet exception occurs
 	 */
 
-	protected void populateField(Field field, ResultSet columnsIter,
-			String catalogName, String schemaName, String tableName)
-			throws SQLException {
+	protected void populateField(Field field, ResultSet columnsIter, String catalogName, String schemaName,
+			String tableName) throws SQLException {
 		String name = columnsIter.getString(4);
 		String dType = columnsIter.getString(6);
 		int length = columnsIter.getInt(16);
@@ -407,15 +403,11 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		int precision = columnsIter.getInt(7);
 
 		if (LOGGER.isLoggable(Level.FINER)) {
-			LOGGER.finer(String.format(
-					"Field: %s, Name: %s, Type: %s,"
-					+ " Length: %s, Precision: %s, Scale: %s",
+			LOGGER.finer(String.format("Field: %s, Name: %s, Type: %s," + " Length: %s, Precision: %s, Scale: %s",
 					field, name, dType, length, scale, precision));
 		}
 		field.setName(name);
-		field.setNativeName(
-				SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(
-						catalogName, schemaName, tableName)
+		field.setNativeName(SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(catalogName, schemaName, tableName)
 				+ "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(name));
 		field.setLength(length);
 
@@ -425,10 +417,10 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				dType = datatype[0];
 			}
 		}
-		
+
 		field.setDataType(dType);
 		field.setScale(scale);
-		
+
 		// if (dType.equalsIgnoreCase("BIT"))
 		if (dType.equalsIgnoreCase("DOUBLE")) {
 			field.setPrecision(38);
@@ -461,7 +453,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		String defValue = columnsIter.getString(13);
 		boolean isNullable = !"0".equals(columnsIter.getString(11));
 
-		// TODO: why field.setNullable or field.setDefaultColValue cannot be used here
+		// TODO: why field.setNullable or field.setDefaultColValue cannot be
+		// used here
 		SEMTableFieldExtensions mFieldExts = (SEMTableFieldExtensions) field.getExtensions();
 		mFieldExts.setDefaultColValue(defValue);
 		mFieldExts.setIsNullable(isNullable);
@@ -486,8 +479,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	@Override
 	public Status writeObjects(Connection connection, MetadataWriteSession writeSession,
 			MetadataWriteOptions defOptions) {
-		LOGGER.finer(String.format("Connection: %s, Session: %s, Options: %s",
-				connection != null, writeSession, defOptions));
+		LOGGER.finer(String.format("Connection: %s, Session: %s, Options: %s", connection != null, writeSession,
+				defOptions));
 		// retrieve the options
 		/*
 		 * int optionID; List<Option> options = defOptions.getOptions(); Boolean
@@ -547,53 +540,55 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	}
 
 	/**
-	 * Encodes a string with double quotes. Note the object name cannot 
-	 * include double quotes, so it is safe to surround the name with
-	 * double quotes without escaping characters.
+	 * Encodes a string with double quotes. Note the object name cannot include
+	 * double quotes, so it is safe to surround the name with double quotes
+	 * without escaping characters.
 	 * 
 	 * @param objectName
 	 * @return a object name surrounded by double quotes
 	 */
-    private static final String encodeFullyQualifiedName(String objectName) {
-        return "\"" + objectName + "\"";
-    }
+	private static final String encodeFullyQualifiedName(String objectName) {
+		return "\"" + objectName + "\"";
+	}
 
-    /**
-     * Encodes catalog, schema and table names into a fully qualified name
-     * @param catalog
-     * @param schema
-     * @param table
-     * @return a fully qualified table name
-     */
-    private static final String encodeFullyQualifiedTableName(String catalog, String schema, String table) {
-        return SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(catalog)
-                + "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(schema)
-                + "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(table);
-    }
+	/**
+	 * Encodes catalog, schema and table names into a fully qualified name
+	 * 
+	 * @param catalog
+	 * @param schema
+	 * @param table
+	 * @return a fully qualified table name
+	 */
+	private static final String encodeFullyQualifiedTableName(String catalog, String schema, String table) {
+		return SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(catalog) + "."
+				+ SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(schema) + "."
+				+ SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(table);
+	}
 
-    /**
-     * Decodes a fully qualified name into catalog, schema and table.
-     * @param fullyQualifiedTableName
-     * @return
-     */
-    private static final List<String> decodeFullyQualifiedTableName(String fullyQualifiedTableName) {
-        List<String> ret = new ArrayList<>();
-        StringBuffer sb = new StringBuffer();
-        for (int idx =1; idx < fullyQualifiedTableName.length();) {
-            char ch = fullyQualifiedTableName.charAt(idx);
-            if (ch == '"') {
-                ret.add(sb.toString());
-                sb = new StringBuffer();
-                idx += 3; // skip '.' and the next '"'
-            } else {
-                sb.append(ch);
-                if (ch == '"') {
-                    ++idx;
-                    sb.append(ch);
-                }
-                ++idx;
-            }
-        }
-        return ret;
-    }
+	/**
+	 * Decodes a fully qualified name into catalog, schema and table.
+	 * 
+	 * @param fullyQualifiedTableName
+	 * @return
+	 */
+	private static final List<String> decodeFullyQualifiedTableName(String fullyQualifiedTableName) {
+		List<String> ret = new ArrayList<>();
+		StringBuffer sb = new StringBuffer();
+		for (int idx = 1; idx < fullyQualifiedTableName.length();) {
+			char ch = fullyQualifiedTableName.charAt(idx);
+			if (ch == '"') {
+				ret.add(sb.toString());
+				sb = new StringBuffer();
+				idx += 3; // skip '.' and the next '"'
+			} else {
+				sb.append(ch);
+				if (ch == '"') {
+					++idx;
+					sb.append(ch);
+				}
+				++idx;
+			}
+		}
+		return ret;
+	}
 }

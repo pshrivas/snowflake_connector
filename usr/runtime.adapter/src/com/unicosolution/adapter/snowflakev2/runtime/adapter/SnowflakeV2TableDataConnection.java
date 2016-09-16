@@ -18,8 +18,8 @@ import com.unicosolution.adapter.snowflakev2.metadata.adapter.NativeConnectionHo
 import com.unicosolution.adapter.snowflakev2.metadata.adapter.SnowflakeV2Connection;
 
 public class SnowflakeV2TableDataConnection extends Connection {
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(
-			SnowflakeV2TableDataConnection.class.getName());
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger
+			.getLogger(SnowflakeV2TableDataConnection.class.getName());
 
 	private Logger logger = null;
 
@@ -54,9 +54,9 @@ public class SnowflakeV2TableDataConnection extends Connection {
 			attrMap.put("account", connHandle.getStringAttribute("account"));
 			attrMap.put("role", connHandle.getStringAttribute("role"));
 			attrMap.put("schema", connHandle.getStringAttribute("schema"));
-			attrMap.put("clientSessionKeepAlive", connHandle.getBooleanAttribute("clientSessionKeepAlive"));
 			attrMap.put("useCustomURL", connHandle.getBooleanAttribute("useCustomURL"));
 			attrMap.put("customURL", connHandle.getStringAttribute("customURL"));
+			attrMap.put("clientSessionKeepAlive", connHandle.getBooleanAttribute("clientSessionKeepAlive"));
 
 			Status status = metadataConn.openConnection(attrMap);
 			if (status.getStatus() == StatusEnum.SUCCESS) {
@@ -66,8 +66,7 @@ public class SnowflakeV2TableDataConnection extends Connection {
 				if (msg != null) {
 					logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, msg);
 				}
-				LOGGER.log(Level.SEVERE,
-						String.format("Failed to open connection to Snowflake DB: %s", msg));
+				LOGGER.log(Level.SEVERE, String.format("Failed to open connection to Snowflake DB: %s", msg));
 				return EReturnStatus.FAILURE;
 			}
 
@@ -102,8 +101,7 @@ public class SnowflakeV2TableDataConnection extends Connection {
 			if (msg != null) {
 				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, msg);
 			}
-			LOGGER.log(Level.SEVERE,
-					String.format("Failed to close connection to Snowflake DB: %s", msg));
+			LOGGER.log(Level.SEVERE, String.format("Failed to close connection to Snowflake DB: %s", msg));
 			return EReturnStatus.FAILURE;
 		}
 	}
@@ -118,24 +116,24 @@ public class SnowflakeV2TableDataConnection extends Connection {
 	 *         indicates the status of the get operation.
 	 */
 
-	//Call this method for Table Data Read
+	// Call this method for Table Data Read
 	public Object getNativeConnection() {
 		return metadataConn.getSnowflakeConnection();
-    }
+	}
 
-	//Call this method for Table Data Write
+	// Call this method for Table Data Write
 	public NativeConnectionHolder getNativeConnectionHolder() {
 		return metadataConn.getSnowflakeNativeConnectionHolder();
-    }
-	
+	}
+
 	public String getSchema() {
 		return metadataConn.getSchema();
 	}
-	
+
 	public String getCatalog() {
 		return metadataConn.getCatalog();
 	}
-	
+
 	public final SnowflakeV2Connection getMetadataConnection() {
 		return metadataConn;
 	}

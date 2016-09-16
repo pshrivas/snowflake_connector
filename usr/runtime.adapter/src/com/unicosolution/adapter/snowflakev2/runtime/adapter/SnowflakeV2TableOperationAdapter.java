@@ -21,201 +21,186 @@ import com.informatica.sdk.adapter.metadata.common.Status;
 import com.informatica.sdk.adapter.metadata.common.StatusEnum;
 
 @SuppressWarnings("unused")
-public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter  {
+public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter {
 
-    private Logger logger = null;
+	private Logger logger = null;
 
-    public SnowflakeV2TableOperationAdapter(Logger infaLogger){
-     	this.logger = infaLogger; 
-    }
+	public SnowflakeV2TableOperationAdapter(Logger infaLogger) {
+		this.logger = infaLogger;
+	}
 
+	/**
+	 * This API should be implemented by adapter developer to initialize the DSO
+	 * adapter before any partitions are executed
+	 *
+	 * @param dsoHandle
+	 *            DSO handle This could be used to set any DSO level metadata
+	 *            common to all partitions in the user handle.
+	 * @return EReturnStatus
+	 */
 
+	@Override
+	public int initDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle)
+			throws SDKException {
+		int status = 0;
+		BasicProjectionView projection = dsoHandle.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
+				.getProjectionHelper();
+		Capability capability = dsoHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
+		if (capability instanceof ReadCapability) {
+			status = initDataOperationRead(dsoHandle, connHandle, projection);
+		} else if (capability instanceof WriteCapability) {
+			status = initDataOperationWrite(dsoHandle, connHandle, projection);
+		}
 
-    /**
-     * This API should be implemented by adapter developer 
-     * to initialize the DSO adapter before any partitions are executed
-     *
-     * @param dsoHandle DSO handle
-     *		 This could be used to set any DSO level metadata common to all partitions in the user handle.
-     * @return EReturnStatus
-     */
+		return status;
+	}
 
-    @Override
-    public int initDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle) throws SDKException  {
-    		int status = 0;
-    		BasicProjectionView projection = dsoHandle
-    				.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
-    				.getProjectionHelper();
-    		Capability capability = dsoHandle.getAdapterDataSourceOperation()
-    				.getCapabilities().get(0);
-    		if (capability instanceof ReadCapability) {
-    			status = initDataOperationRead(dsoHandle, connHandle, projection);
-    		} else if (capability instanceof WriteCapability) {
-    			status = initDataOperationWrite(dsoHandle, connHandle, projection);
-    		}
+	/**
+	 * This API should be implemented by adapter developer to de-initialize the
+	 * DSO adapter after all partitions are executed
+	 *
+	 * @param dsoHandle
+	 *            DSO handle This could be used to set any DSO level metadata
+	 *            common to all partitions in the user handle.
+	 * @return EReturnStatus
+	 */
 
-    	return status;
-    }
+	@Override
+	public int deinitDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle)
+			throws SDKException {
+		int status = 0;
+		BasicProjectionView projection = dsoHandle.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
+				.getProjectionHelper();
+		Capability capability = dsoHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
+		if (capability instanceof ReadCapability) {
+			status = deinitDataOperationRead(dsoHandle, connHandle, projection);
 
+		} else if (capability instanceof WriteCapability) {
+			status = deinitDataOperationWrite(dsoHandle, connHandle, projection);
+		}
 
+		return status;
+	}
 
-    /**
-     * This API should be implemented by adapter developer 
-     * to de-initialize the DSO adapter after all partitions are executed
-     *
-     * @param dsoHandle DSO handle
-     *		This could be used to set any DSO level metadata common to all partitions in the user handle.
-     * @return EReturnStatus
-     */
+	/**
+	 * This API should be implemented by adapter developer to perform
+	 * read-specific pre-task
+	 *
+	 * @return EReturnStatus
+	 */
 
-    @Override
-    public int deinitDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle) throws SDKException  {
-    			int status = 0;
-        	    BasicProjectionView projection = dsoHandle
-        				.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
-        				.getProjectionHelper();
-        		Capability capability = dsoHandle.getAdapterDataSourceOperation()
-            				.getCapabilities().get(0);
-            		if (capability instanceof ReadCapability) {
-        			status = deinitDataOperationRead(dsoHandle, connHandle, projection);
+	private int initDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
+			BasicProjectionView projection) {
 
-        		} else if (capability instanceof WriteCapability) {
-        			status = deinitDataOperationWrite(dsoHandle, connHandle, projection);
-        		}
-    		
-    	return status;
-    }
+		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
+		if (record.getIndexList().size() > 0) {
+			Index index = record.getIndexList().get(0);
+		}
 
+		// Sample code below to show
+		// how the query is constructed
 
+		/*
+		 * String query = "CREATE UNIQUE INDEX newIndex ON " + record.getName()
+		 * + " ( " + record.getFieldList().get(0).getName() + " ) "; try { stmt
+		 * = sqlConn.createStatement(); rs = stmt.executeQuery(query);
+		 * sqlConn.close(); } catch (SQLException e) {
+		 * logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
+		 * ELogLevel.TRACE_NONE, e.getMessage()); return EReturnStatus.FAILURE;
+		 * }
+		 */
 
-     /**
-      * This API should be implemented by adapter developer 
-      * to perform read-specific pre-task
-      *
-      * @return EReturnStatus
-      */ 
+		// close connection to data source
+		// conn.disConnect(connHandle);
 
-    private int initDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle, BasicProjectionView projection){
+		return EReturnStatus.SUCCESS;
+	}
 
-        		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
-        		if (record.getIndexList().size() > 0) {
-        			Index index = record.getIndexList().get(0);
-        		}
+	/**
+	 * This API should be implemented by adapter developer to perform
+	 * write-specific pre-task
+	 *
+	 * @return EReturnStatus
+	 */
 
-        		// Sample code below to show
-        		// how the query is constructed
+	private int initDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
+			BasicProjectionView projection) {
 
-        		/* String query = "CREATE UNIQUE INDEX newIndex ON " + record.getName()
-        				+ " ( " + record.getFieldList().get(0).getName() + " ) ";
-        		try {
-        			stmt = sqlConn.createStatement();
-        			rs = stmt.executeQuery(query);
-        			sqlConn.close();
-        		} catch (SQLException e) {
-        			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
-        					ELogLevel.TRACE_NONE, e.getMessage());
-        			return EReturnStatus.FAILURE;
-        		} */
+		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
+		if (record.getIndexList().size() > 0) {
+			Index index = record.getIndexList().get(0);
+		}
 
-        		// close connection to data source
-        		// conn.disConnect(connHandle);
-        		
-    	return EReturnStatus.SUCCESS;
-    }
+		// Sample code below to show
+		// how the query is constructed
 
+		/*
+		 * String query = "TRUNCATE TABLE " + record.getName(); try { stmt =
+		 * sqlConn.createStatement(); rs = stmt.executeQuery(query);
+		 * sqlConn.close(); } catch (SQLException e) {
+		 * logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
+		 * ELogLevel.TRACE_NONE, e.getMessage()); return EReturnStatus.FAILURE;
+		 * }
+		 */
 
+		// close connection to data source
+		// conn.disConnect(connHandle);
 
-     /**
-      * This API should be implemented by adapter developer 
-      * to perform write-specific pre-task
-      *
-      * @return EReturnStatus
-      */ 
+		return EReturnStatus.SUCCESS;
+	}
 
-    private int initDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle, BasicProjectionView projection){
+	/**
+	 * This API should be implemented by adapter developer to perform
+	 * read-specific post-task
+	 *
+	 * @return EReturnStatus
+	 */
 
-        		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
-        		if (record.getIndexList().size() > 0) {
-        			Index index = record.getIndexList().get(0);
-        		}
+	private int deinitDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
+			BasicProjectionView projection) {
 
-        		// Sample code below to show
-        		// how the query is constructed
+		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
+		if (record.getIndexList().size() > 0) {
+			Index index = record.getIndexList().get(0);
+		}
 
-        		/* String query = "TRUNCATE TABLE " + record.getName();
-        		try {
-        			stmt = sqlConn.createStatement();
-        			rs = stmt.executeQuery(query);
-        			sqlConn.close();
-        		} catch (SQLException e) {
-        			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
-        					ELogLevel.TRACE_NONE, e.getMessage());
-        			return EReturnStatus.FAILURE;
-        		} */
+		// Sample code below to show
+		// how the query is constructed
 
-        		// close connection to data source
-        		// conn.disConnect(connHandle);
+		/*
+		 * String query = "DROP index newIndex " + " ON " + record.getName();
+		 * try { stmt = sqlConn.createStatement(); rs =
+		 * stmt.executeQuery(query); sqlConn.close(); } catch (SQLException e) {
+		 * logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
+		 * ELogLevel.TRACE_NONE, e.getMessage()); return EReturnStatus.FAILURE;
+		 * }
+		 */
 
-    	return EReturnStatus.SUCCESS;
-    }
+		// close connection to data source
+		// conn.disConnect(connHandle);
 
+		return EReturnStatus.SUCCESS;
+	}
 
+	/**
+	 * This API should be implemented by adapter developer to perform
+	 * write-specific post-task
+	 *
+	 * @return EReturnStatus
+	 */
 
-     /**
-      * This API should be implemented by adapter developer 
-      * to perform read-specific post-task
-      *
-      * @return EReturnStatus
-      */ 
+	private int deinitDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
+			BasicProjectionView projection) {
 
-    private int deinitDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle, BasicProjectionView projection){
+		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
+		if (record.getIndexList().size() > 0) {
+			Index index = record.getIndexList().get(0);
+		}
 
-        		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
-        		if (record.getIndexList().size() > 0) {
-        			Index index = record.getIndexList().get(0);
-        		}
+		// close connection to data source
+		// conn.disConnect(connHandle);
 
-        		// Sample code below to show
-        		// how the query is constructed
-
-        		/* String query = "DROP index newIndex " + " ON " + record.getName();
-        		try {
-        			stmt = sqlConn.createStatement();
-        			rs = stmt.executeQuery(query);
-        			sqlConn.close();
-        		} catch (SQLException e) {
-        			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
-        					ELogLevel.TRACE_NONE, e.getMessage());
-        			return EReturnStatus.FAILURE;
-        		} */
-
-        		// close connection to data source
-        		// conn.disConnect(connHandle); 
-        		
-    	return EReturnStatus.SUCCESS;
-    }
-
-
-
-     /**
-      * This API should be implemented by adapter developer 
-      * to perform write-specific post-task
-      *
-      * @return EReturnStatus
-      */ 
-
-    private int deinitDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle, BasicProjectionView projection){
-
-        		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
-        		if (record.getIndexList().size() > 0) {
-        			Index index = record.getIndexList().get(0);
-        		}
-
-        		// close connection to data source
-        		// conn.disConnect(connHandle);
-    		
-    	return EReturnStatus.SUCCESS;
-    }
-
+		return EReturnStatus.SUCCESS;
+	}
 
 }

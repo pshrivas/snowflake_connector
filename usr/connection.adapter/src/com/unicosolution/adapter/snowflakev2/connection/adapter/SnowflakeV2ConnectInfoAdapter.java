@@ -1,7 +1,10 @@
 package com.unicosolution.adapter.snowflakev2.connection.adapter;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,52 +17,55 @@ import com.unicosolution.adapter.snowflakev2.designmessages.MessageBundle;
 import com.unicosolution.adapter.snowflakev2.designmessages.Messages;
 
 import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAdapter  {
+public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAdapter {
 	public static final String CONNECTOR_NAMESPACE = "com.unicosolution";
 	public static final String JDBC_NAMESPACE = "com.snowflake";
 	public static final String SYSTEM_PROPERTY_NAMESPACE = "com.snowflake.connector.informatica.";
 	public static final Level DEFAULT_LOG_LEVEL = Level.SEVERE;
-	
+
 	private Logger LOGGER = Logger.getLogger(SnowflakeV2ConnectInfoAdapter.class.getName());
 
 	static {
 		/**
-         * Configures logger to output to a file.
-         * Two System parameters:
-         * - com.snowflake.connector.informatica.logging.level:    Log Level
-         * - com.snowflake.connector.informatica.logging.filename: Log file name
-         */
-		String userLogLevel = System.getProperty(
-				SYSTEM_PROPERTY_NAMESPACE + "logging.level");
+		 * Configures logger to output to a file. Two System parameters: -
+		 * com.snowflake.connector.informatica.logging.level: Log Level -
+		 * com.snowflake.connector.informatica.logging.filename: Log file name
+		 */
+		String userLogLevel = System.getProperty(SYSTEM_PROPERTY_NAMESPACE + "logging.level");
 		if (userLogLevel != null) {
 			Level logLevel = null;
 			try {
 				logLevel = Level.parse(userLogLevel);
-			} catch (IllegalArgumentException|NullPointerException e) {
+			} catch (IllegalArgumentException | NullPointerException e) {
 				e.printStackTrace();
 				// fallback to the default log level
 				logLevel = DEFAULT_LOG_LEVEL;
 			}
-			final String[] nameSpaces = new String[] {
-					JDBC_NAMESPACE,
-					CONNECTOR_NAMESPACE};
-			for (String nameSpace: nameSpaces) {
-				Logger logger = Logger.getLogger(nameSpace);	
+			Formatter fileFormatter = new SimpleFormatter();
+			if (logLevel.intValue() <= Level.FINE.intValue()) {
+				fileFormatter = new BetterLogFormatter();
+			}
+
+			final String[] nameSpaces = new String[] { JDBC_NAMESPACE, CONNECTOR_NAMESPACE };
+			for (String nameSpace : nameSpaces) {
+				Logger logger = Logger.getLogger(nameSpace);
 				logger.setLevel(logLevel);
-	
+
 				try {
-					String logFileName = System.getProperty(
-							SYSTEM_PROPERTY_NAMESPACE + "logging.filename",
+					String logFileName = System.getProperty(SYSTEM_PROPERTY_NAMESPACE + "logging.filename",
 							"%t/V2SnowflakeConnectorInformatica%u.%g.log");
-		        	FileHandler fileHandler = new FileHandler(logFileName);
-		        	fileHandler.setLevel(logLevel);
-		        	fileHandler.setFormatter(new SimpleFormatter());
-		        	logger.addHandler(fileHandler);
-				} catch (SecurityException|IOException e) {
+					FileHandler fileHandler = new FileHandler(logFileName);
+					fileHandler.setLevel(logLevel);
+					fileHandler.setFormatter(fileFormatter);
+					logger.addHandler(fileHandler);
+				} catch (SecurityException | IOException e) {
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
@@ -67,7 +73,48 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 			// set the same log level to JDBC driver
 			System.setProperty("snowflake.jdbc.log.level", userLogLevel);
 		}
-    }
+	}
+
+	static class BetterLogFormatter extends Formatter {
+		private static final String CLASS_NAME_PREFIX = "com.unicosolution.adapter.snowflakev2";
+		private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+		@Override
+		public String format(LogRecord record) {
+			int lineNumber = -1;
+			String className = record.getSourceClassName();
+			final String methodName = record.getSourceMethodName();
+			StackTraceElement[] stackTraces = new Exception().getStackTrace();
+			for (StackTraceElement ste : stackTraces) {
+				if (ste.getClassName().equals(className) && ste.getMethodName().equals(methodName)) {
+					lineNumber = ste.getLineNumber();
+					break;
+				}
+			}
+			if (className.startsWith(CLASS_NAME_PREFIX)) {
+				className = "c.u.a.s" + className.substring(CLASS_NAME_PREFIX.length());
+			}
+			StringBuilder builder = new StringBuilder(1000);
+			builder.append(df.format(new Date(record.getMillis()))).append(" ");
+			builder.append(className).append(" ");
+			builder.append(record.getLevel()).append(" ");
+			builder.append(methodName).append(":");
+			builder.append(lineNumber).append(" - ");
+			builder.append(formatMessage(record));
+			builder.append("\n");
+			return builder.toString();
+		}
+
+		@Override
+		public String getHead(Handler h) {
+			return super.getHead(h);
+		}
+
+		@Override
+		public String getTail(Handler h) {
+			return super.getTail(h);
+		}
+	}
 
 	/**
 	 * Validates the connection attributes of an adapter.
@@ -93,25 +140,22 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 		}
 		String user = (String) attrNameValmap.get("user");
 		if (null == user || "".equalsIgnoreCase(user.trim())) {
-			ExceptionManager.createNlsAdapterSDKException(
-					MessageBundle.getInstance(),
+			ExceptionManager.createNlsAdapterSDKException(MessageBundle.getInstance(),
 					Messages.SnowflakeV2_EMPTY_USER_900);
 		}
-		
+
 		String password = (String) attrNameValmap.get("password");
 		if (null == password || "".equalsIgnoreCase(password.trim())) {
-			ExceptionManager.createNlsAdapterSDKException(
-					MessageBundle.getInstance(),
+			ExceptionManager.createNlsAdapterSDKException(MessageBundle.getInstance(),
 					Messages.SnowflakeV2_EMPTY_PASSWORD_901);
 		}
-		
+
 		String account = (String) attrNameValmap.get("account");
 		if (null == account || "".equalsIgnoreCase(account.trim())) {
-			ExceptionManager.createNlsAdapterSDKException(
-					MessageBundle.getInstance(),
+			ExceptionManager.createNlsAdapterSDKException(MessageBundle.getInstance(),
 					Messages.SnowflakeV2_EMPTY_ACCOUNT_905);
 		}
-			
+
 		return null;
 	}
 
@@ -134,11 +178,10 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 	 *         that uses the adapter.
 	 */
 	@Override
-	public List<Object> getConnectInfoUpdatedConsumerInfo(
-			Map<String, Object> map, SDKConsumerTypeEnum consumerType) {
+	public List<Object> getConnectInfoUpdatedConsumerInfo(Map<String, Object> map, SDKConsumerTypeEnum consumerType) {
 		LOGGER.finer(String.format("Map: %s, ConsumerType: %s", map, consumerType));
 		ArrayList<Object> newAttributes = new ArrayList<>();
-		
+
 		String account = (String) map.get("account");
 		String user = (String) map.get("user");
 		String password = (String) map.get("password");
@@ -147,20 +190,19 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 		String schema = (String) map.get("schema");
 		String role = (String) map.get("role");
 
-		SDKConnectionConsumerAttribute accountNew = createAttributePresentation(
-				"account", "ACCOUNT", "ACCOUNT_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute userNew = createAttributePresentation(
-				"user", "USER", "USER_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute passwordNew = createAttributePresentation(
-				"password", "PASSWORD", "PASSWORD_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute warehouseNew = createAttributePresentation(
-				"warehouse", "WAREHOUSE", "WAREHOUSE_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute dbNew = createAttributePresentation(
-				"db", "DB", "DB_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute schemaNew = createAttributePresentation(
-				"schema", "SCHEMA", "SCHEMA_TOOLTIP", true, false, true);
-		SDKConnectionConsumerAttribute roleNew = createAttributePresentation(
-				"role", "ROLE", "ROLE_TOOLTIP", true, false, false);
+		SDKConnectionConsumerAttribute accountNew = createAttributePresentation("account", "ACCOUNT", "ACCOUNT_TOOLTIP",
+				true, false, true);
+		SDKConnectionConsumerAttribute userNew = createAttributePresentation("user", "USER", "USER_TOOLTIP", true,
+				false, true);
+		SDKConnectionConsumerAttribute passwordNew = createAttributePresentation("password", "PASSWORD",
+				"PASSWORD_TOOLTIP", true, false, true);
+		SDKConnectionConsumerAttribute warehouseNew = createAttributePresentation("warehouse", "WAREHOUSE",
+				"WAREHOUSE_TOOLTIP", true, false, true);
+		SDKConnectionConsumerAttribute dbNew = createAttributePresentation("db", "DB", "DB_TOOLTIP", true, false, true);
+		SDKConnectionConsumerAttribute schemaNew = createAttributePresentation("schema", "SCHEMA", "SCHEMA_TOOLTIP",
+				true, false, true);
+		SDKConnectionConsumerAttribute roleNew = createAttributePresentation("role", "ROLE", "ROLE_TOOLTIP", true,
+				false, false);
 
 		accountNew.getAttributeType().setAttributeValue(account);
 		newAttributes.add(accountNew);

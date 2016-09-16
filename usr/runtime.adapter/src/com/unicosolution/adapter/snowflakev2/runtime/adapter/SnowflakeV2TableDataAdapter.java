@@ -91,11 +91,11 @@ import com.informatica.sdk.adapter.metadata.projection.sourceoperation.semantic.
 
 @SuppressWarnings("unused")
 public class SnowflakeV2TableDataAdapter extends DataAdapter {
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(
-			SnowflakeV2TableDataAdapter.class.getName());
-	
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger
+			.getLogger(SnowflakeV2TableDataAdapter.class.getName());
+
 	private Logger logger = null;
-	
+
 	private int BATCH_SIZE = 1000;
 
 	private List<BasicProjectionField> projectionFields = null;
@@ -108,7 +108,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	private List<ImportableObject> nativeRecords = null;
 	private ResultSet rs = null;
-	
+
 	private FilterOperation m_FilterOperation;
 	private String filterQuery;
 
@@ -133,7 +133,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	private String nativeFilterQuery;
 	private String nativeJoinQuery;
-	
+
 	private Loader loader;
 	private BulkLoadResultListener listener;
 	private Operation op;
@@ -168,15 +168,15 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// information
 		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-		
+
 		// Use the basic projection view to get basic details like the projected
 		// fields/ filter / join metadata
 		projectionView = runtimeMetadataHandle.getBasicProjection();
-		
+
 		// projectionFields has all fields of the native object to the platform
 		// source/target
 		projectionFields = projectionView.getProjectionFields();
-		
+
 		// connected fields is the subset of fields which are actually used in
 		// the mapping.
 		// use to fetch/write data to/from the native source
@@ -188,10 +188,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// handle to the list of capability attributes. Get the read/write
 		// capability details using this list
 		capAttrs = runtimeMetadataHandle.getCapabilityAttributes();
-		
+
 		// Get the current selected record
-		currentFlatRecord = (FlatRecord) nativeRecords.get(0); // start mentioning the first
-												// table name in a query
+		currentFlatRecord = (FlatRecord) nativeRecords.get(0); // start
+																// mentioning
+																// the first
+		// table name in a query
 
 		SnowflakeV2UserContext suc = new SnowflakeV2UserContext();
 		suc.setResetRowIndex(true);
@@ -210,10 +212,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		if (status != EReturnStatus.SUCCESS) {
 			return status;
 		}
-		LOGGER.finer(String.format("Platform Join Types: %s, Platform Join Exprs: %s, Native Join: %s",
-				this.joinTypes, this.joinExprs, this.nativeJoinQuery));
-		LOGGER.finer(String.format("Platform Filter Query: %s, Native Filter: %s",
-				this.filterQuery, this.nativeFilterQuery));
+		LOGGER.finer(String.format("Platform Join Types: %s, Platform Join Exprs: %s, Native Join: %s", this.joinTypes,
+				this.joinExprs, this.nativeJoinQuery));
+		LOGGER.finer(String.format("Platform Filter Query: %s, Native Filter: %s", this.filterQuery,
+				this.nativeFilterQuery));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
 				"SnowflakeV2TableDataAdapter:initDataSession:: filterQuery : " + filterQuery);
@@ -226,16 +228,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
 				"SnowflakeV2TableDataAdapter:initDataSession:: end");
-		
+
 		Capability capability = runtimeMetadataHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
-		
-		if (capability instanceof WriteCapability) { //the operation is WRITE
+
+		if (capability instanceof WriteCapability) { // the operation is WRITE
 			initBulkLoader(dataSession);
 		}
 
 		return EReturnStatus.SUCCESS;
 	}
-	
+
 	/**
 	 * Builds the Join expression by resolving the table name and the column
 	 * name
@@ -246,9 +248,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return The expression in the form of tableName.columnName
 	 */
 	private String getResolvedJoinExpression(SimpleBinaryExpression simplBinExpr) {
-		LOGGER.finer(String.format(
-				"SimpleBinaryExpression: %s, Left Op: %s, Opr: %s, Right Op: %s",
-				simplBinExpr, simplBinExpr.getLeftOperand(), simplBinExpr.getBinaryOperator(), simplBinExpr.getRightOperand()));
+		LOGGER.finer(String.format("SimpleBinaryExpression: %s, Left Op: %s, Opr: %s, Right Op: %s", simplBinExpr,
+				simplBinExpr.getLeftOperand(), simplBinExpr.getBinaryOperator(), simplBinExpr.getRightOperand()));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "getResolvedJoinExpression:: begin");
 
@@ -304,7 +305,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	/**
 	 * parse the mapping graph to obtain filter and join expressions
-	 * @param dataSession 
+	 * 
+	 * @param dataSession
 	 * 
 	 * @return status of processing of filter and join expressions
 	 ************************************* 
@@ -321,7 +323,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		List<Capability> caps = m_asoOperation.getCapabilities();
 		Capability cap = caps.get(0);
 
-		for (Projection proj: projlist) {
+		for (Projection proj : projlist) {
 			LOGGER.finer(String.format("Projection: %s", proj));
 			if (proj == null) {
 				LOGGER.severe(String.format("Projection is null"));
@@ -339,17 +341,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 
 			int status = EReturnStatus.SUCCESS;
-			for (OperationBase ob: baseOperList) {
+			for (OperationBase ob : baseOperList) {
 				if (ob == null) {
-					LOGGER.severe(
-							String.format("Operation Base is null. Projection: %s, Base Projecion: %s", proj, baseOperList));
+					LOGGER.severe(String.format("Operation Base is null. Projection: %s, Base Projecion: %s", proj,
+							baseOperList));
 					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
 							"Error : Operation Base is NULL");
 					return EReturnStatus.FAILURE;
 				}
 
-				LOGGER.finer(String.format(
-						"Operation: %s, ReadCapacity?: %s", ob, cap instanceof ReadCapability));
+				LOGGER.finer(String.format("Operation: %s, ReadCapacity?: %s", ob, cap instanceof ReadCapability));
 				if (cap instanceof ReadCapability) {
 					if (ob instanceof FilterOperation) {
 						LOGGER.finer(String.format("Filter Opeartion"));
@@ -477,18 +478,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private int processPlatformJoin(JoinOperation platformJoin) {
 		LOGGER.finer(String.format(
-				"JoinOperation: Name: %s,"
-				+ " InfaSDKExpression: %s,"
-				+ " Join Policy Enum: %s,"
-				+ " Foreign Key Relationship: %s,"
-				+ " Join Condition: %s,"
-				+ " Join Modifier: %s",
-				platformJoin.getName(),
-				platformJoin.getInfaSDKExpression().getExpressionString(),
-				platformJoin.getJoinPolicyEnum(),
-				platformJoin.getForeignKeyRelationship(),
-				platformJoin.getJoinCondition(),
-				platformJoin.getJoinModifier()));
+				"JoinOperation: Name: %s," + " InfaSDKExpression: %s," + " Join Policy Enum: %s,"
+						+ " Foreign Key Relationship: %s," + " Join Condition: %s," + " Join Modifier: %s",
+				platformJoin.getName(), platformJoin.getInfaSDKExpression().getExpressionString(),
+				platformJoin.getJoinPolicyEnum(), platformJoin.getForeignKeyRelationship(),
+				platformJoin.getJoinCondition(), platformJoin.getJoinModifier()));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processPlatformJoin:: begin");
 
@@ -649,10 +643,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
 
-		Capability capability = runtimeMetadataHandle
-				.getAdapterDataSourceOperation().getCapabilities().get(0);
+		Capability capability = runtimeMetadataHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
 
-		if (capability instanceof WriteCapability) { //the operation is WRITE
+		if (capability instanceof WriteCapability) { // the operation is WRITE
 
 			try {
 				loader.finish();
@@ -661,51 +654,52 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
 			}
 
-/*	        Unico 30-Aug-2016: The processing results captured and submitted to the Infa platform seems
-			to be discarded by the platform. So, commenting this out here and moving this to the "write" method
-
- 			//BEGIN - Capture Processing Stats
- 			int opInd = EIUDIndicator.INSERT; //default
-
-	        switch (op) {
-	        case INSERT:
-				opInd = EIUDIndicator.INSERT;
-				break;
-	        case MODIFY:
-				opInd = EIUDIndicator.UPDATE;
-				break;
-	        case DELETE:
-				opInd = EIUDIndicator.DELETE;
-				break;
-	        default:
-				opInd = EIUDIndicator.INSERT;
-				//Informatica does not support UPSERT
-	        }
-
-	        RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(opInd);
-
-	         try {
-	             //Get hold of the Listener from the Loader
-	             if (null != loader.getListener() && loader.getListener() instanceof BulkLoadResultListener) {
-
-		              listener = (BulkLoadResultListener)loader.getListener();
-
-		              logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				          "deinitDataSession:: from listener LOADER: " +
-				          "\nlistener.getProcessedRecordCount(op) -> " + listener.getProcessedRecordCount(op) +
-				          "\nlistener.getOperationRecordCount(op) -> " + listener.getOperationRecordCount(op) +
-				          "\nlistener.getRejectedRecordCount(op) -> " + listener.getRejectedRecordCount(op));
-
-	             }
-			     rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); //(Local->No. of Rows Written)
-			     rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
-			     rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
-
-	         } catch (Exception e1) {
-		       logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-		         "deinitDataSession:: SDKException while setting processing status - " + e1.getMessage());
-		      }
-		      //END - Capture Processing Stats*/
+			/*
+			 * Unico 30-Aug-2016: The processing results captured and submitted
+			 * to the Infa platform seems to be discarded by the platform. So,
+			 * commenting this out here and moving this to the "write" method
+			 * 
+			 * //BEGIN - Capture Processing Stats int opInd =
+			 * EIUDIndicator.INSERT; //default
+			 * 
+			 * switch (op) { case INSERT: opInd = EIUDIndicator.INSERT; break;
+			 * case MODIFY: opInd = EIUDIndicator.UPDATE; break; case DELETE:
+			 * opInd = EIUDIndicator.DELETE; break; default: opInd =
+			 * EIUDIndicator.INSERT; //Informatica does not support UPSERT }
+			 * 
+			 * RowsStatInfo rowsStatInfo =
+			 * runtimeMetadataHandle.getRowsStatInfo(opInd);
+			 * 
+			 * try { //Get hold of the Listener from the Loader if (null !=
+			 * loader.getListener() && loader.getListener() instanceof
+			 * BulkLoadResultListener) {
+			 * 
+			 * listener = (BulkLoadResultListener)loader.getListener();
+			 * 
+			 * logger.logMessage(EMessageLevel.MSG_INFO,
+			 * ELogLevel.TRACE_VERBOSE_DATA,
+			 * "deinitDataSession:: from listener LOADER: " +
+			 * "\nlistener.getProcessedRecordCount(op) -> " +
+			 * listener.getProcessedRecordCount(op) +
+			 * "\nlistener.getOperationRecordCount(op) -> " +
+			 * listener.getOperationRecordCount(op) +
+			 * "\nlistener.getRejectedRecordCount(op) -> " +
+			 * listener.getRejectedRecordCount(op));
+			 * 
+			 * }
+			 * rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op
+			 * )); //(Local->No. of Rows Written)
+			 * rowsStatInfo.incrementAffected(listener.getOperationRecordCount(
+			 * op));
+			 * rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op
+			 * ));
+			 * 
+			 * } catch (Exception e1) {
+			 * logger.logMessage(EMessageLevel.MSG_INFO,
+			 * ELogLevel.TRACE_VERBOSE_DATA,
+			 * "deinitDataSession:: SDKException while setting processing status - "
+			 * + e1.getMessage()); } //END - Capture Processing Stats
+			 */
 
 		}
 
@@ -738,12 +732,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int read(DataSession dataSession, ReadAttributes readAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s,"
-				+ " ReadAttributes: %s,"
-				+ " Number of Rows to Read: %s",
-				dataSession,
-				readAttr,
-				readAttr.getNumRowsToRead()));
+		LOGGER.finer(String.format("DataSession: %s," + " ReadAttributes: %s," + " Number of Rows to Read: %s",
+				dataSession, readAttr, readAttr.getNumRowsToRead()));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "SnowflakeV2TableDataAdapter:Read:: begin");
 
@@ -770,17 +760,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			if (!isNullOrEmpty(filterQuery) && !isNullOrEmpty(nativeFilterQuery)) {
 				// both Platform Filter or Native Filter is enabled
 				if (!isNullOrEmpty(nativeJoinQuery)) {
-					query = getNativeJoinQuery(connectedFields)
-							+ " WHERE " + filterQuery + " " + simpleLogicalOp
+					query = getNativeJoinQuery(connectedFields) + " WHERE " + filterQuery + " " + simpleLogicalOp
 							+ " ( " + nativeFilterQuery + " )";
 				} else if (joinTypes.size() > 0 || joinExprs.size() > 0) {
-					query = getJoinQuery(connectedFields)
-							+ " WHERE " + filterQuery + " " + simpleLogicalOp
-							+ " ( " + nativeFilterQuery + " )";
+					query = getJoinQuery(connectedFields) + " WHERE " + filterQuery + " " + simpleLogicalOp + " ( "
+							+ nativeFilterQuery + " )";
 				} else {
-					query = query
-							+ " WHERE " + filterQuery + " " + simpleLogicalOp
-							+ " ( " + nativeFilterQuery + " )";
+					query = query + " WHERE " + filterQuery + " " + simpleLogicalOp + " ( " + nativeFilterQuery + " )";
 				}
 			} else {
 				// Combination of filter and join expressions
@@ -802,14 +788,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					}
 				} else if (!isNullOrEmpty(filterQuery)) {
 					// Single filter expressions
-					query = query
-							+ " WHERE " + filterQuery;
+					query = query + " WHERE " + filterQuery;
 				} else if (!isNullOrEmpty(nativeFilterQuery)) {
-					query = query
-							+ " WHERE " + nativeFilterQuery;
+					query = query + " WHERE " + nativeFilterQuery;
 				} else if (!isNullOrEmpty(lookupExpr)) {
-					query = query
-							+ " WHERE " + lookupExpr;
+					query = query + " WHERE " + lookupExpr;
 				}
 			}
 
@@ -883,9 +866,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			fr2 = (FlatRecord) nativeRecords.get(i);
 			tabName2 = fr2.getNativeName();
 			if (joinExprs.size() > 0)
-				query += " " + joinTypes.get(i-1) + " " + tabName2 + joinExprs.get(i-1);
+				query += " " + joinTypes.get(i - 1) + " " + tabName2 + joinExprs.get(i - 1);
 			else
-				query += " " + joinTypes.get(i-1) + " " + tabName2;
+				query += " " + joinTypes.get(i - 1) + " " + tabName2;
 		}
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
 				"SnowflakeV2TableDataAdapter:getJoinQuery:: end");
@@ -970,11 +953,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * 
 	 */
 	private int readDatafromSource(DataSession dataSession, List<List<Object>> dataTable, int rowsToRead) {
-		LOGGER.finer(String.format("DataSession: %s,"
-				+ " DataTable: %s,"
-				+ " RowsToRead: %s",
-				dataSession,
-				dataTable,
+		LOGGER.finer(String.format("DataSession: %s," + " DataTable: %s," + " RowsToRead: %s", dataSession, dataTable,
 				rowsToRead));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
@@ -1001,8 +980,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				List<Object> datarow = new ArrayList<Object>();
 				for (int i = 0; i < connectedFields.size(); i++) {
 					String dataType = connectedFields.get(i).field.getNativeFieldRef().getDataType();
-					if ("BOOLEAN".equalsIgnoreCase(dataType) 
-							|| "OBJECT".equalsIgnoreCase(dataType)) {
+					if ("BOOLEAN".equalsIgnoreCase(dataType) || "OBJECT".equalsIgnoreCase(dataType)) {
 						datarow.add(rs.getString(i + 1));
 					} else {
 						datarow.add(rs.getObject(i + 1));
@@ -1073,8 +1051,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						String boolValue = data.toString();
 
 						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-								"setDataToPlatform:: boolValue : " + boolValue +
-								" pDataAttributes.getIndicator() : " + pDataAttributes.getIndicator());
+								"setDataToPlatform:: boolValue : " + boolValue + " pDataAttributes.getIndicator() : "
+										+ pDataAttributes.getIndicator());
 
 						if ("true".equalsIgnoreCase(boolValue) || "t".equalsIgnoreCase(boolValue)
 								|| "on".equalsIgnoreCase(boolValue) || "1".equalsIgnoreCase(boolValue)
@@ -1097,8 +1075,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						} catch (Exception e) {
 							data = ((String) data).replaceAll("\n", "");
 
-							//data = ((String) data).replaceAll("\n", "")
-							//	.replaceAll("\\\"", "\"");
+							// data = ((String) data).replaceAll("\n", "")
+							// .replaceAll("\\\"", "\"");
 						}
 					} else {
 						String text = data.toString();
@@ -1113,21 +1091,43 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 							pDataAttributes.setIndicator(EIndicator.VALID);
 						}
 					}
-                    if ("TIMESTAMPNTZ".equalsIgnoreCase(nativeType)) { //TIMESTAMPNTZ does not accept TimeZone.
-                        												//So we have mapped it to Informatica "string" type. But the data from
-                         												//the datasource would still be TIMESTAMPNTZ (Timestamp)
-                    	//dataSession.setDateTimeData((Timestamp) data, pDataAttributes);
-                    	//dataSession.setStringData((String) data.toString(), pDataAttributes);
-                    	if (null != data) {
-                    		dataSession.setStringData((String) data.toString(), pDataAttributes);
-                    	} else {
-                    		dataSession.setStringData((String) null, pDataAttributes);
-                    	}
+					if ("TIMESTAMPNTZ".equalsIgnoreCase(nativeType)) { // TIMESTAMPNTZ
+																		// does
+																		// not
+																		// accept
+																		// TimeZone.
+																		// So we
+																		// have
+																		// mapped
+																		// it to
+																		// Informatica
+																		// "string"
+																		// type.
+																		// But
+																		// the
+																		// data
+																		// from
+																		// the
+																		// datasource
+																		// would
+																		// still
+																		// be
+																		// TIMESTAMPNTZ
+																		// (Timestamp)
+						// dataSession.setDateTimeData((Timestamp) data,
+						// pDataAttributes);
+						// dataSession.setStringData((String) data.toString(),
+						// pDataAttributes);
+						if (null != data) {
+							dataSession.setStringData((String) data.toString(), pDataAttributes);
+						} else {
+							dataSession.setStringData((String) null, pDataAttributes);
+						}
 					} else {
 						dataSession.setStringData((String) data, pDataAttributes);
-                		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-								" After setting data to session, pDataAttributes.getIndicator() : " + 
-										pDataAttributes.getIndicator());
+						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+								" After setting data to session, pDataAttributes.getIndicator() : "
+										+ pDataAttributes.getIndicator());
 					}
 				} else if (dataType.compareToIgnoreCase("double") == 0) {
 					if (data instanceof Double) {
@@ -1279,7 +1279,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				"SnowflakeV2TableDataAdapter:setDataToPlatform:: end");
 
 	}
-	
+
 	private String getOperationTypeString(int operationType) {
 		if (operationType == EIUDIndicator.INSERT) {
 			return "INSERT";
@@ -1291,7 +1291,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			return "STREAMING_INSERT";
 		} else if (operationType == EIUDIndicator.REJECT) {
 			return "REJECT";
-		} 
+		}
 		return "UNKNOWN";
 	}
 
@@ -1309,25 +1309,20 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int write(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s,"
-				+ " WriteAttributes: %s,"
-				+ " Number of Rows to Write: %s",
-				dataSession,
-				writeAttr,
-				writeAttr.getNumRowsToWrite()));
+		LOGGER.finer(String.format("DataSession: %s," + " WriteAttributes: %s," + " Number of Rows to Write: %s",
+				dataSession, writeAttr, writeAttr.getNumRowsToWrite()));
 
 		// Get runtime config metadata handle
 		RuntimeConfigMetadata runtimeMd = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
 
-		//Checking the first row is good enough
+		// Checking the first row is good enough
 		int operationType = runtimeMd.getRowIUDIndicator(0);
-		//  operationType = EIUDIndicator.UPDATE; //Only for testing
-		
+		// operationType = EIUDIndicator.UPDATE; //Only for testing
+
 		String operationTypeString = this.getOperationTypeString(operationType);
 		LOGGER.finer(String.format("Operation Type: %s", operationTypeString));
-		logger.logMessage(EMessageLevel.MSG_INFO,
-				ELogLevel.TRACE_VERBOSE_DATA,
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 				"write:begin Operation Type: " + operationTypeString);
 
 		int returnStatus = EReturnStatus.FAILURE;
@@ -1335,472 +1330,97 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		switch (operationType) {
 		case EIUDIndicator.INSERT:
 			op = Operation.INSERT;
-			//returnStatus = writeInsert(dataSession, writeAttr);
 			break;
 		case EIUDIndicator.DELETE:
 			op = Operation.DELETE;
-			//returnStatus = writeDelete(dataSession, writeAttr);
 			break;
 		case EIUDIndicator.UPDATE:
 			op = Operation.MODIFY;
-			//returnStatus = writeUpdate(dataSession, writeAttr);
 			break;
 
 		default: // Default is INSERT
 			op = Operation.INSERT;
-			//returnStatus = writeInsert(dataSession, writeAttr);
-			
-			//returnStatus = writeUpsert(dataSession, writeAttr);
-			//Will enable UPSERT when Infa starts supporting the operation
-			
 			break;
-
 		}
 
 		returnStatus = submitDataToLoader(dataSession, writeAttr.getNumRowsToWrite());
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 				"write: " + writeAttr.getNumRowsToWrite() + " submitted to loader");
-		
-		//BEGIN - Capture Processing Stats
+
+		// BEGIN - Capture Processing Stats
 		try {
-			//UNICO-30-Aug-2016: Calling finish() in here could deteriorate performance.
-			//However, this is the place where we can capture the processing reults and hand-off to the platform.
+			// UNICO-30-Aug-2016: Calling finish() in here could deteriorate
+			// performance.
+			// However, this is the place where we can capture the processing
+			// reults and hand-off to the platform.
 			LOGGER.info(String.format("Writing data finish"));
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 					"write: About to wait for loader to complete current set of rows...");
 			loader.finish();
-			// loader.close(); //This would close the connections, so we don't want to call close() now
+			// loader.close(); //This would close the connections, so we don't
+			// want to call close() now
 		} catch (Exception e1) {
-			LOGGER.severe(String.format("Writin data finish caused errors: %s, %s",
-					e1.getMessage(),
+			LOGGER.severe(String.format("Writin data finish caused errors: %s, %s", e1.getMessage(),
 					e1.getCause() != null ? e1.getCause().getMessage() : "N/A"));
 			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
 		}
 
-		//Capture the processing stats from the loader's listener
+		// Capture the processing stats from the loader's listener
 		RowsStatInfo rowsStatInfo = runtimeMd.getRowsStatInfo(operationType);
-		
-		listener = (BulkLoadResultListener)loader.getListener();
+
+		listener = (BulkLoadResultListener) loader.getListener();
 		rowsStatInfo.incrementRequested(writeAttr.getNumRowsToWrite());
-		rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); //(Local->No. of Rows Written)
-	    rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
-	    rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
+		rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); // (Local->No.
+																				// of
+																				// Rows
+																				// Written)
+		rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
+		rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-	    LOGGER.finer(String.format("Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
-	    		listener.getProcessedRecordCount(op),
-	    		listener.getOperationRecordCount(op),
-	    		listener.getRejectedRecordCount(op)));
-	    
-	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
-	    		"write: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> " +
-	    		listener.getProcessedRecordCount(op));
-	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-	    		"rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> " +
-	    		listener.getOperationRecordCount(op));
-	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-	    		"rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> " +
-	    		listener.getRejectedRecordCount(op));
+		LOGGER.finer(String.format("Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
+				listener.getProcessedRecordCount(op), listener.getOperationRecordCount(op),
+				listener.getRejectedRecordCount(op)));
 
-	    //Restart the loader, for potentially subsequent calls to "write" method by the platform
-	    listener = new BulkLoadResultListener(this);
-	    loader.setListener(listener);
-	    try {
-	    	LOGGER.info(String.format("Writinga data start"));
-	    	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, 
-	    			"About to restart the loader with a new instance of the listener");
-	    	loader.start();
-	    } catch(Exception e1) {
-			LOGGER.severe(String.format("Writin data start caused errors: %s, %s",
-					e1.getMessage(),
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+				"write: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> "
+						+ listener.getProcessedRecordCount(op));
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+				"rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
+						+ listener.getOperationRecordCount(op));
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+				"rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
+						+ listener.getRejectedRecordCount(op));
+
+		// Restart the loader, for potentially subsequent calls to "write"
+		// method by the platform
+		listener = new BulkLoadResultListener(this);
+		loader.setListener(listener);
+		try {
+			LOGGER.info(String.format("Writinga data start"));
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"About to restart the loader with a new instance of the listener");
+			loader.start();
+		} catch (Exception e1) {
+			LOGGER.severe(String.format("Writin data start caused errors: %s, %s", e1.getMessage(),
 					e1.getCause() != null ? e1.getCause().getMessage() : "N/A"));
-        	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 					"SnowflakeV2TableDataAdapter::write: Loader failed to start: " + e1.getMessage());
-			
-        	//Loader failed to start. So, cannot proceed further... Throw SDKException
-        	final String eMsg = e1.getMessage();
+
+			// Loader failed to start. So, cannot proceed further... Throw
+			// SDKException
+			final String eMsg = e1.getMessage();
 			throw (new SDKException() {
 				private static final long serialVersionUID = 1L;
-				public String getMessage() {return eMsg;}
+
+				public String getMessage() {
+					return eMsg;
+				}
 			});
-	    }
-	    //END - Capture Processing Stats
+		}
+		// END - Capture Processing Stats
 
-	    logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "write: end");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "write: end");
 		return returnStatus;
-	}
-
-	/**
-	 * <pre>
-	 * Steps:
-	 * 1. Get the runtime handle from platform
-	 * 2. Get the number of rows to insert
-	 * 3. Get the additional properties (that were defined in the Write Capability section) and their values
-	 * 4. Get the target table name and build base queries for single insert, batch insert and bulk insert
-	 * 5. Begin Transaction on the native connection 
-	 * 		5.a. Truncate the target table if opted	
-	 * 		5.b. For each row to be written, build and / or execute queries
-	 * 				5.b.1.  If single-insert, 
-	 * 						5.b.1.i. 	If the value is too large for the target, reject the row and move to the next
-	 * 						5.b.1.ii.	Else Execute the insert query
-	 * 				5.b.2. If bulk-insert,
-	 * 						5.b.2.i.	Append the value list and / or column list and move to the next row
-	 * 				5.b.3. If using batch,
-	 * 						5.b.3.i.	Add the constructed query to the batch
-	 * 						5.b.3.ii.	If the size of the batch has reached the defined limit, execute the current batch and clear it
-	 * 		5.c. If bulk-insert,
-	 * 				5.c.1. Execute the bulk query
-	 * 				5.c.2. If unsuccessful, ROLLBACK the transaction
-	 * 		5.d. If using batch,
-	 * 				5.d.1. If the batch contains more rows to be executed, execute the batch and clear it
-	 * 		5.e. Free up the DB resources as needed
-	 * 		5.f. If there were no ROLLBACK in previous steps, COMMIT the transaction
-	 * 6. End Transaction on the native connection
-	 * </pre>
-	 * 
-	 * @param dataSession
-	 * @param writeAttr
-	 * @return
-	 * @throws SDKException
-	 */
-	private int writeInsert(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, WriteAttributes: %s", dataSession, writeAttr));
-
-		Statement stmt = null;
-		PreparedStatement ps = null;
-
-		int batchCount = 0;
-		List<ErrorRowInfo> errorRowInfo = new ArrayList<ErrorRowInfo>();
-		String valueList;
-		boolean bulkLoad = false;
-		ExecutionType queryExecType = ExecutionType.BATCH;
-		boolean truncateTable = false;
-		boolean txnRolledBack = false;
-		ASOOperation m_asoOperation;
-
-		/** 1. Get the runtime handle from platform */
-		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
-				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-		if (runtimeMetadataHandle == null) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-					"writeInsert Error : Runtime Handle is NULL");
-			return EReturnStatus.FAILURE;
-		}
-		
-		SnowflakeV2UserContext uc = getSnowflakeUserContext(dataSession);
-		FlatRecord fr = (FlatRecord) projectionView.getNativeRecords().get(0);
-		String tabName = buildTabName(fr.getName());
-
-		/** 2. Get the number of rows to insert */
-		int rowsToWrite = writeAttr.getNumRowsToWrite();
-
-		/**
-		 * 3. Get the additional properties (that were defined in the Write
-		 * Capability section) and their values
-		 */
-		m_asoOperation = runtimeMetadataHandle.getAdapterDataSourceOperation();
-		WriteCapabilityAttributes writeCapAttr = m_asoOperation.getWriteCapabilityAttributes();
-		if (writeCapAttr != null) {
-			SEMTableWriteCapabilityAttributesExtension partAttris = (SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
-					.getExtensions();
-
-			bulkLoad = partAttris.isBulkLoad();
-			truncateTable = partAttris.isTruncateTargetTable();
-		}
-		queryExecType = getQueryExecType(bulkLoad);
-
-		/**
-		 * 4. Get the target table name and build base queries for single
-		 * insert, batch insert and bulk insert
-		 */
-
-		String truncateQuery = "TRUNCATE TABLE " + tabName;
-
-		String insertQueryBase = "INSERT INTO " + tabName + " ( " + getTargetColumnList() + " ) ";
-		
-		String insertQueryBulk = "";
-		String insertQueryBatch = insertQueryBase;
-		String insertQuerySingle = insertQueryBase;
-		
-		//Construct the appropriate query based on the ExecutionType
-		switch (queryExecType) {
-		case SINGLE:
-			insertQuerySingle += getSingleInsertQuery(tabName);
-			break;
-		case BATCH:
-			insertQueryBatch += "values ( ";
-			for (int i = 0; i < connectedFields.size(); i++) {
-				insertQueryBatch += "?, ";
-			}
-			insertQueryBatch = insertQueryBatch.substring(0, insertQueryBatch.lastIndexOf(",")) + ") ";
-			break;
-		case BULK:
-			break;
-		default:
-			break;
-		}
-
-		// Get rows statistics info to update row statistics etc.
-		RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(EIUDIndicator.INSERT);
-
-		/** 5. Begin Transaction on the native connection */
-		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"WRITE-Insert: Got the connection handle");
-		Connection nativeConn = (Connection) conn.getNativeConnection();
-		try {
-			nativeConn.setAutoCommit(false); // BEGIN TRANSACTION
-
-			stmt = nativeConn.createStatement(); //For Bulk and Truncate Queries
-			
-			if (queryExecType == ExecutionType.BATCH){
-				ps = nativeConn.prepareStatement(insertQueryBatch);
-			} else if (queryExecType == ExecutionType.SINGLE){
-				ps = nativeConn.prepareStatement(insertQuerySingle);
-			}
-
-		} catch (SQLException e2) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e2.getMessage());
-			return EReturnStatus.FAILURE;
-		}
-
-		/** 5.a. Truncate the target table if opted */
-		if (truncateTable && !uc.isTuncateRequestCompleted()) {
-			// This operation cannot be rolled back
-			try {
-				stmt.executeQuery(truncateQuery);
-				uc.setTruncateRequestCompleted(true);
-				setSnowflakeUserContext(dataSession, uc);
-			} catch (SQLException e) {
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-						"Could not truncate table " + tabName + " " + e.getMessage());
-			}
-		}
-
-		/** 5.b. For each row to be written, build and / or execute queries */
-		insertQueryBulk = insertQueryBase;
-		boolean firstBulkRun = true;
-		for (int row = 0; row < rowsToWrite; row++) {
-
-			boolean reject = false;
-
-			valueList = "(";
-
-			for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-
-				BasicProjectionField field = connectedFields.get(fieldIndex).field;
-
-				DataAttributes pDataAttributes = new DataAttributes();
-				pDataAttributes.setRowIndex(row);
-				pDataAttributes.setColumnIndex(connectedFields.get(fieldIndex).index);
-				pDataAttributes.setDataSetId(0); // currently 0
-
-				if (queryExecType == ExecutionType.BULK) {
-					valueList += getDataValueFromPlatform(dataSession, pDataAttributes, field) + ","; 
-				}
-
-				switch (pDataAttributes.getIndicator()) {
-				case EIndicator.TOO_LARGE:
-				case EIndicator.TRUNCATED:
-					reject = true;
-				}
-
-				if (reject) {
-					break;
-				}
-
-				if (queryExecType == ExecutionType.SINGLE || queryExecType == ExecutionType.BATCH) {
-					try {
-						setDataValueToNativeSink(dataSession, pDataAttributes, field, ps, fieldIndex + 1);
-					} catch (SQLException e) {
-						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-								"WRITE-insert: Could not set values in PreparedStatement for row-" + row + " column-"
-										+ (fieldIndex + 1) + " " + e.getMessage());
-					}
-				}
-			}
-
-			if (reject) { // Skip row query formation
-				rowsStatInfo.incrementRejected(1);
-				continue;
-			}
-
-			if (queryExecType == ExecutionType.SINGLE) {
-
-				logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "WRITE: " + insertQuerySingle);
-
-				/** 5.b.1.ii. Else Execute the insert query */
-				try { 
-					rowsStatInfo.incrementRequested(1);
-					
-				    ps.executeUpdate();
-
-				    rowsStatInfo.incrementAffected(1);
-				    rowsStatInfo.incrementApplied(1); 
-				} catch (SQLException e) {
-					rowsStatInfo.incrementRejected(1);
-				  
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR,
-							  				ELogLevel.TRACE_VERBOSE_DATA, "Rejected: " +
-							  							rowsStatInfo.getRejectedRows());
-				  
-					errorRowInfo.add(new ErrorRowInfo(0, row,
-							  		Integer.toString(e.getErrorCode()), e.getMessage()));
-				  
-					//Per design, no rollback done in this case.
-				  
-				  continue; 
-				 }
-
-			} else if(queryExecType == ExecutionType.BATCH) {
-				try {
-					ps.addBatch();
-					batchCount++;
-
-					if (batchCount % BATCH_SIZE == 0) {
-						rowsStatInfo.incrementRequested(BATCH_SIZE);
-						
-						ps.executeBatch();
-						
-						rowsStatInfo.incrementAffected(BATCH_SIZE);
-						rowsStatInfo.incrementApplied(BATCH_SIZE);
-
-						ps.clearBatch();
-						batchCount = 0;
-					} // end batch count check
-
-				} catch (SQLException e) {
-					rowsStatInfo.incrementRejected(BATCH_SIZE);
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-							"Batch Execution failed: " + rowsStatInfo.getRejectedRows());
-
-					errorRowInfo.add(new ErrorRowInfo(0, row, Integer.toString(e.getErrorCode()), e.getMessage()));
-
-					// Batch update failed. So, rollback txn
-					// ROLLBACK TRANSACTION
-					try {
-						nativeConn.rollback();
-						txnRolledBack = true;
-					} catch (SQLException e1) {
-						logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-								"Transaction Rollback Failed: " + e1.getErrorCode() + ": " + e1.getMessage());
-					}
-
-					break; // Do not process the rest of the rows
-				} // end catch
-
-			} // end batch insert
-			else if (queryExecType == ExecutionType.BULK) {// Preparing the bulk query
-				valueList = valueList.substring(0, valueList.lastIndexOf(",")) + ") ";
-				if (firstBulkRun) {
-					insertQueryBulk += " values " + valueList; 
-					firstBulkRun = false;
-				} else {
-					insertQueryBulk += ", " + valueList;
-				}
-
-				continue;
-
-			} 
-		} // end row
-
-		/** 5.c.1. Execute the bulk query */
-		if (queryExecType == ExecutionType.BULK) {
-			try {
-				rowsStatInfo.incrementRequested(rowsToWrite);
-
-				stmt.executeUpdate(insertQueryBulk);
-
-				rowsStatInfo.incrementAffected(rowsToWrite);
-				rowsStatInfo.incrementApplied(rowsToWrite);
-			} catch (SQLException e) {
-				rowsStatInfo.incrementRejected(rowsToWrite);
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-						"Bulk load failed: " + e.getErrorCode() + ": " + e.getMessage());
-
-				/** 5.c.2. If unsuccessful, ROLLBACK the transaction **/
-				// ROLLBACK TRANSACTION
-				try {
-					nativeConn.rollback();
-					txnRolledBack = true;
-				} catch (SQLException e1) {
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-							"Transaction Rollback Failed: " + e.getErrorCode() + ": " + e.getMessage());
-				}
-
-				return EReturnStatus.FAILURE;
-			}
-		} // end bulk load
-		else {
-			// Finish up the remaining inserts in the batch and end the
-			// transaction
-			/**
-			 * 5.d.1. If the batch contains more rows to be executed, execute
-			 * the batch and clear it
-			 */
-			if (batchCount > 0) {
-				try {
-					rowsStatInfo.incrementRequested(batchCount);
-					ps.executeBatch();
-					rowsStatInfo.incrementAffected(batchCount);
-					rowsStatInfo.incrementApplied(batchCount);
-
-					ps.clearBatch();
-					batchCount = 0;
-
-				} catch (SQLException e) {
-					rowsStatInfo.incrementRejected(batchCount);
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-							"Batch Execution failed: " + rowsStatInfo.getRejectedRows());
-
-					errorRowInfo
-							.add(new ErrorRowInfo(0, batchCount, Integer.toString(e.getErrorCode()), e.getMessage()));
-
-					// Batch update failed. So, rollback txn
-					// ROLLBACK TRANSACTION
-					try {
-						nativeConn.rollback();
-						txnRolledBack = true;
-					} catch (SQLException e1) {
-						logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-								"Transaction Rollback Failed: " + e.getErrorCode() + ": " + e.getMessage());
-					}
-				} // end catch
-
-			} // end batchCount > 0
-		}
-
-		// Finally, free up the DB resources and end the transaction
-		try {
-			/** 5.e. Free up the DB resources as needed */
-			if (null != stmt) {
-				stmt.close();
-			}
-			if (null != ps) {
-				ps.close();
-			}
-
-			// COMMIT TRANSACTION
-			/**
-			 * 5.f. If there were no ROLLBACK in previous steps, COMMIT the
-			 * transaction
-			 */
-			if (!txnRolledBack) {
-				nativeConn.commit();
-			}
-
-			/** 6. End Transaction on the native connection */
-			nativeConn.setAutoCommit(true); // END TRANSACTION
-
-		} catch (SQLException e) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-					"Closing statement failed: " + e.getErrorCode() + ": " + e.getMessage());
-		}
-
-		if (errorRowInfo.size() > 0) {
-			runtimeMetadataHandle.setErrorInputRowInfo(errorRowInfo);
-		}
-
-		return EReturnStatus.SUCCESS;
 	}
 
 	/**
@@ -1824,15 +1444,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		return colList;
 	}
-	
+
 	/**
 	 * Checks if the list of columns has any of the Semi-Structured Data Types
-	 * viz., Object, Array, Variant
-	 * Determines the appropriate <code>ExecutionType</code> based on the <code>isBulk</code> boolean
+	 * viz., Object, Array, Variant Determines the appropriate
+	 * <code>ExecutionType</code> based on the <code>isBulk</code> boolean
 	 * 
-	 * @param isBulk - indicates if Bulk Write option has been chosen by user
+	 * @param isBulk
+	 *            - indicates if Bulk Write option has been chosen by user
 	 * @return ExecutionType
-	 * @throws SnowflakeV2OperationNotSupportedException 
+	 * @throws SnowflakeV2OperationNotSupportedException
 	 */
 	private ExecutionType getQueryExecType(boolean isBulk) throws SnowflakeV2OperationNotSupportedException {
 		LOGGER.finer(String.format("IsBulk: %s", isBulk));
@@ -1840,679 +1461,126 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		boolean hasSemiStructure = false;
 		boolean hasDateTime = false;
 		ExecutionType typeToReturn = ExecutionType.BATCH;
-		
+
 		for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
 			BasicProjectionField field = connectedFields.get(fieldIndex).field;
 			nativeType = field.getNativeFieldRef().getDataType();
-			
-			if (!hasSemiStructure && ("OBJECT".equalsIgnoreCase(nativeType) ||
-					"ARRAY".equalsIgnoreCase(nativeType) ||
-						"VARIANT".equalsIgnoreCase(nativeType))) {
-				
+
+			if (!hasSemiStructure && ("OBJECT".equalsIgnoreCase(nativeType) || "ARRAY".equalsIgnoreCase(nativeType)
+					|| "VARIANT".equalsIgnoreCase(nativeType))) {
+
 				hasSemiStructure = true;
-				
+
 			}
-			if (!hasDateTime && (nativeType.startsWith("TIME") ||
-					nativeType.startsWith("DATE"))) {
+			if (!hasDateTime && (nativeType.startsWith("TIME") || nativeType.startsWith("DATE"))) {
 				hasDateTime = true;
 			}
 		}
-		
+
 		if (isBulk) {
 			if (hasSemiStructure) {
-				//User has opted Bulk Write, but the target table has field(s) of 
-				//Semi-Structured data type. Cannot perform requested operation. 
-				//So, throw SDKException 
-				
+				// User has opted Bulk Write, but the target table has field(s)
+				// of
+				// Semi-Structured data type. Cannot perform requested
+				// operation.
+				// So, throw SDKException
+
 				typeToReturn = ExecutionType.NOP;
-				
+
 				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-						"Could not perform Bulk Write operation on target table " +
-							" becuase one of the columns is of type Object, Array or Variant" );
-				
-				throw new SnowflakeV2OperationNotSupportedException("Could not perform " +
-						"Bulk Write operation on target table "+
-						" becuase one of the columns is of type Object, Array or Variant");
+						"Could not perform Bulk Write operation on target table "
+								+ " becuase one of the columns is of type Object, Array or Variant");
+
+				throw new SnowflakeV2OperationNotSupportedException(
+						"Could not perform " + "Bulk Write operation on target table "
+								+ " becuase one of the columns is of type Object, Array or Variant");
 			} else if (hasDateTime) {
-				typeToReturn = ExecutionType.BATCH; //Raw SQL is built in the case of Bulk, 
-													//which messes up the Timezone info. 
-													//so, use PreparedStatement only
-			}
-			else {
-				//The target table does not have any field of Semi-Structured data type.
-				//So, the requested Bulk write operation can be performed.
+				typeToReturn = ExecutionType.BATCH; // Raw SQL is built in the
+													// case of Bulk,
+													// which messes up the
+													// Timezone info.
+													// so, use PreparedStatement
+													// only
+			} else {
+				// The target table does not have any field of Semi-Structured
+				// data type.
+				// So, the requested Bulk write operation can be performed.
 				typeToReturn = ExecutionType.BULK;
 			}
 		} else {
 			if (hasSemiStructure) {
-				//Can only execute each write query one-by-one.
+				// Can only execute each write query one-by-one.
 				typeToReturn = ExecutionType.SINGLE;
 			} else {
-				//For better performance, execute the queries in batches
+				// For better performance, execute the queries in batches
 				typeToReturn = ExecutionType.BATCH;
 			}
 		}
 
 		return typeToReturn;
 	}
-	
+
 	/**
-	 * Builds the Insert SQL incorporating the appropriate native functions 
-	 * to handle the Semi-structured data types
+	 * Builds the Insert SQL incorporating the appropriate native functions to
+	 * handle the Semi-structured data types
 	 * 
-	 * @param tableName - name of the Table to insert into
-	 * @return - Insert SQL string ready to be used in a <code>PreparedStatement</code>
+	 * @param tableName
+	 *            - name of the Table to insert into
+	 * @return - Insert SQL string ready to be used in a
+	 *         <code>PreparedStatement</code>
 	 */
 	private String getSingleInsertQuery(String tableName) {
 		LOGGER.finer(String.format("TableName: %s", tableName));
 		String insertSQL = "SELECT ";
-		
+
 		String nativeType = "";
 		for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
 			BasicProjectionField field = connectedFields.get(fieldIndex).field;
 			nativeType = field.getNativeFieldRef().getDataType();
-			
-			insertSQL += getQueryFieldPlaceHolder(field) + ", ";
-			
-			/*switch (nativeType) {
-				case "OBJECT":
-					insertSQL += "TO_OBJECT(PARSE_JSON(?)), ";
-					break;
-					
-				case "ARRAY":
-					insertSQL += "TO_ARRAY(?), ";
-					break;
-					
-				case "VARIANT":
-					insertSQL += "TO_VARIANT(?), ";
-					break;
 
-				default:
-					insertSQL += "?, ";
-			}*/
-			
+			insertSQL += getQueryFieldPlaceHolder(field) + ", ";
+
+			/*
+			 * switch (nativeType) { case "OBJECT": insertSQL +=
+			 * "TO_OBJECT(PARSE_JSON(?)), "; break;
+			 * 
+			 * case "ARRAY": insertSQL += "TO_ARRAY(?), "; break;
+			 * 
+			 * case "VARIANT": insertSQL += "TO_VARIANT(?), "; break;
+			 * 
+			 * default: insertSQL += "?, "; }
+			 */
+
 		}
-		
+
 		insertSQL = insertSQL.substring(0, insertSQL.lastIndexOf(","));
 
 		return insertSQL;
 	}
 
-	
 	private String getQueryFieldPlaceHolder(BasicProjectionField field) {
 		LOGGER.finer(String.format("BasicProjectionField: %s", field));
 		String nativeType = field.getNativeFieldRef().getDataType();
 		String placeHolder = "?";
 		switch (nativeType) {
-			case "OBJECT":
-				placeHolder = "TO_OBJECT(PARSE_JSON(?))";
-				break;
-				
-			case "ARRAY":
-				placeHolder = "TO_ARRAY(?)";
-				break;
-				
-			case "VARIANT":
-				placeHolder = "TO_VARIANT(?)";
-				break;
+		case "OBJECT":
+			placeHolder = "TO_OBJECT(PARSE_JSON(?))";
+			break;
 
-			default:
-				placeHolder = "?";
+		case "ARRAY":
+			placeHolder = "TO_ARRAY(?)";
+			break;
+
+		case "VARIANT":
+			placeHolder = "TO_VARIANT(?)";
+			break;
+
+		default:
+			placeHolder = "?";
 		}
-		
+
 		return placeHolder;
-		
-	}
-	/**
-	 * 
-	 * Method to delete records
-	 * 
-	 * @param dataSession
-	 * @param writeAttr
-	 * @return
-	 * @throws SDKException
-	 */
-	private int writeDelete(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, WriteAttributes: %s", dataSession, writeAttr));
 
-		PreparedStatement pstmt = null;
-		boolean txnRolledBack = false;
-
-		int rowsToWrite = writeAttr.getNumRowsToWrite();
-		List<ErrorRowInfo> errorRowInfo = new ArrayList<ErrorRowInfo>();
-		List<Field> pkFields = new ArrayList<>();
-
-		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
-		Connection nativeConn = (Connection) conn.getNativeConnection();
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "DELETE: Got the connection handle");
-
-		FlatRecord frToDeleteFrom = (FlatRecord) projectionView.getNativeRecords().get(0);
-		String tabName = buildTabName(frToDeleteFrom.getName());
-		String query = "DELETE FROM " + tabName + " WHERE ";
-
-		// Get runtime config metadata handle
-		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
-				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-		if (runtimeMetadataHandle == null) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, "Error : Runtime Handle is NULL");
-			return EReturnStatus.FAILURE;
-		}
-		// Get rows statistics info to update row statistics etc.
-		RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(EIUDIndicator.DELETE);
-
-		
-		// Get the list of Primary Key Column Names 
-		PrimaryKey primKey = frToDeleteFrom.getPrimaryKey();
-		if (null != primKey) {
-			pkFields = primKey.getFieldList();
-
-		} else {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, 
-					"Cannot DELETE from table " + tabName + ". No Primary Keys available");
-
-			throw new SnowflakeV2OperationNotSupportedException("Cannot DELETE from table " + 
-					tabName + ". No Primary Keys available");
-		}
-
-		List<String> pkColumnNames = new ArrayList<>();
-		for (Field fd : pkFields) {
-			pkColumnNames.add(fd.getName());
-			query += fd.getName() + " = ? AND ";
-		}
-		query = query.substring(0, query.lastIndexOf(" AND"));
-		
-		try {
-			nativeConn.setAutoCommit(false); //BEGIN TRANSACTION
-			
-			pstmt = nativeConn.prepareStatement(query);
-			
-		} catch (SQLException e2) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e2.getMessage());
-			return EReturnStatus.FAILURE;
-		}
-
-		// Build and execute the DELETE query for each row
-		for (int row = 0; row < rowsToWrite; row++) {
-
-			boolean reject = false;
-			int pkMapped = 0;
-
-			for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-
-				BasicProjectionField field = connectedFields.get(fieldIndex).field;
-				
-				if (!pkColumnNames.contains(field.getName())) {
-					continue;
-				}
-
-				DataAttributes pDataAttributes = new DataAttributes();
-				pDataAttributes.setRowIndex(row);
-				pDataAttributes.setColumnIndex(connectedFields.get(fieldIndex).index);
-				pDataAttributes.setDataSetId(0); // currently 0
-
-				try {
-					pkMapped++;
-					setDataValueToNativeSink(dataSession, pDataAttributes, field, pstmt, pkMapped);
-				} catch (Exception e) {
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e.getMessage());
-				}
-
-				switch (pDataAttributes.getIndicator()) {
-				case EIndicator.TOO_LARGE:
-				case EIndicator.TRUNCATED:
-					reject = true;
-				}
-
-				if (reject) {
-					break;
-				}
-
-			} //end columns loop
-			
-			if (pkMapped == 0) {
-				reject = true;
-			}
-			
-			if (reject) { // Skip row query formation
-				rowsStatInfo.incrementRejected(1);
-				continue;
-			}
-
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "DELETE: " + query);
-
-			try {
-				rowsStatInfo.incrementRequested(1);
-				
-				pstmt.executeUpdate();
-				
-				rowsStatInfo.incrementAffected(1);
-				rowsStatInfo.incrementApplied(1);
-			} catch (SQLException e) {
-				rowsStatInfo.incrementRejected(1);
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-						"Rejected: " + rowsStatInfo.getRejectedRows());
-				
-				errorRowInfo.add(new ErrorRowInfo(0, row, Integer.toString(e.getErrorCode()), e.getMessage()));
-				continue;
-			}
-		} //end rows loop
-		
-		
-		try {
-			if (null != pstmt) {
-				pstmt.close();
-			}
-			
-			if (!txnRolledBack) {
-				nativeConn.commit(); // COMMIT
-			}
-			
-			nativeConn.setAutoCommit(true); //END TRANSACTION
-			
-		} catch (Exception e) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-					"Transaction failed ");
-		}
-
-		if (errorRowInfo.size() > 0) {
-			runtimeMetadataHandle.setErrorInputRowInfo(errorRowInfo);
-		}
-
-		return EReturnStatus.SUCCESS;
-	}
-
-	
-	/**
-	 * 
-	 * Method to update records
-	 * 
-	 * @param dataSession
-	 * @param writeAttr
-	 * @return
-	 * @throws SDKException
-	 */
-	private int writeUpdate(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, WriteAttributes: %s", dataSession, writeAttr));
-
-		PreparedStatement pstmt = null;
-		boolean txnRolledBack = false;
-
-		int rowsToWrite = writeAttr.getNumRowsToWrite();
-		List<ErrorRowInfo> errorRowInfo = new ArrayList<ErrorRowInfo>();
-		List<Field> pkFields = new ArrayList<>();
-
-		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
-		Connection nativeConn = (Connection) conn.getNativeConnection();
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "DELETE: Got the connection handle");
-
-		FlatRecord frToUpdate = (FlatRecord) projectionView.getNativeRecords().get(0);
-		String tabName = buildTabName(frToUpdate.getName());
-
-		// Get runtime config metadata handle
-		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
-				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-		if (runtimeMetadataHandle == null) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, "Error : Runtime Handle is NULL");
-			return EReturnStatus.FAILURE;
-		}
-		// Get rows statistics info to update row statistics etc.
-		RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(EIUDIndicator.DELETE);
-
-		
-		// Get the list of Primary Key Column Names 
-		PrimaryKey primKey = frToUpdate.getPrimaryKey();
-		if (null != primKey) {
-			pkFields = primKey.getFieldList();
-
-		} else {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, 
-					"Cannot UPDATE table " + tabName + ". No Primary Keys available" );
-			
-			throw new SnowflakeV2OperationNotSupportedException("Cannot UPDATE table " + 
-					tabName + ". No Primary Keys available");
-		}
-
-		List<String> pkColumnNames = new ArrayList<>();
-		String query = "UPDATE " + tabName ;
-		String setClause = " SET ";
-		String whereClause = " WHERE ";
-		
-		//Begin Query Construction  -- DO NOT CHANGE THE ORDER
-		for (Field fd : pkFields) {
-			pkColumnNames.add(fd.getName());
-		}
-
-		Map<String, Integer> fieldPositionMap = new HashMap<>(); 
-		int pos = 1;
-		for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-			BasicProjectionField field = connectedFields.get(fieldIndex).field;
-						
-			if (!pkColumnNames.contains(field.getName())) {
-				setClause += field.getName() + " = " + getQueryFieldPlaceHolder(field) + ", ";
-				fieldPositionMap.put(field.getName(), pos);
-				pos++;
-			}
-		}
-		setClause = setClause.substring(0, setClause.lastIndexOf(","));
-
-		for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-			BasicProjectionField field = connectedFields.get(fieldIndex).field;
-						
-			if (pkColumnNames.contains(field.getName())) {
-				whereClause += field.getName() + " = " + getQueryFieldPlaceHolder(field) + " AND ";
-				fieldPositionMap.put(field.getName(), pos);
-				pos++;
-			}
-		}
-		whereClause = whereClause.substring(0, whereClause.lastIndexOf(" AND"));
-		
-		query = query + setClause + whereClause;
-		//End Query Construction
-		
-		
-		try {
-			nativeConn.setAutoCommit(false); //BEGIN TRANSACTION
-			
-			pstmt = nativeConn.prepareStatement(query);
-			
-		} catch (SQLException e2) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e2.getMessage());
-			return EReturnStatus.FAILURE;
-		}
-		 
-		// Build and execute the DELETE query for each row
-		for (int row = 0; row < rowsToWrite; row++) {
-
-			boolean reject = false;
-			int pkMapped = 0;
-
-			for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-
-				BasicProjectionField field = connectedFields.get(fieldIndex).field;
-				
-				/*if (!pkColumnNames.contains(field.getName())) {
-					continue;
-				}*/
-
-				DataAttributes pDataAttributes = new DataAttributes();
-				pDataAttributes.setRowIndex(row);
-				pDataAttributes.setColumnIndex(connectedFields.get(fieldIndex).index);
-				pDataAttributes.setDataSetId(0); // currently 0
-
-				try {
-					pkMapped++;
-					//setUpdateDataValueToNativeSink(dataSession, pDataAttributes, field, pstmt, fieldPositionMap.get(field.getName()).intValue());
-					setDataValueToNativeSink(dataSession, pDataAttributes, field, pstmt, fieldPositionMap.get(field.getName()).intValue());
-				} catch (Exception e) {
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e.getMessage());
-				}
-
-				switch (pDataAttributes.getIndicator()) {
-				case EIndicator.TOO_LARGE:
-				case EIndicator.TRUNCATED:
-					reject = true;
-				}
-
-				if (reject) {
-					break;
-				}
-
-			} //end columns loop
-			
-			if (pkMapped == 0) {
-				reject = true;
-			}
-			
-			if (reject) { // Skip row query formation
-				rowsStatInfo.incrementRejected(1);
-				continue;
-			}
-
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "DELETE: " + query);
-
-			try {
-				rowsStatInfo.incrementRequested(1);
-				
-				pstmt.executeUpdate();
-				
-				rowsStatInfo.incrementAffected(1);
-				rowsStatInfo.incrementApplied(1);
-			} catch (SQLException e) {
-				rowsStatInfo.incrementRejected(1);
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-						"Rejected: " + rowsStatInfo.getRejectedRows());
-				
-				errorRowInfo.add(new ErrorRowInfo(0, row, Integer.toString(e.getErrorCode()), e.getMessage()));
-				continue;
-			}
-		} //end rows loop
-		
-		
-		try {
-			if (null != pstmt) {
-				pstmt.close();
-			}
-			
-			if (!txnRolledBack) {
-				nativeConn.commit(); // COMMIT
-			}
-			
-			nativeConn.setAutoCommit(true); //END TRANSACTION
-			
-		} catch (Exception e) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-					"Transaction failed");
-		}
-
-		if (errorRowInfo.size() > 0) {
-			runtimeMetadataHandle.setErrorInputRowInfo(errorRowInfo);
-		}
-
-		return EReturnStatus.SUCCESS;
-	}
-	
-	/**
-	 * 
-	 * @param dataSession
-	 * @param writeAttr
-	 * @return
-	 * @throws SDKException
-	 */
-	// Currently not used. Will revisit method when INFA enables support for UPSERT operation
-	private int writeUpsert(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, WriteAttributes: %s", dataSession, writeAttr));
-
-		Statement stmt = null;
-
-		int rowsToWrite = writeAttr.getNumRowsToWrite();
-
-		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
-		Connection nativeConn = (Connection) conn.getNativeConnection();
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "UPDATE: Got the connection handle");
-
-		FlatRecord frToUpdate = (FlatRecord) projectionView.getNativeRecords().get(0);
-
-		String tabName = buildTabName(frToUpdate.getName());
-
-		List<ErrorRowInfo> errorRowInfo = new ArrayList<ErrorRowInfo>();
-
-		try {
-			stmt = nativeConn.createStatement();
-		} catch (SQLException e2) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA, e2.getMessage());
-		}
-
-		// Get runtime config metadata handle
-		RuntimeConfigMetadata runtimeMd = (RuntimeConfigMetadata) dataSession
-				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-
-		// Fetching partition specific attributes
-		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
-				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-
-		if (runtimeMetadataHandle == null) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, "Error : Runtime Handle is NULL");
-			return EReturnStatus.FAILURE;
-		}
-
-		// Get rows statistics info to update row statistics etc.
-		RowsStatInfo rowsStatInfo = runtimeMd.getRowsStatInfo(EIUDIndicator.DELETE);
-
-		// Get the list of Primary Key Column Names
-		List<Field> pkFields = new ArrayList<>();
-		PrimaryKey primKey = frToUpdate.getPrimaryKey();
-		if (null != primKey) {
-			pkFields = primKey.getFieldList();
-		} else {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, 
-					"Cannot UPSERT table " + tabName + ". No Primary Keys available" );
-			
-			throw new SnowflakeV2OperationNotSupportedException("Cannot UPSERT table " + 
-					tabName + ". No Primary Keys available");
-		}
-
-		List<String> pkColumnNames = new ArrayList<>();
-		for (Field fd : pkFields) {
-			pkColumnNames.add(fd.getName());
-		}
-
-		// Build and execute the UPDATE(UPSERT) query for each row
-		for (int row = 0; row < rowsToWrite; row++) {
-
-			boolean reject = false;
-
-			String query = "update " + tabName;
-			String whereCondition = "";
-			String dataValue = "";
-
-			String colList = "(";
-			String valueList = "(";
-			String queryForInsert = "insert into " + tabName + "";
-
-			List<String> conditionList = new ArrayList<>();
-
-			// Build the conditions to be included in the "WHERE" clause for
-			// this row based on
-			// the primary keys
-
-			boolean firstCondition = true;
-			boolean buildSet = false;
-			boolean firstSet = true;
-			String setClause = " SET ";
-
-			for (int fieldIndex = 0; fieldIndex < connectedFields.size(); fieldIndex++) {
-
-				BasicProjectionField field = connectedFields.get(fieldIndex).field;
-
-				buildSet = false;
-				if (pkColumnNames.contains(field.getName())) {
-					if (firstCondition) {
-						whereCondition = whereCondition + " " + field.getName() + " = ";
-						firstCondition = false;
-					} else {
-						whereCondition = whereCondition + " AND " + field.getName() + " = ";
-					}
-				} else {
-					// If the field is not part of the Primary Key, include it
-					// in the SET clause
-					buildSet = true;
-					if (firstSet) {
-						setClause = setClause + field.getName() + " = ";
-						firstSet = false;
-					} else {
-						setClause = setClause + ", " + field.getName() + " = ";
-					}
-				}
-
-				DataAttributes pDataAttributes = new DataAttributes();
-				pDataAttributes.setRowIndex(row);
-				pDataAttributes.setColumnIndex(connectedFields.get(fieldIndex).index);
-				pDataAttributes.setDataSetId(0); // currently 0
-
-				dataValue = getDataValueFromPlatform(dataSession, pDataAttributes, field);
-				valueList += dataValue + ",";
-
-				switch (pDataAttributes.getIndicator()) {
-				case EIndicator.TOO_LARGE:
-				case EIndicator.TRUNCATED:
-					reject = true;
-				}
-
-				if (buildSet) {
-					setClause = setClause + dataValue;
-				} else {
-					if (null == dataValue || "".equalsIgnoreCase(dataValue.trim())) {
-						reject = true; // Reject record if value for a PK column is NULL
-					} else {
-						whereCondition = whereCondition + dataValue;
-					}
-				}
-
-				if (reject) {
-					break;
-				}
-				colList += field.getName() + ",";
-
-			}
-			colList = colList.substring(0, colList.lastIndexOf(",")) + ") ";
-			valueList = valueList.substring(0, valueList.lastIndexOf(",")) + ") ";
-
-			queryForInsert += colList + " values " + valueList;
-
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "WRITE: " + queryForInsert);
-
-			if (!"".equalsIgnoreCase(whereCondition)) {
-				query = query + setClause + " where " + whereCondition;
-			} else {
-				// This case could happen when the Primary Key information
-				// cannot be found (or not available)
-				// for the target table
-				// Executing an UPDATE statement without WHERE clause will
-				// update all the records in the table
-				// We need to avoid this.
-				reject = true;
-			}
-
-			if (reject) { // Skip row query formation
-				rowsStatInfo.incrementRejected(1);
-				continue;
-			}
-
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "UPDATE(UPSERT): " + query);
-
-			// IMPORTANT NOTE: SNOWFLAKE DOES NOT SUPPORT addBatch() on Statement
-
-			try {
-				rowsStatInfo.incrementRequested(1);
-
-				int updtCount = stmt.executeUpdate(query); // update
-
-				if (updtCount == 0) {
-					stmt.executeUpdate(queryForInsert); // insert
-				}
-
-				rowsStatInfo.incrementAffected(1);
-				rowsStatInfo.incrementApplied(1);
-			} catch (SQLException e) {
-
-				rowsStatInfo.incrementRejected(1);
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_VERBOSE_DATA,
-						"Rejected: " + rowsStatInfo.getRejectedRows());
-
-				errorRowInfo.add(new ErrorRowInfo(0, row, Integer.toString(e.getErrorCode()), e.getMessage()));
-
-				continue;
-			}
-		}
-
-		if (errorRowInfo.size() > 0) {
-			runtimeMetadataHandle.setErrorInputRowInfo(errorRowInfo);
-		}
-
-		return EReturnStatus.SUCCESS;
 	}
 
 	/**
@@ -2527,9 +1595,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private String getDataValueFromPlatform(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, "
-				+ "DataAttributes: %s, "
-				+ "BasicProjectionField", dataSession, pDataAttributes, field));
+		LOGGER.finer(String.format("DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField", dataSession,
+				pDataAttributes, field));
 
 		String dataValue = "";
 
@@ -2537,14 +1604,14 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		case "string":
 		case "text":
 			String nativeType = field.getNativeFieldRef().getDataType();
-			
+
 			switch (nativeType) {
 			case "BIT":
 				if (dataSession.getStringData(pDataAttributes).equalsIgnoreCase("true")) {
 					dataValue += "1";
 				} else {
 					dataValue += "0";
-				}				
+				}
 				break;
 			case "BOOLEAN":
 				dataValue = dataSession.getStringData(pDataAttributes);
@@ -2565,13 +1632,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			case "VARIANT":
 				dataValue += "TO_VARIANT(\'" + dataSession.getStringData(pDataAttributes) + "\')";
 				break;
-				
+
 			default:
 				dataValue += "\'" + dataSession.getStringData(pDataAttributes) + "\'";
 				break;
 			}
 			break;
-			
+
 		case "integer":
 			dataValue += dataSession.getIntData(pDataAttributes) + "";
 			break;
@@ -2594,7 +1661,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		}
 
 		return dataValue;
-
 	}
 
 	/**
@@ -2610,19 +1676,19 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private void setDataValueToNativeSink(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field, PreparedStatement pstmt, int index) throws SDKException, SQLException {
-		LOGGER.finer(String.format("DataSession: %s, "
-				+ "DataAttributes: %s, "
-				+ "BasicProjectionField: %s, "
-				+ "PreparedStatement: %s, "
-				+ "Index: %s", dataSession, pDataAttributes, field, pstmt!=null, index));
+		LOGGER.finer(
+				String.format(
+						"DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField: %s, "
+								+ "PreparedStatement: %s, " + "Index: %s",
+						dataSession, pDataAttributes, field, pstmt != null, index));
 
 		String strDataValue = "";
 		int intDataValue = 0;
 		long longDataValue = 0L;
 		double doubleDataValue = 0;
-		
+
 		String nativeType = field.getNativeFieldRef().getDataType();
-		
+
 		switch (field.getDataType().toLowerCase()) {
 
 		case "string":
@@ -2645,7 +1711,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					} else {
 						boolValue = false;
 					}
-	
+
 					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 							"setDataValueToNativeSink:: boolValue : " + boolValue);
 
@@ -2653,9 +1719,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					pDataAttributes.setIndicator((short) 0);
 				}
 				break;
-			
-			/** Supply the data as String for OBJECT, ARRAY and VARIANT types. 
-			 * The native functions in the query take String parameters*/
+
+			/**
+			 * Supply the data as String for OBJECT, ARRAY and VARIANT types.
+			 * The native functions in the query take String parameters
+			 */
 			case "OBJECT":
 			case "ARRAY":
 			case "VARIANT":
@@ -2674,7 +1742,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				break;
 			}
 			break;
-			
+
 		case "integer":
 			intDataValue = dataSession.getIntData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2683,7 +1751,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setInt(index, intDataValue);
 			}
 			break;
-		
+
 		case "bigint":
 			longDataValue = dataSession.getLongData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2692,7 +1760,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setLong(index, longDataValue);
 			}
 			break;
-		
+
 		case "double":
 			doubleDataValue = dataSession.getDoubleData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2701,11 +1769,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setDouble(index, doubleDataValue);
 			}
 			break;
-		
+
 		case "date/time":
 			Timestamp dateTime = dataSession.getDateTimeData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
-				//pstmt.setTimestamp(index, null);
+				// pstmt.setTimestamp(index, null);
 				pstmt.setNull(index, Types.TIMESTAMP);
 			} else {
 				if (nativeType.indexOf("NTZ") > 0) {
@@ -2713,16 +1781,17 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					cal.setTimeInMillis(dateTime.getTime());
 					TimeZone tz = cal.getTimeZone();
 					String zoneID = tz.getID();
-	
+
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes), cal);
 				} else if (nativeType.indexOf("LTZ") > 0) {
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes));
 				} else {
-					//Could be TZ or Date or Time
+					// Could be TZ or Date or Time
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes));
-					
-					//Time t = new java.sql.Time(dataSession.getDateTimeData(pDataAttributes).getTime());
-					//pstmt.setTime(..);
+
+					// Time t = new
+					// java.sql.Time(dataSession.getDateTimeData(pDataAttributes).getTime());
+					// pstmt.setTime(..);
 				}
 			}
 			break;
@@ -2735,7 +1804,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setBigDecimal(index, bdValue);
 			}
 			break;
-			
+
 		default:
 			strDataValue = dataSession.getStringData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2760,21 +1829,21 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @throws SDKException
 	 * @throws SQLException
 	 */
-	//Unused.
+	// Unused.
 	private void setUpdateDataValueToNativeSink(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field, PreparedStatement pstmt, int index) throws SDKException, SQLException {
-		LOGGER.finer(String.format("DataSession: %s, "
-				+ "DataAttributes: %s, "
-				+ "BasicProjectionField: %s, "
-				+ "PreparedStatement: %s, "
-				+ "Index: %s", dataSession, pDataAttributes, field, pstmt!=null, index));
+		LOGGER.finer(
+				String.format(
+						"DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField: %s, "
+								+ "PreparedStatement: %s, " + "Index: %s",
+						dataSession, pDataAttributes, field, pstmt != null, index));
 
 		String strDataValue = "";
 		int intDataValue = 0;
 		long longDataValue = 0L;
 		double doubleDataValue = 0;
 		String nativeType = field.getNativeFieldRef().getDataType();
-		
+
 		switch (field.getDataType().toLowerCase()) {
 
 		case "string":
@@ -2792,14 +1861,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					} else {
 						boolValue = false;
 					}
-	
+
 					pstmt.setBoolean(index, boolValue);
 					pDataAttributes.setIndicator((short) 0);
 				}
 				break;
-			
-			/** Supply the data as String for OBJECT, ARRAY and VARIANT types. 
-			 * The native functions in the query take String parameters*/
+
+			/**
+			 * Supply the data as String for OBJECT, ARRAY and VARIANT types.
+			 * The native functions in the query take String parameters
+			 */
 			case "OBJECT":
 				String strValue = "";
 				if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2832,7 +1903,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				break;
 			}
 			break;
-			
+
 		case "integer":
 			intDataValue = dataSession.getIntData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2841,7 +1912,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setInt(index, intDataValue);
 			}
 			break;
-		
+
 		case "bigint":
 			longDataValue = dataSession.getLongData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2850,7 +1921,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setLong(index, longDataValue);
 			}
 			break;
-		
+
 		case "double":
 			doubleDataValue = dataSession.getDoubleData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -2859,11 +1930,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setDouble(index, doubleDataValue);
 			}
 			break;
-		
+
 		case "date/time":
 			Timestamp dateTime = dataSession.getDateTimeData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
-				//pstmt.setTimestamp(index, null);
+				// pstmt.setTimestamp(index, null);
 				pstmt.setNull(index, Types.TIMESTAMP);
 			} else {
 				if (nativeType.indexOf("NTZ") > 0) {
@@ -2871,16 +1942,17 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					cal.setTimeInMillis(dateTime.getTime());
 					TimeZone tz = cal.getTimeZone();
 					String zoneID = tz.getID();
-	
+
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes), cal);
 				} else if (nativeType.indexOf("LTZ") > 0) {
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes));
 				} else {
-					//Could be TZ or Date or Time
+					// Could be TZ or Date or Time
 					pstmt.setTimestamp(index, dataSession.getDateTimeData(pDataAttributes));
-					
-					//Time t = new java.sql.Time(dataSession.getDateTimeData(pDataAttributes).getTime());
-					//pstmt.setTime(..);
+
+					// Time t = new
+					// java.sql.Time(dataSession.getDateTimeData(pDataAttributes).getTime());
+					// pstmt.setTime(..);
 				}
 			}
 			break;
@@ -2893,7 +1965,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				pstmt.setBigDecimal(index, bdValue);
 			}
 			break;
-			
+
 		default:
 			strDataValue = dataSession.getStringData(pDataAttributes);
 			if (pDataAttributes.getIndicator() == EIndicator.NULL) {
@@ -3033,7 +2105,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		LOGGER.finer(String.format("NativeName: %s", nativeName));
 		// 17-Jun-2016: Using native name in Snowflake queries is not supported.
 		// Input is not in the native name format.
-		// So, commenting out this splitting-logic and returning the input as it is.
+		// So, commenting out this splitting-logic and returning the input as it
+		// is.
 
 		// TODO: this should be remove as the native names are stored in
 		// nativeName attributes in Field object
@@ -3115,8 +2188,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private int logMessage(int logLevel, String messageKey, Object... messageFormatArguments) {
 		if (this.logger != null) {
-			return logger.logMessage(MessageBundle.getInstance(),
-					logLevel, messageKey, messageFormatArguments);
+			return logger.logMessage(MessageBundle.getInstance(), logLevel, messageKey, messageFormatArguments);
 		}
 		return EReturnStatus.FAILURE;
 	}
@@ -3133,7 +2205,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			this.field = field;
 			this.index = index;
 		}
-		
+
 		public String toString() {
 			return String.format("Field: %s, Index: %s", field, index);
 		}
@@ -3171,83 +2243,87 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		public void setTotalRows(int totalRows) {
 			this.totalRows = totalRows;
 		}
-		
+
 		public boolean isTuncateRequestCompleted() {
 			return truncateRequestCompleted;
 		}
-		
+
 		public void setTruncateRequestCompleted(boolean complete) {
 			this.truncateRequestCompleted = complete;
 		}
 
 	}
-	
+
 	enum ExecutionType {
 		// TODO: do we supports BATCH only?
-		
-		SINGLE, 	// Execute queries one by one. No option to improve performance
-		BATCH,		// Use PreparedStatement and batch up for improved performance
-		BULK,		// Create a Single query appending all values, if user opts for Bulk write
-		NOP			// Request cannot be processed. Applicable when user opts for Bulk Write
-					// but uses a table that has Semi-Structured data types (Object, Array or Variant)
+
+		SINGLE, // Execute queries one by one. No option to improve performance
+		BATCH, // Use PreparedStatement and batch up for improved performance
+		BULK, // Create a Single query appending all values, if user opts for
+				// Bulk write
+		NOP // Request cannot be processed. Applicable when user opts for Bulk
+			// Write
+			// but uses a table that has Semi-Structured data types (Object,
+			// Array or Variant)
 	}
-	
-	//------------------------Bulk Loader related methods---------------------------------------//
+
+	// ------------------------Bulk Loader related
+	// methods---------------------------------------//
 
 	public void logDebugMessage(String caller, String method, String message) {
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 				caller + ":" + method + ":: " + message);
 	}
-	
+
 	/**
-	 * Kicks off the bulk loader process (threads) 
+	 * Kicks off the bulk loader process (threads)
 	 */
 	private void initBulkLoader(DataSession dataSession) throws SDKException {
 		LOGGER.finer(String.format("DataSession: %s", dataSession));
-		
+
 		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
-		
+
 		String db = conn.getCatalog();
 		String schema = conn.getSchema();
-		
+
 		String tableName = currentFlatRecord.getName();
-		LOGGER.finer(String.format("Table Name: %s, Table Native Name: %s",
-				tableName, currentFlatRecord.getNativeName()));
-		
+		LOGGER.finer(
+				String.format("Table Name: %s, Table Native Name: %s", tableName, currentFlatRecord.getNativeName()));
+
 		List<String> columnsList = new ArrayList<>();
 		for (FieldInfo fieldInfo : connectedFields) {
 			columnsList.add(fieldInfo.field.getName());
 		}
 		LOGGER.finer(String.format("Column List: %s", columnsList));
-		
+
 		List<Field> pkFields = new ArrayList<>();
 		PrimaryKey pk = currentFlatRecord.getPrimaryKey();
 		if (null != pk && null != pk.getFieldList() && !pk.getFieldList().isEmpty()) {
 			pkFields.addAll(pk.getFieldList());
 		}
 		LOGGER.finer(String.format("Primary Key List: %s", pkFields));
-		
+
 		List<String> pkColumns = new ArrayList<>();
 		for (Field pkField : pkFields) {
 			pkColumns.add(pkField.getName());
 		}
 		LOGGER.finer(String.format("Column List: %s", pkColumns));
-				
+
 		RecordMeta recordMeta = new RecordMeta();
 		recordMeta.setCatalogName(db);
 		recordMeta.setRecordName(tableName);
 		recordMeta.setColumns(columnsList);
 		recordMeta.setKeys(pkColumns);
-		
+
 		SnowflakeV2Connection metadataConnection = conn.getMetadataConnection();
 		loader = metadataConnection.getStreamLoader(recordMeta);
-		
+
 		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
-		
+
 		ASOOperation m_asoOperation = runtimeMetadataHandle.getAdapterDataSourceOperation();
 		WriteCapabilityAttributes writeCapAttr = m_asoOperation.getWriteCapabilityAttributes();
-		
+
 		String preSql = null;
 		String postSql = null;
 		boolean abortOnErrors = false;
@@ -3256,8 +2332,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		boolean truncateTable = false;
 
 		if (writeCapAttr != null) {
-			SEMTableWriteCapabilityAttributesExtension writeAttribs = 
-					(SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
+			SEMTableWriteCapabilityAttributesExtension writeAttribs = (SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
 					.getExtensions();
 
 			preSql = writeAttribs.getPreSql();
@@ -3267,114 +2342,110 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			oneBatch = writeAttribs.isOneBatch();
 			truncateTable = writeAttribs.isTruncateTargetTable();
 		}
-		
+
 		if (preSql != null && !preSql.trim().isEmpty()) {
-            loader.setProperty(LoaderProperty.executeBefore, preSql); 
-        }
-        if(db != null && !db.trim().isEmpty()) {
-        	loader.setProperty(LoaderProperty.databaseName, db);
-        }		
-        if(schema != null && !schema.trim().isEmpty()) {
-        	loader.setProperty(LoaderProperty.schemaName, schema);
-        }
+			loader.setProperty(LoaderProperty.executeBefore, preSql);
+		}
+		if (db != null && !db.trim().isEmpty()) {
+			loader.setProperty(LoaderProperty.databaseName, db);
+		}
+		if (schema != null && !schema.trim().isEmpty()) {
+			loader.setProperty(LoaderProperty.schemaName, schema);
+		}
 
-        // TODO: we don't need this option but always batch upload
-        loader.setProperty(LoaderProperty.oneBatch, true);
+		// TODO: we don't need this option but always batch upload
+		loader.setProperty(LoaderProperty.oneBatch, true);
 
-        if (postSql != null && !postSql.trim().isEmpty()) {
-            loader.setProperty(LoaderProperty.executeAfter, postSql);
-        }
+		if (postSql != null && !postSql.trim().isEmpty()) {
+			loader.setProperty(LoaderProperty.executeAfter, postSql);
+		}
 
-        loader.setProperty(LoaderProperty.truncateTable, truncateTable);
+		loader.setProperty(LoaderProperty.truncateTable, truncateTable);
 
-        // safe to set, delayed OP change will be a no-ops
-        loader.setProperty(LoaderProperty.operation, Operation.INSERT);
-        op = Operation.INSERT;
+		// safe to set, delayed OP change will be a no-ops
+		loader.setProperty(LoaderProperty.operation, Operation.INSERT);
+		op = Operation.INSERT;
 
 		listener = new BulkLoadResultListener(this);
-        listener.setAbortOnErrors(abortOnErrors);
-        listener.setPropagate(propagateData);
+		listener.setAbortOnErrors(abortOnErrors);
+		listener.setPropagate(propagateData);
 
 		loader.setListener(listener);
 
 		try {
 
 			LOGGER.info(String.format("Writing data start"));
-        	loader.start();
+			loader.start();
 
-        } catch (Exception e) {
-        	LOGGER.severe(String.format("Writing data start caused errors: %s", e.getMessage()));
-        	logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+		} catch (Exception e) {
+			LOGGER.severe(String.format("Writing data start caused errors: %s", e.getMessage()));
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 					"SnowflakeV2TableDataAdapter::initBulkLoader: Loader failed to start: " + e.getMessage());
-			
-        	//Loader failed to start. So, cannot proceed further... Throw SDKException
-        	final String eMsg = e.getMessage();
+
+			// Loader failed to start. So, cannot proceed further... Throw
+			// SDKException
+			final String eMsg = e.getMessage();
 			throw (new SDKException() {
 				private static final long serialVersionUID = 1L;
-				public String getMessage() {return eMsg;}
+
+				public String getMessage() {
+					return eMsg;
+				}
 			});
-        }
+		}
 
 	}
-	
+
 	private int submitDataToLoader(DataSession dataSession, int numberOfRows) throws SDKException {
 		LOGGER.finer(String.format("DataSession: %s, NoOfRows: %s", dataSession, numberOfRows));
 
 		loader.resetOperation(op);
-		((BulkLoadResultListener)loader.getListener()).setOperation(op);
-		
+		((BulkLoadResultListener) loader.getListener()).setOperation(op);
+
 		int noOfCols = connectedFields.size();
 		List<Object[]> rows = new ArrayList<>();
-		Object fieldData =  null;
+		Object fieldData = null;
 
 		for (int row = 0; row < numberOfRows; row++) {
 
 			try {
 				Object[] rowData = new Object[noOfCols];
-				
+
 				for (int fieldIndex = 0; fieldIndex < noOfCols; fieldIndex++) {
-	
+
 					FieldInfo fieldInfo = connectedFields.get(fieldIndex);
 					LOGGER.finer(String.format(
-							"FieldInfo: %s,"
-							+ " Index: %s,"
-							+ " Field: %s,"
-							+ " FieldName: %s,"
-							+ " Field Native Ref Name: %s,"
-							+ " Field Native Ref Native Name: %s",
-							fieldInfo,
-							fieldInfo.index,
-							fieldInfo.field,
-							fieldInfo.field.getName(),
+							"FieldInfo: %s," + " Index: %s," + " Field: %s," + " FieldName: %s,"
+									+ " Field Native Ref Name: %s," + " Field Native Ref Native Name: %s",
+							fieldInfo, fieldInfo.index, fieldInfo.field, fieldInfo.field.getName(),
 							fieldInfo.field.getNativeFieldRef().getName(),
 							fieldInfo.field.getNativeFieldRef().getNativeName()));
-	
+
 					DataAttributes pDataAttributes = new DataAttributes();
 					pDataAttributes.setRowIndex(row);
 					pDataAttributes.setColumnIndex(fieldInfo.index);
 					pDataAttributes.setDataSetId(0); // currently 0
-	
+
 					BasicProjectionField field = fieldInfo.field;
 					fieldData = getDataObjectValueFromPlatform(dataSession, pDataAttributes, field);
-	
+
 					rowData[fieldIndex] = fieldData;
 				}
-	
+
 				loader.submitRow(rowData);
 			} catch (Exception e) {
 				// TODO: do better error handling.
 				LOGGER.severe(String.format("Write caused errors: row: %s, op: %s, table: %s, Error: %s, Cause: %s",
-						row,
-						op,
-						currentFlatRecord.getName(),
-						e.getMessage(),
+						row, op, currentFlatRecord.getName(), e.getMessage(),
 						e.getCause() != null ? e.getCause().getMessage() : "N/A"));
 				if (loader instanceof StreamLoader) {
-					if (((StreamLoader)loader).getListener() instanceof BulkLoadResultListener) {
-						//The Loader and LoadResultListener APIs do not provide a way to track rejected count
-						//So, need to do this hack
-						StreamLoader streamLoader = (StreamLoader)loader;
-						BulkLoadResultListener bulkLoadResultListener = (BulkLoadResultListener)streamLoader.getListener();
+					if (((StreamLoader) loader).getListener() instanceof BulkLoadResultListener) {
+						// The Loader and LoadResultListener APIs do not provide
+						// a way to track rejected count
+						// So, need to do this hack
+						StreamLoader streamLoader = (StreamLoader) loader;
+						BulkLoadResultListener bulkLoadResultListener = (BulkLoadResultListener) streamLoader
+								.getListener();
 						bulkLoadResultListener.addRejectedRecordCount(op, 1);
 						LOGGER.warning(String.format("Write failed: %s", e.getMessage(),
 								bulkLoadResultListener.getRejectedRecordCount(op)));
@@ -3382,21 +2453,20 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						LOGGER.severe(String.format("Unsupported loader is used: %s", loader.getClass().getName()));
 					}
 				}
-				
+
 				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NORMAL,
-						"SnowflakeV2TableDataAdapter::submitDataToLoader: Rejecting row-" + row + 
-						"for " + op + " operation on table " + currentFlatRecord.getName() + " Cause: " + e.getMessage());
+						"SnowflakeV2TableDataAdapter::submitDataToLoader: Rejecting row-" + row + "for " + op
+								+ " operation on table " + currentFlatRecord.getName() + " Cause: " + e.getMessage());
 			}
 		}
 		return EReturnStatus.SUCCESS;
 
 	}
-	
-	
+
 	private Object getDataObjectValueFromPlatform(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, DataAttributes: %s, BasicProjectionField: %s",
-				dataSession, pDataAttributes, field));
+		LOGGER.finer(String.format("DataSession: %s, DataAttributes: %s, BasicProjectionField: %s", dataSession,
+				pDataAttributes, field));
 
 		String dataValue = "";
 		Object objValue = null;
@@ -3406,7 +2476,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		case "string":
 		case "text":
 			String nativeType = field.getNativeFieldRef().getDataType();
-			
+
 			switch (nativeType) {
 			case "BIT":
 				if (dataSession.getStringData(pDataAttributes).equalsIgnoreCase("true")) {
@@ -3418,47 +2488,48 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				break;
 			case "BOOLEAN":
 				dataValue = dataSession.getStringData(pDataAttributes);
-				if ("t".equalsIgnoreCase(dataValue) || "true".equalsIgnoreCase(dataValue)
+				objValue = ("t".equalsIgnoreCase(dataValue) || "true".equalsIgnoreCase(dataValue)
 						|| "yes".equalsIgnoreCase(dataValue) || "y".equalsIgnoreCase(dataValue)
-						|| "on".equalsIgnoreCase(dataValue) || "1".equalsIgnoreCase(dataValue)) {
-					dataValue = "true";
-				} else {
-					dataValue = "false";
-				}
-				objValue = Boolean.valueOf(dataValue);
+						|| "on".equalsIgnoreCase(dataValue) || "1".equalsIgnoreCase(dataValue));
 				break;
-			
+
 			case "OBJECT":
 			case "ARRAY":
 			case "VARIANT":
 			default:
 				dataValue += dataSession.getStringData(pDataAttributes);
-				//dataValue += "\'" + dataSession.getStringData(pDataAttributes) + "\'";
+				// dataValue += "\'" +
+				// dataSession.getStringData(pDataAttributes) + "\'";
 				objValue = new String(dataValue);
 				break;
 			}
 			break;
-			
+
 		case "integer":
 			objValue = new Integer(dataSession.getIntData(pDataAttributes));
 			break;
+
 		case "bigint":
 			objValue = new Long(dataSession.getLongData(pDataAttributes));
 			break;
+
 		case "double":
 			objValue = new Double(dataSession.getDoubleData(pDataAttributes));
 			break;
+
 		case "date/time":
 			objValue = dataSession.getDateTimeData(pDataAttributes);
 			break;
+
 		case "decimal":
 			objValue = dataSession.getBigDecimalData(pDataAttributes);
 			break;
+
 		case "binary":
 			objValue = dataSession.getBinaryData(pDataAttributes) + "";
 			break;
 		}
-		//Preventing primitives to be set as 0
+		// Preventing primitives to be set as 0
 		if (pDataAttributes.getIndicator() == EIndicator.NULL) {
 			objValue = null;
 		}
@@ -3466,10 +2537,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		return objValue;
 
 	}
-	
+
 	/**
 	 * Is null or empty string?
-	 *  
+	 * 
 	 * @param str
 	 * @return true if null or empty
 	 */
