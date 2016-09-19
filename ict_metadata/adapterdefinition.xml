@@ -232,6 +232,7 @@
             </DepenendentTasks>
          </WorkflowTask>
          <WorkflowTask id="TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem" taskType="TYPESYSTEM" componentName="SnowflakeV2Unicosolutiontypesystem" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_METADATA_MODEL_table" taskType="NMO_METADATA_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="METADATA_ADAPTER_SnowflakeV2_table_Pattern" taskType="METADATA_ADAPTER" componentName="SnowflakeV2_table_Pattern" status="GENERATED" taskKind="CodeGenerationTask">
             <DepenendentTasks>
                <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
@@ -246,11 +247,18 @@
                <dependentTasks>METADATA_ADAPTER_SnowflakeV2_table_Pattern</dependentTasks>
             </DepenendentTasks>
          </WorkflowTask>
-         <WorkflowTask id="NMO_METADATA_MODEL_table" taskType="NMO_METADATA_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_METADATA_FIELD_MODEL_table" taskType="NMO_METADATA_FIELD_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_OPERATIONS_table" taskType="NMO_RUNTIME_OPERATIONS" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_MODEL_table" taskType="NMO_RUNTIME_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
+            <DepenendentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
          <WorkflowTask id="TEST_NMO_READ_table" taskType="TEST_NMO_READ" componentName="table" status="NONE" taskKind="TestTask">
             <DepenendentTasks>
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
@@ -261,116 +269,18 @@
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
             </DepenendentTasks>
          </WorkflowTask>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
-            <DepenendentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-            </DepenendentTasks>
-         </WorkflowTask>
       </WorkflowTasks>
    </ConnectorWorkflow>
    <ProjectConfiguration>
       <BuildConfigurations>
          <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-2.7.99" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-2.7.100.1" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
          <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-2.7.99" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-2.7.100.1" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
       </BuildConfigurations>

@@ -636,7 +636,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return EReturnStatus The status of the deinitialization call.
 	 */
 	@Override
-	public int deinitDataSession(DataSession dataSession) {
+	public int deinitDataSession(DataSession dataSession) throws SDKException {
 		LOGGER.finer(String.format("DataSession: %s", dataSession));
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "deinitDataSession:: begin");
 
@@ -653,6 +653,50 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			} catch (Exception e1) {
 				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
 			}
+
+			// int operationType = runtimeMd.getRowIUDIndicator(0);
+			int opInd = EIUDIndicator.INSERT; //default
+			switch (op) {
+			case INSERT:
+				opInd = EIUDIndicator.INSERT;
+				break;
+			case MODIFY:
+				opInd = EIUDIndicator.UPDATE;
+				break;
+			case DELETE:
+				opInd = EIUDIndicator.DELETE;
+				break;
+			default:
+				opInd = EIUDIndicator.INSERT; //Informatica does not support UPSERT
+			}
+			 
+			RowsStatInfo rowsStatInfo =
+					runtimeMetadataHandle.getRowsStatInfo(opInd);
+			
+			// rowsStatInfo.incrementRequested(writeAttr.getNumRowsToWrite());
+			listener = (BulkLoadResultListener) loader.getListener();
+			// Local -> No. of Rows Written
+			rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op));
+			rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
+			rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
+
+			LOGGER.finer(String.format(
+					"Processed Record Count: %s, "
+					+ "Operation Record Count: %s, "
+					+ "Rejected Recourd Count: %s",
+					listener.getProcessedRecordCount(op),
+					listener.getOperationRecordCount(op),
+					listener.getRejectedRecordCount(op)));
+
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"deinit: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> "
+							+ listener.getProcessedRecordCount(op));
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"deinit: rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
+							+ listener.getOperationRecordCount(op));
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+					"deinit: rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
+							+ listener.getRejectedRecordCount(op));
 
 			/*
 			 * Unico 30-Aug-2016: The processing results captured and submitted
@@ -700,7 +744,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			 * "deinitDataSession:: SDKException while setting processing status - "
 			 * + e1.getMessage()); } //END - Capture Processing Stats
 			 */
-
 		}
 
 		try {
@@ -1318,7 +1361,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		// Checking the first row is good enough
 		int operationType = runtimeMd.getRowIUDIndicator(0);
-		// operationType = EIUDIndicator.UPDATE; //Only for testing
 
 		String operationTypeString = this.getOperationTypeString(operationType);
 		LOGGER.finer(String.format("Operation Type: %s", operationTypeString));
@@ -1353,53 +1395,58 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			// performance.
 			// However, this is the place where we can capture the processing
 			// reults and hand-off to the platform.
-			LOGGER.info(String.format("Writing data finish"));
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-					"write: About to wait for loader to complete current set of rows...");
-			loader.finish();
+			// LOGGER.info(String.format("Writing data finish"));
+			// logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+			// 		"write: About to wait for loader to complete current set of rows...");
+			// loader.finish();
 			// loader.close(); //This would close the connections, so we don't
 			// want to call close() now
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "This section used to be used to do loader.finish()");
 		} catch (Exception e1) {
 			LOGGER.severe(String.format("Writin data finish caused errors: %s, %s", e1.getMessage(),
 					e1.getCause() != null ? e1.getCause().getMessage() : "N/A"));
-			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
+			logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NORMAL, e1.getMessage());
 		}
 
 		// Capture the processing stats from the loader's listener
 		RowsStatInfo rowsStatInfo = runtimeMd.getRowsStatInfo(operationType);
 
-		listener = (BulkLoadResultListener) loader.getListener();
 		rowsStatInfo.incrementRequested(writeAttr.getNumRowsToWrite());
-		rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)); // (Local->No.
-																				// of
-																				// Rows
-																				// Written)
+		listener = (BulkLoadResultListener) loader.getListener();
+		// Local -> No. of Rows Written
+		rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op));
 		rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
 		rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-		LOGGER.finer(String.format("Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
-				listener.getProcessedRecordCount(op), listener.getOperationRecordCount(op),
+		LOGGER.finer(String.format(
+				"Processed Record Count: %s, "
+				+ "Operation Record Count: %s, "
+				+ "Rejected Recourd Count: %s",
+				listener.getProcessedRecordCount(op),
+				listener.getOperationRecordCount(op),
 				listener.getRejectedRecordCount(op)));
 
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 				"write: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> "
 						+ listener.getProcessedRecordCount(op));
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
+				"write: rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
 						+ listener.getOperationRecordCount(op));
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
+				"write: rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
 						+ listener.getRejectedRecordCount(op));
 
 		// Restart the loader, for potentially subsequent calls to "write"
 		// method by the platform
 		listener = new BulkLoadResultListener(this);
+		((BulkLoadResultListener)listener).setOperation(op);
 		loader.setListener(listener);
 		try {
-			LOGGER.info(String.format("Writinga data start"));
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-					"About to restart the loader with a new instance of the listener");
-			loader.start();
+			// LOGGER.info(String.format("Writing data start"));
+			//logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
+			//		"About to restart the loader with a new instance of the listener");
+			// loader.start();
+			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "This section used to be used to do loader.start()");
 		} catch (Exception e1) {
 			LOGGER.severe(String.format("Writin data start caused errors: %s, %s", e1.getMessage(),
 					e1.getCause() != null ? e1.getCause().getMessage() : "N/A"));
@@ -2353,8 +2400,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			loader.setProperty(LoaderProperty.schemaName, schema);
 		}
 
-		// TODO: we don't need this option but always batch upload
-		loader.setProperty(LoaderProperty.oneBatch, true);
+		loader.setProperty(LoaderProperty.oneBatch, oneBatch);
 
 		if (postSql != null && !postSql.trim().isEmpty()) {
 			loader.setProperty(LoaderProperty.executeAfter, postSql);
@@ -2366,6 +2412,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		loader.setProperty(LoaderProperty.operation, Operation.INSERT);
 		op = Operation.INSERT;
 
+		loader.setProperty(LoaderProperty.batchRowSize, "6");
+		
+		// A new listener. All metrics are reset
 		listener = new BulkLoadResultListener(this);
 		listener.setAbortOnErrors(abortOnErrors);
 		listener.setPropagate(propagateData);
@@ -2415,8 +2464,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 					FieldInfo fieldInfo = connectedFields.get(fieldIndex);
 					LOGGER.finer(String.format(
-							"FieldInfo: %s," + " Index: %s," + " Field: %s," + " FieldName: %s,"
-									+ " Field Native Ref Name: %s," + " Field Native Ref Native Name: %s",
+							"FieldInfo: %s, Index: %s, Field: %s, FieldName: %s,"
+									+ " Field Native Ref Name: %s, Field Native Ref Native Name: %s",
 							fieldInfo, fieldInfo.index, fieldInfo.field, fieldInfo.field.getName(),
 							fieldInfo.field.getNativeFieldRef().getName(),
 							fieldInfo.field.getNativeFieldRef().getNativeName()));
