@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0 
- * Generation time: 2016-09-16 12:10:01
+ * Generation time: 2016-09-21 20:40:13
  */ 
 
 package com.unicosolution.adapter.snowflakev2.table.metadata.impl;

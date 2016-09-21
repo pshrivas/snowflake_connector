@@ -699,45 +699,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 							+ listener.getRejectedRecordCount(op));
 
 			/*
-			 * Unico 30-Aug-2016: The processing results captured and submitted
-			 * to the Infa platform seems to be discarded by the platform. So,
-			 * commenting this out here and moving this to the "write" method
-			 * 
-			 * //BEGIN - Capture Processing Stats int opInd =
-			 * EIUDIndicator.INSERT; //default
-			 * 
-			 * switch (op) { case INSERT: opInd = EIUDIndicator.INSERT; break;
-			 * case MODIFY: opInd = EIUDIndicator.UPDATE; break; case DELETE:
-			 * opInd = EIUDIndicator.DELETE; break; default: opInd =
-			 * EIUDIndicator.INSERT; //Informatica does not support UPSERT }
-			 * 
-			 * RowsStatInfo rowsStatInfo =
-			 * runtimeMetadataHandle.getRowsStatInfo(opInd);
-			 * 
-			 * try { //Get hold of the Listener from the Loader if (null !=
-			 * loader.getListener() && loader.getListener() instanceof
-			 * BulkLoadResultListener) {
-			 * 
-			 * listener = (BulkLoadResultListener)loader.getListener();
-			 * 
-			 * logger.logMessage(EMessageLevel.MSG_INFO,
-			 * ELogLevel.TRACE_VERBOSE_DATA,
-			 * "deinitDataSession:: from listener LOADER: " +
-			 * "\nlistener.getProcessedRecordCount(op) -> " +
-			 * listener.getProcessedRecordCount(op) +
-			 * "\nlistener.getOperationRecordCount(op) -> " +
-			 * listener.getOperationRecordCount(op) +
-			 * "\nlistener.getRejectedRecordCount(op) -> " +
-			 * listener.getRejectedRecordCount(op));
-			 * 
-			 * }
-			 * rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op
-			 * )); //(Local->No. of Rows Written)
-			 * rowsStatInfo.incrementAffected(listener.getOperationRecordCount(
-			 * op));
-			 * rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op
-			 * ));
-			 * 
 			 * } catch (Exception e1) {
 			 * logger.logMessage(EMessageLevel.MSG_INFO,
 			 * ELogLevel.TRACE_VERBOSE_DATA,
@@ -2348,13 +2309,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		if (null != pk && null != pk.getFieldList() && !pk.getFieldList().isEmpty()) {
 			pkFields.addAll(pk.getFieldList());
 		}
-		LOGGER.finer(String.format("Primary Key List: %s", pkFields));
+		LOGGER.finer(String.format("Primary Key Fields: %s", pkFields));
 
 		List<String> pkColumns = new ArrayList<>();
 		for (Field pkField : pkFields) {
 			pkColumns.add(pkField.getName());
 		}
-		LOGGER.finer(String.format("Column List: %s", pkColumns));
+		LOGGER.finer(String.format("Primary Key Columns: %s", pkColumns));
 
 		RecordMeta recordMeta = new RecordMeta();
 		recordMeta.setCatalogName(db);
@@ -2377,6 +2338,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		boolean propagateData = false;
 		boolean oneBatch = false;
 		boolean truncateTable = false;
+		String updatedKeyColumns = null;
 
 		if (writeCapAttr != null) {
 			SEMTableWriteCapabilityAttributesExtension writeAttribs = (SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
@@ -2388,6 +2350,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			propagateData = writeAttribs.isPropagateData();
 			oneBatch = writeAttribs.isOneBatch();
 			truncateTable = writeAttribs.isTruncateTargetTable();
+			updatedKeyColumns = writeAttribs.getUpdateKeyColumns();
 		}
 
 		if (preSql != null && !preSql.trim().isEmpty()) {
@@ -2411,8 +2374,45 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// safe to set, delayed OP change will be a no-ops
 		loader.setProperty(LoaderProperty.operation, Operation.INSERT);
 		op = Operation.INSERT;
+		
+		if (updatedKeyColumns != null && !updatedKeyColumns.trim().isEmpty()) {
+			List<String> keys = new ArrayList<>();
+            for (String c : updatedKeyColumns.split("\\s*;\\s*")) {
+                boolean found = false;
 
-		loader.setProperty(LoaderProperty.batchRowSize, "6");
+                for (FieldInfo fieldInfo : connectedFields) {
+					LOGGER.log(Level.FINER, String.format(
+							"FieldInfo: "
+							+ " Index: %s,"
+							+ " Field Name: %s,"
+							+ " Field Native Ref Name: %s,"
+							+ " Field Native Ref Native Name: %s",
+							fieldInfo.index,
+							fieldInfo.field.getName(),
+							fieldInfo.field.getNativeFieldRef().getName(),
+							fieldInfo.field.getNativeFieldRef().getNativeName()));
+                    if (fieldInfo.field.getNativeFieldRef().getName().equalsIgnoreCase(c)) {
+                    	keys.add(fieldInfo.field.getNativeFieldRef().getName());
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                	String msg = String.format("Not found the Update Key Column: %s", c);
+                    LOGGER.log(Level.WARNING, msg);
+                	throw new SDKException() {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public String getMessage() {
+							return msg;
+						}
+                		
+                	};
+                }
+            }
+			loader.setProperty(LoaderProperty.keys, keys);
+		}
 		
 		// A new listener. All metrics are reset
 		listener = new BulkLoadResultListener(this);
@@ -2464,9 +2464,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 					FieldInfo fieldInfo = connectedFields.get(fieldIndex);
 					LOGGER.finer(String.format(
-							"FieldInfo: %s, Index: %s, Field: %s, FieldName: %s,"
-									+ " Field Native Ref Name: %s, Field Native Ref Native Name: %s",
-							fieldInfo, fieldInfo.index, fieldInfo.field, fieldInfo.field.getName(),
+							"FieldInfo: "
+							+ " Index: %s,"
+							+ " Field Name: %s,"
+							+ " Field Native Ref Name: %s,"
+							+ " Field Native Ref Native Name: %s",
+							fieldInfo.index,
+							fieldInfo.field.getName(),
 							fieldInfo.field.getNativeFieldRef().getName(),
 							fieldInfo.field.getNativeFieldRef().getNativeName()));
 

@@ -42,4 +42,9 @@ public class TableWriteCapabilityAttributesExtension extends D_ModelExtensionWri
     @Property( minOccurs = 1 ,  maxOccurs = 1 )
     boolean startTransactionForJobs = false;
 
+    @Property( minOccurs = 0 ,  maxOccurs = 1 ,  isSubstitutable = true ,  substituteType = com.informatica.metadata.common.parameter.model.Parameter.class )
+    @Length( min = 0 ,  max = 1024 )
+    @Persistence( size = 1024 )
+    String updateKeyColumns;
+
 }

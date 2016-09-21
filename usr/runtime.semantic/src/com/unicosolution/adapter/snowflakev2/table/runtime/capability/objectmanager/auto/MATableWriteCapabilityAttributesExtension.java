@@ -50,6 +50,7 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         if(!validate_propagateData(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isPropagateData(), semObj)) rc = false;
         if(!validate_oneBatch(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isOneBatch(), semObj)) rc = false;
         if(!validate_startTransactionForJobs(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isStartTransactionForJobs(), semObj)) rc = false;
+        if(!validate_updateKeyColumns(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getUpdateKeyColumns(), semObj)) rc = false;
         return rc;
 
     }
@@ -118,6 +119,16 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
     public boolean validate_startTransactionForJobs(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
+        return rc;
+
+    }
+
+    /** Validate the 'updateKeyColumns' property  */
+    public boolean validate_updateKeyColumns(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        if(newVal.length()<0 || newVal.length()>1024)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 1024, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS);
         return rc;
 
     }

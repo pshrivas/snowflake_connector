@@ -50,6 +50,7 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     public static final int PROPAGATEDATA_ID = 1401041416;
     public static final int ONEBATCH_ID = 296468278;
     public static final int STARTTRANSACTIONFORJOBS_ID = 716940003;
+    public static final int UPDATEKEYCOLUMNS_ID = -304174726;
 
     protected HashMap<IProperty, Integer> propMap = new HashMap<IProperty, Integer>();
     // get IProperty->propId map
@@ -76,6 +77,8 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                     propMap.put(prop,ONEBATCH_ID);
                 else if (propIDStr.equalsIgnoreCase("STARTTRANSACTIONFORJOBS_ID"))
                     propMap.put(prop,STARTTRANSACTIONFORJOBS_ID);
+                else if (propIDStr.equalsIgnoreCase("UPDATEKEYCOLUMNS_ID"))
+                    propMap.put(prop,UPDATEKEYCOLUMNS_ID);
 
             }
         }
@@ -446,6 +449,43 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
 
     }
 
+    /** 
+      * Get the 'updateKeyColumns' property.
+      */
+    public String getUpdateKeyColumns()
+    {
+        return _get_imfObject().getUpdateKeyColumns();
+    }
+
+    /** 
+      * Set the 'updateKeyColumns' property.
+      */
+    public final void setUpdateKeyColumns(String newObj)throws SL_Exception
+    {
+        setUpdateKeyColumns(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'updateKeyColumns' property.
+      */
+    public void setUpdateKeyColumns(String newVal, ObjectChangeSink sink)
+    {
+        if(newVal!=null && newVal.equals(getUpdateKeyColumns())) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_updateKeyColumns(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setUpdateKeyColumns(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
+
+    }
+
     /** Pretty-print this object: */
     public String toString()
     {
@@ -458,6 +498,7 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         rc += " (propagateData="+isPropagateData()+")";
         rc += " (oneBatch="+isOneBatch()+")";
         rc += " (startTransactionForJobs="+isStartTransactionForJobs()+")";
+        rc += " (updateKeyColumns="+getUpdateKeyColumns()+")";
         return rc;
 
     }
@@ -509,6 +550,8 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return isOneBatch();
             case STARTTRANSACTIONFORJOBS_ID:
                 return isStartTransactionForJobs();
+            case UPDATEKEYCOLUMNS_ID:
+                return getUpdateKeyColumns();
             default:
                 return super.get(propID);
             }
@@ -543,6 +586,9 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return;
             case STARTTRANSACTIONFORJOBS_ID:
                 setStartTransactionForJobs((java.lang.Boolean)obj);
+                return;
+            case UPDATEKEYCOLUMNS_ID:
+                setUpdateKeyColumns((String)obj);
                 return;
             default:
                 super.set(propID, obj);
@@ -618,6 +664,8 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         setOneBatch(fromObj.isOneBatch());
 
         setStartTransactionForJobs(fromObj.isStartTransactionForJobs());
+
+        setUpdateKeyColumns(fromObj.getUpdateKeyColumns());
     }
 
     /** 

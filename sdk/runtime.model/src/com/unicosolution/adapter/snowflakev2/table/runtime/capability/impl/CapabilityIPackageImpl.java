@@ -130,9 +130,19 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
     public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+9;
 
     /**
+     * Constant for property 'TableWriteCapabilityAttributesExtension.updateKeyColumns'.
+     */
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+10;
+
+    /**
+     * Constant for property 'TableWriteCapabilityAttributesExtension.updateKeyColumns$'.
+     */
+    public static final  int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS$ =com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+11;
+
+    /**
      * Constant for feature constant in class 'TableWriteCapabilityAttributesExtension'.
      */
-    private static final int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION_FEATURE_COUNT = com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+10;
+    private static final int TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION_FEATURE_COUNT = com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl.getD__MODEL_EXTENSION_WRITE_CAP_ATTRIBUTESFeatureCount()+12;
 
 
     /**
@@ -151,6 +161,14 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
      * Upper bound constant for TableWriteCapabilityAttributesExtension.preSql$.
      */
     private static final int TABLEWRITECAPABILITYATTRIBUTESEXTENSION_PRESQL$_UPPER = -2147483648;
+    /**
+     * Lower bound constant for TableWriteCapabilityAttributesExtension.updateKeyColumns$.
+     */
+    private static final int TABLEWRITECAPABILITYATTRIBUTESEXTENSION_UPDATEKEYCOLUMNS$_LOWER = -2147483648;
+    /**
+     * Upper bound constant for TableWriteCapabilityAttributesExtension.updateKeyColumns$.
+     */
+    private static final int TABLEWRITECAPABILITYATTRIBUTESEXTENSION_UPDATEKEYCOLUMNS$_UPPER = -2147483648;
 
 
     private com.informatica.imf.icore.IClass tableCallCapabilityAttributesExtensionIClass = null;
@@ -159,10 +177,10 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
     private com.informatica.imf.icore.IClass tableWriteCapabilityAttributesExtensionIClass = null;
     private static com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl theComInformaticaMetadataCommonParameterIPackage = (com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl)com.informatica.metadata.common.parameter.ParameterIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
-    private static com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl theComInformaticaAdapterSdkadapterAsoextensionIPackage = (com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl)com.informatica.adapter.sdkadapter.asoextension.AsoextensionIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.types.impl.TypesIPackageImpl theComInformaticaMetadataCommonTypesIPackage = (com.informatica.metadata.common.types.impl.TypesIPackageImpl)com.informatica.metadata.common.types.TypesIPackage.I_INSTANCE;
     private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
+    private static com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl theComInformaticaAdapterSdkadapterAsoextensionIPackage = (com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl)com.informatica.adapter.sdkadapter.asoextension.AsoextensionIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
     private CapabilityIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIFactory.I_INSTANCE);
         // set all the package-info
@@ -358,6 +376,8 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PROPAGATE_DATA);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__START_TRANSACTION_FOR_JOBS);
          createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE);
+         createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS);
+         createIProperty(this.tableWriteCapabilityAttributesExtensionIClass,TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS$);
 
 
          LOGGER.log(Level.FINE, "Initialization of com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage: exit 'createPackageContents()'");
@@ -458,6 +478,14 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
         	false, BOUNDS_VALUE_ONE, BOUNDS_VALUE_ONE, null,
         	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
         	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
+        initIProperty(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS), com.informatica.imf.icore.ICoreDatatypes.I_STRING, "updateKeyColumns",
+        	"", BOUNDS_VALUE_ZERO, BOUNDS_VALUE_ONE, null,
+        	!IS_CONTAINMENT, IS_NO, IS_NOT_REFERABLE, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
+        	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, null);
+        initIProperty(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS$), theComInformaticaMetadataCommonParameterIPackage.getParameterIClass(), "updateKeyColumns$",
+        	DEFAULT_PROPERTY_VALUE, DEFAULT_BOUNDS_VALUE, DEFAULT_BOUNDS_VALUE, null,
+        	!IS_CONTAINMENT, IS_NO, IS_EXTERNAL, !IS_UNIQUE, !IS_ORDERED, "", IS_FINALREDEFINE, "",
+        	!IS_AGGREGATION, !IS_AGGREGATOR, !IS_FINAL_PROPERTY, !IS_NAME_PROPERTY, !IS_SENSITIVE,!IS_DEPRECATED, this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS));
     }
     private void initEnums() {
         com.informatica.imf.icore.IEnumerationLiteral defaultLiteral = null;
@@ -542,5 +570,19 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
       		tablewritecapabilityattributesextensionPresqlPersistence.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getPersistenceIClass());
       		tablewritecapabilityattributesextensionPresqlPersistence.setSize(255);
       		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__PRE_SQL), tablewritecapabilityattributesextensionPresqlPersistence);
+
+      		//initialization of annotations for property updateKeyColumns
+      		com.informatica.imf.annotations.constraints.impl.LengthImpl tablewritecapabilityattributesextensionUpdatekeycolumnsLength = 
+      					new com.informatica.imf.annotations.constraints.impl.LengthImpl();
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsLength.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getLengthIClass());
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsLength.setLengthType(com.informatica.imf.annotations.constraints.LengthType.OTHER);
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsLength.setMax(1024);
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsLength.setMin(0);
+      		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS), tablewritecapabilityattributesextensionUpdatekeycolumnsLength);
+      		com.informatica.imf.annotations.constraints.impl.PersistenceImpl tablewritecapabilityattributesextensionUpdatekeycolumnsPersistence = 
+      					new com.informatica.imf.annotations.constraints.impl.PersistenceImpl();
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsPersistence.iSetIClass(com.informatica.imf.annotations.constraints.ConstraintsIPackage.I_INSTANCE.getPersistenceIClass());
+      		tablewritecapabilityattributesextensionUpdatekeycolumnsPersistence.setSize(1024);
+      		this.addAnnotationToElement(this.tableWriteCapabilityAttributesExtensionIClass.getAllProperties(true).get(TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS), tablewritecapabilityattributesextensionUpdatekeycolumnsPersistence);
     }
 }

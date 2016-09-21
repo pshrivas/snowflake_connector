@@ -73,4 +73,12 @@ public interface SEMTableWriteCapabilityAttributesExtension extends com.informat
       * Set the 'startTransactionForJobs' property.
       */
     public void setStartTransactionForJobs(boolean _newVal);
+    /** 
+      * Get the 'updateKeyColumns' property.
+      */
+    public String getUpdateKeyColumns();
+    /** 
+      * Set the 'updateKeyColumns' property.
+      */
+    public void setUpdateKeyColumns(String _newVal);
 }

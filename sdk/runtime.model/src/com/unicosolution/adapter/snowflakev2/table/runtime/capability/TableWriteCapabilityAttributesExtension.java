@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-09-16 12:10:45
+ * Generation time: 2016-09-21 20:40:27
  */
 
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
@@ -35,6 +35,8 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isPropagateData() <em>propagateData</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isStartTransactionForJobs() <em>startTransactionForJobs</em>} </li>
  *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#isTruncateTargetTable() <em>truncateTargetTable</em>} </li>
+ *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getUpdateKeyColumns() <em>updateKeyColumns</em>} </li>
+ *     <li>{@link com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getUpdateKeyColumns$() <em>updateKeyColumns$</em>} </li>
  * </ul>
  * </p>
  * @Class (isSeeded=false, classKind=com.informatica.imf.annotations.ClassKind.SECOND_CLASS_INTERNAL, isAbstract=false)
@@ -202,6 +204,38 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
      */
     void setTruncateTargetTable(boolean truncateTargetTable);
 
+
+    /**
+     * Retrieves the 'updateKeyColumns' property value for this IObject.
+     * @return the 'updateKeyColumns' property value for this IObject.
+     * @Property (redefines="", minOccurs=0, containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.NONE, containmentType=com.informatica.imf.annotations.ContainmentType.NOT_CONTAINED, isUnique=false, maxOccurs=1, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     */
+    java.lang.String getUpdateKeyColumns();
+
+
+    /**
+     * Sets the 'updateKeyColumns' property value for this IObject.
+     * @param updateKeyColumns is the new property value for this IObject
+     * @see #getUpdateKeyColumns
+     */
+    void setUpdateKeyColumns(java.lang.String updateKeyColumns);
+
+
+    /**
+     * Retrieves the 'updateKeyColumns$' property value for this IObject.
+     * @return the 'updateKeyColumns$' property value for this IObject.
+     * @Property (redefines="", containerType=com.informatica.imf.annotations.ContainerType.NOT_A_CONTAINER, referenceScope=com.informatica.imf.annotations.ReferenceScope.EXTERNAL, containmentType=com.informatica.imf.annotations.ContainmentType.UNSET, isUnique=false, opposite="", redefinability=com.informatica.imf.annotations.Redefinability.FINAL_PROPERTY)
+     */
+    com.informatica.metadata.common.parameter.Parameter getUpdateKeyColumns$();
+
+
+    /**
+     * Sets the 'updateKeyColumns$' property value for this IObject.
+     * @param updateKeyColumns$ is the new property value for this IObject
+     * @see #getUpdateKeyColumns$
+     */
+    void setUpdateKeyColumns$(com.informatica.metadata.common.parameter.Parameter updateKeyColumns$);
+
     /**
      * Exposes the IProperties of the IClass associated with this Object
      */
@@ -226,6 +260,10 @@ package com.unicosolution.adapter.snowflakev2.table.runtime.capability;
         public static com.informatica.imf.icore.IProperty START_TRANSACTION_FOR_JOBS = null;
 
         public static com.informatica.imf.icore.IProperty TRUNCATE_TARGET_TABLE = null;
+
+        public static com.informatica.imf.icore.IProperty UPDATE_KEY_COLUMNS = null;
+
+        public static com.informatica.imf.icore.IProperty UPDATE_KEY_COLUMNS$ = null;
         static  {
 			com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.TableWriteCapabilityAttributesExtensionImpl.initIProperties();
 		}

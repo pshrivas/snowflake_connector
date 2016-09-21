@@ -5,7 +5,7 @@
 /*
  * This file is generated. Do not modify.
  * IMF Version: 9.5.0
- * Generation time: 2016-09-16 12:10:45
+ * Generation time: 2016-09-21 20:40:27
  */
 package com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl;
 
@@ -19,7 +19,7 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     /**
      * The generated Serial Version UID.
      */
-    private static final long serialVersionUID = -116467259375983265L;
+    private static final long serialVersionUID = -1655138418615938639L;
 
     private static int PROPERTY_ID;
 
@@ -42,6 +42,10 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
     protected boolean startTransactionForJobs = false;
 
     protected boolean truncateTargetTable = false;
+
+    protected java.lang.String updateKeyColumns = "";
+
+    protected com.informatica.metadata.common.parameter.Parameter updateKeyColumns$;
 
 
     /**
@@ -498,6 +502,108 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
      
 
 
+     /**
+     * Retrieves the 'updateKeyColumns' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getUpdateKeyColumns()
+     * @return the 'updateKeyColumns' property value for this Object
+     */
+     public java.lang.String getUpdateKeyColumns() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.updateKeyColumns;
+     }
+
+    /**
+     * Sets the 'updateKeyColumns' property value for this IObject.
+     * If a <code>null</code> is specified as the value for this property,
+     * the default value of the String, i.e., empty string('""') will be set.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setUpdateKeyColumns(java.lang.String updateKeyColumns)
+     * @param updateKeyColumns is the new value for property 'updateKeyColumns'
+     */public void setUpdateKeyColumns(java.lang.String updateKeyColumns) {
+    		if(this.updateKeyColumns.equals(updateKeyColumns)) {
+    			return;
+    		}
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            java.lang.String oldVal = this.updateKeyColumns;
+            if(updateKeyColumns == null) {
+                updateKeyColumns = "";
+            }
+            this.updateKeyColumns = updateKeyColumns;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS, oldVal, updateKeyColumns);
+            }
+        }
+     
+
+
+     /**
+     * Retrieves the 'updateKeyColumns$' property value for this Object.
+     *
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#getUpdateKeyColumns$()
+     * @return the 'updateKeyColumns$' property value for this Object
+     */
+     public com.informatica.metadata.common.parameter.Parameter getUpdateKeyColumns$() {
+         if (this.iIsProxy()) {
+             if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+                 throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+                     com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+             }
+         }
+         return this.updateKeyColumns$;
+     }
+
+    /**
+     * Sets the 'updateKeyColumns$' property value for this IObject.
+     * @see com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension#setUpdateKeyColumns$(com.informatica.metadata.common.parameter.Parameter updateKeyColumns$)
+     * @param updateKeyColumns$ is the new value for property 'updateKeyColumns$'
+     */public void setUpdateKeyColumns$(com.informatica.metadata.common.parameter.Parameter updateKeyColumns$) {
+
+    		if (this.iIsProxy()) {
+    			if(!isResolvingProxy() && !resolveProxyUsingCallback()) {
+    				throw new com.informatica.imf.icore.exception.UnresolvedProxyException(
+    					com.informatica.imf.ImfMsg.GETTERS_AND_SETTERS_NOT_PERMITTED_ON_PROXY_OBJECT);
+    			}
+    		}
+            com.informatica.metadata.common.parameter.Parameter actualObject = updateKeyColumns$;
+            if(updateKeyColumns$ != null) {
+              if(updateKeyColumns$ instanceof com.informatica.imf.icore.IDelegatedObject ) {
+               actualObject = ((com.informatica.imf.icore.IDelegatedObject)updateKeyColumns$).getDelegatee();
+                }
+            }
+    		if(this.updateKeyColumns$ == actualObject) {
+    			return;
+    		}
+            if (actualObject == null) {
+               if (iGetSubstituteProperties()
+                           .containsKey(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS$))
+                     iRemoveSubstituteProperty(com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS$);
+            } else {
+               iPutSubstituteProperty(
+                            com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS$,
+                            actualObject);
+            }
+            com.informatica.metadata.common.parameter.Parameter oldVal = (com.informatica.metadata.common.parameter.Parameter) this.updateKeyColumns$;
+            this.updateKeyColumns$ = actualObject;
+            if (com.informatica.imf.icore.IMFRuntime.getInstance().isListenerActive()) {
+                com.informatica.imf.icore.IMFRuntime.getInstance().getObjectChangeListener().onPropertyChange(
+                    this, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS$, oldVal, actualObject);
+            }
+        }
+     
+
+
 
     /**
      * Returns the value of the specified IProperty.
@@ -540,6 +646,10 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             return this.isStartTransactionForJobs();
         case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
             return this.isTruncateTargetTable();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns":
+            return this.getUpdateKeyColumns();
+        case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns$":
+            return this.getUpdateKeyColumns$();
         default:
                 throw new com.informatica.core.exception.IllegalArgumentException(
                     com.informatica.imf.ImfMsg.COULD_NOT_RETRIEVE_PROPERTY_property_FOR_CLASS_class,
@@ -590,6 +700,10 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                 return this.isStartTransactionForJobs();
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
                 return this.isTruncateTargetTable();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns":
+                return this.getUpdateKeyColumns();
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns$":
+                return this.getUpdateKeyColumns$();
             default:
                    throw new com.informatica.core.exception.IllegalArgumentException(
                        com.informatica.imf.ImfMsg.COULD_NOT_RETRIEVE_PROPERTY_property_FOR_CLASS_class,
@@ -724,6 +838,12 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setTruncateTargetTable((java.lang.Boolean) newValue);
                 break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns":
+                this.setUpdateKeyColumns((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns$":
+                this.setUpdateKeyColumns$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
             default:
                   throw new com.informatica.core.exception.IllegalArgumentException(
                     com.informatica.imf.ImfMsg.COULD_NOT_SET_PROPERTY_property_FOR_CLASS_class,
@@ -827,6 +947,12 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
                  }
                 this.setTruncateTargetTable((java.lang.Boolean) newValue);
                 break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns":
+                this.setUpdateKeyColumns((java.lang.String) newValue);
+                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns$":
+                this.setUpdateKeyColumns$((com.informatica.metadata.common.parameter.Parameter) newValue);
+                break;
             default:
                   throw new com.informatica.core.exception.IllegalArgumentException(
                     com.informatica.imf.ImfMsg.COULD_NOT_SET_PROPERTY_property_FOR_CLASS_class,
@@ -888,6 +1014,12 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
             case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.truncateTargetTable":
                this.truncateTargetTable = (java.lang.Boolean) newValue;
                break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns":
+               this.updateKeyColumns = (java.lang.String) newValue;
+               break;
+            case "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.updateKeyColumns$":
+               this.updateKeyColumns$ = (com.informatica.metadata.common.parameter.Parameter) newValue;
+               break;
             default:
                   throw new com.informatica.core.exception.IllegalArgumentException(
                       com.informatica.imf.ImfMsg.COULD_NOT_SET_PROPERTY_property_FOR_CLASS_class,
@@ -940,6 +1072,12 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableW
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
         PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__TRUNCATE_TARGET_TABLE;
         		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.TRUNCATE_TARGET_TABLE =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS =
+        			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
+        PROPERTY_ID = com.unicosolution.adapter.snowflakev2.table.runtime.capability.impl.CapabilityIPackageImpl.TABLE_WRITE_CAPABILITY_ATTRIBUTES_EXTENSION__UPDATE_KEY_COLUMNS$;
+        		com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS$ =
         			com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIPackage.I_INSTANCE.getTableWriteCapabilityAttributesExtensionIClass().getAllProperties(true).get(PROPERTY_ID);
     }
 }
