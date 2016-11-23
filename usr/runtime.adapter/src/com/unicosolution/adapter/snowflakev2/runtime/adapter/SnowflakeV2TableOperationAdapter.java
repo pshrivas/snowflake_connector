@@ -42,6 +42,8 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 	@Override
 	public int initDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle)
 			throws SDKException {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
+				formatLog("initDataSourceOperation", "begin"));
 		int status = 0;
 		BasicProjectionView projection = dsoHandle.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
 				.getProjectionHelper();
@@ -52,6 +54,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 			status = initDataOperationWrite(dsoHandle, connHandle, projection);
 		}
 
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataSourceOperation", "end"));
 		return status;
 	}
 
@@ -68,6 +71,8 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 	@Override
 	public int deinitDataSourceOperation(DataSourceOperationContext dsoHandle, MetadataContext connHandle)
 			throws SDKException {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
+				formatLog("deinitDataSourceOperation", "begin"));
 		int status = 0;
 		BasicProjectionView projection = dsoHandle.getAdapterDataSourceOperation().getASOProjectionsList().get(0)
 				.getProjectionHelper();
@@ -78,6 +83,8 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 		} else if (capability instanceof WriteCapability) {
 			status = deinitDataOperationWrite(dsoHandle, connHandle, projection);
 		}
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
+				formatLog("deinitDataSourceOperation", "end"));
 
 		return status;
 	}
@@ -91,6 +98,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 	private int initDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
 			BasicProjectionView projection) {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataOperationRead", "begin"));
 
 		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
 		if (record.getIndexList().size() > 0) {
@@ -112,6 +120,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 		// close connection to data source
 		// conn.disConnect(connHandle);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataOperationRead", "end"));
 
 		return EReturnStatus.SUCCESS;
 	}
@@ -125,6 +134,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 	private int initDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
 			BasicProjectionView projection) {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataOperationWrite", "begin"));
 
 		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
 		if (record.getIndexList().size() > 0) {
@@ -145,6 +155,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 		// close connection to data source
 		// conn.disConnect(connHandle);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataOperationWrite", "end"));
 
 		return EReturnStatus.SUCCESS;
 	}
@@ -158,6 +169,8 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 	private int deinitDataOperationRead(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
 			BasicProjectionView projection) {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
+				formatLog("deinitDataOperationRead", "begin"));
 
 		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
 		if (record.getIndexList().size() > 0) {
@@ -178,6 +191,7 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 		// close connection to data source
 		// conn.disConnect(connHandle);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("deinitDataOperationRead", "end"));
 
 		return EReturnStatus.SUCCESS;
 	}
@@ -191,6 +205,8 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 
 	private int deinitDataOperationWrite(DataSourceOperationContext dsoHandle, MetadataContext connHandle,
 			BasicProjectionView projection) {
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
+				formatLog("deinitDataOperationWrite", "begin"));
 
 		FlatRecord record = (FlatRecord) projection.getNativeRecords().get(0);
 		if (record.getIndexList().size() > 0) {
@@ -200,7 +216,12 @@ public class SnowflakeV2TableOperationAdapter extends DataSourceOperationAdapter
 		// close connection to data source
 		// conn.disConnect(connHandle);
 
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("deinitDataOperationWrite", "end"));
 		return EReturnStatus.SUCCESS;
+	}
+
+	private final String formatLog(String methodName, String msg) {
+		return SnowflakeV2TableOperationAdapter.class.getSimpleName() + "." + methodName + ": " + msg;
 	}
 
 }

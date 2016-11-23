@@ -30,6 +30,7 @@ import com.informatica.sdk.adapter.metadata.provider.AbstractMetadataAdapter;
 import com.informatica.sdk.adapter.metadata.provider.Connection;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteOptions;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteSession;
+import com.informatica.sdk.adapter.metadata.common.CWriteObjectsOpts;
 import com.informatica.sdk.exceptions.ExceptionManager;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableRecordExtensions;
@@ -133,7 +134,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					Package pack = sdkFactory.newPackage(catalog);
 					pack.setName(foundCatalogName);
 					foundCatalogList.add(pack);
-					if (foundCatalogName.equals(catName)) { // case sensitive
+					if (foundCatalogName.equalsIgnoreCase(catName)) { // case insensitive
 						catalog.addRootPackage(pack);
 					}
 				}
@@ -166,13 +167,10 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				}
 				schemaResultSet.close();
 
-				ResultSet tablesIter = metadata.getTables(tabSchema.getName(), foundSchema ? schemaName : "%", // use
-																												// schema
-																												// if
-																												// found
-																												// otherwise
-																												// all
-																												// schemas
+				 // use schema if found otherwise all schemas
+				ResultSet tablesIter = metadata.getTables(
+						tabSchema.getName(),
+						foundSchema ? schemaName : "%",
 						nameFilter == null ? "%" : "%" + nameFilter + "%", null);
 
 				while (tablesIter.next()) {
@@ -203,7 +201,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.severe(String.format("Failed to get metadata: %s", e.getMessage()));
+			LOGGER.severe(String.format("Failed to get metadata: %s", e.getMessage(), e));
 			return false;
 		}
 
@@ -482,6 +480,17 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		LOGGER.finer(String.format("Connection: %s, Session: %s, Options: %s", connection != null, writeSession,
 				defOptions));
 		// retrieve the options
+		int optionID; List<Option> options = defOptions.getOptions();
+		Boolean defCreateIfMissing = true;
+		for (Option option : options) {
+			optionID = option.getDescription().getEffectiveDefinition().getOptionID();
+			if (optionID == CWriteObjectsOpts.DROP_AND_CREATE) {
+				defCreateIfMissing = (Boolean)option.getValue();
+			} else {
+				//
+			}
+		}
+		
 		/*
 		 * int optionID; List<Option> options = defOptions.getOptions(); Boolean
 		 * defCreateIfMissing = true; for (Option option : options) { optionID =
