@@ -114,12 +114,12 @@ implements com.unicosolution.adapter.snowflakev2.connection.ConnectionIPackage {
 
     private com.informatica.imf.icore.IClass snowflakeV2ConnectInfoExtensionIClass = null;
     private com.informatica.imf.icore.IClass snowflakeV2ConnectInfoIClass = null;
+    private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
+    private static com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl theComInformaticaMetadataInfasdkConnectinfoCommonSdkmodelextensionIPackage = (com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl)com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.SdkmodelextensionIPackage.I_INSTANCE;
     private static com.informatica.metadata.infasdk.connectinfo.sdkadapter.impl.SdkadapterIPackageImpl theComInformaticaMetadataInfasdkConnectinfoSdkadapterIPackage = (com.informatica.metadata.infasdk.connectinfo.sdkadapter.impl.SdkadapterIPackageImpl)com.informatica.metadata.infasdk.connectinfo.sdkadapter.SdkadapterIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl theComInformaticaMetadataCommonConnectinfoIPackage = (com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl)com.informatica.metadata.common.connectinfo.ConnectinfoIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
-    private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl theComInformaticaMetadataCommonConnectinfoIPackage = (com.informatica.metadata.common.connectinfo.impl.ConnectinfoIPackageImpl)com.informatica.metadata.common.connectinfo.ConnectinfoIPackage.I_INSTANCE;
-    private static com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl theComInformaticaMetadataInfasdkConnectinfoCommonSdkmodelextensionIPackage = (com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.impl.SdkmodelextensionIPackageImpl)com.informatica.metadata.infasdk.connectinfo.common.sdkmodelextension.SdkmodelextensionIPackage.I_INSTANCE;
     private ConnectionIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.connection.ConnectionIFactory.I_INSTANCE);
         // set all the package-info

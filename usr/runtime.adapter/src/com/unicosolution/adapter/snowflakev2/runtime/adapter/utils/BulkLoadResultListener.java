@@ -1,8 +1,8 @@
 package com.unicosolution.adapter.snowflakev2.runtime.adapter.utils;
 
-import com.snowflake.client.loader.LoadResultListener;
-import com.snowflake.client.loader.LoadingError;
-import com.snowflake.client.loader.Operation;
+import net.snowflake.client.loader.LoadResultListener;
+import net.snowflake.client.loader.LoadingError;
+import net.snowflake.client.loader.Operation;
 import com.unicosolution.adapter.snowflakev2.runtime.adapter.SnowflakeV2TableDataAdapter;
 
 import java.util.logging.Logger;

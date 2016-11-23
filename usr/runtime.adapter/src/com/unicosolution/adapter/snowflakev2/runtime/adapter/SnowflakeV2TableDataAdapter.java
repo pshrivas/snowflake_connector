@@ -58,12 +58,12 @@ import com.informatica.sdk.exceptions.SDKException;
 import com.informatica.sdk.adapter.javasdk.dataadapter.ReadAttributes;
 import com.informatica.sdk.adapter.javasdk.dataadapter.WriteAttributes;
 import com.informatica.sdk.adapter.javasdk.dataaccess.DataAttributes;
-import com.snowflake.client.jdbc.internal.amazonaws.util.json.JSONObject;
-import com.snowflake.client.jdbc.internal.fasterxml.jackson.databind.Module.SetupContext;
-import com.snowflake.client.loader.Loader;
-import com.snowflake.client.loader.LoaderProperty;
-import com.snowflake.client.loader.Operation;
-import com.snowflake.client.loader.StreamLoader;
+import net.snowflake.client.jdbc.internal.amazonaws.util.json.JSONObject;
+import net.snowflake.client.jdbc.internal.fasterxml.jackson.databind.Module.SetupContext;
+import net.snowflake.client.loader.Loader;
+import net.snowflake.client.loader.LoaderProperty;
+import net.snowflake.client.loader.Operation;
+import net.snowflake.client.loader.StreamLoader;
 import com.unicosolution.adapter.snowflakev2.metadata.adapter.RecordMeta;
 import com.unicosolution.adapter.snowflakev2.metadata.adapter.SnowflakeV2Connection;
 import com.unicosolution.adapter.snowflakev2.runtime.adapter.utils.BulkLoadResultListener;
@@ -107,7 +107,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	private BasicProjectionView projectionView = null;
 
 	private List<ImportableObject> nativeRecords = null;
-	private ResultSet rs = null;
+	private ResultSet resultSet = null;
 
 	private FilterOperation m_FilterOperation;
 	private String filterQuery;
@@ -152,15 +152,14 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	@Override
 	public int initDataSession(DataSession dataSession) throws SDKException {
 		// Static logger is used to debug and trace the code
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		String msg = String.format("DataSession: %s", dataSession);
+		LOGGER.log(Level.FINER, msg);
 
 		// Use the logger for logging messages to the session log
 		// as logMessage(ELogLevel.TRACE_NONE, Messages.CONN_SUCC_200,
 		// "user",6005,5.2);
 		this.logger = dataSession.getInfaUtilsHandle().getLogger();
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:initDataSession:: begin");
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("initDataSession", msg));
 
 		filterQuery = "";
 
@@ -190,11 +189,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		capAttrs = runtimeMetadataHandle.getCapabilityAttributes();
 
 		// Get the current selected record
-		currentFlatRecord = (FlatRecord) nativeRecords.get(0); // start
-																// mentioning
-																// the first
-		// table name in a query
-
+		currentFlatRecord = (FlatRecord) nativeRecords.get(0);
+		
 		SnowflakeV2UserContext suc = new SnowflakeV2UserContext();
 		suc.setResetRowIndex(true);
 		suc.setTotalRows(0);
@@ -210,24 +206,22 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		int status = processFilterAndJoin(runtimeMetadataHandle);
 		if (status != EReturnStatus.SUCCESS) {
+			// not success return
 			return status;
 		}
-		LOGGER.finer(String.format("Platform Join Types: %s, Platform Join Exprs: %s, Native Join: %s", this.joinTypes,
-				this.joinExprs, this.nativeJoinQuery));
-		LOGGER.finer(String.format("Platform Filter Query: %s, Native Filter: %s", this.filterQuery,
-				this.nativeFilterQuery));
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:initDataSession:: filterQuery : " + filterQuery);
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:initDataSession:: joinTypes : " + joinTypes);
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:initDataSession:: joinExprs : " + joinExprs);
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:initDataSession:: end");
+		msg = String.format(
+				"Platform Join Types: %s,"
+				+ " Platform Join Exprs: %s,"
+				+ " Native Join: %s,"
+				+ " Platform Filter Query: %s,"
+				+ " Native Filter: %s",
+				this.joinTypes,
+				this.joinExprs,
+				this.nativeJoinQuery,
+				this.filterQuery,
+				this.nativeFilterQuery);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("initDataSession", msg));
 
 		Capability capability = runtimeMetadataHandle.getAdapterDataSourceOperation().getCapabilities().get(0);
 
@@ -248,10 +242,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return The expression in the form of tableName.columnName
 	 */
 	private String getResolvedJoinExpression(SimpleBinaryExpression simplBinExpr) {
-		LOGGER.finer(String.format("SimpleBinaryExpression: %s, Left Op: %s, Opr: %s, Right Op: %s", simplBinExpr,
-				simplBinExpr.getLeftOperand(), simplBinExpr.getBinaryOperator(), simplBinExpr.getRightOperand()));
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "getResolvedJoinExpression:: begin");
+		String msg = String.format("SimpleBinaryExpression: %s, Left Op: %s, Opr: %s, Right Op: %s", simplBinExpr,
+				simplBinExpr.getLeftOperand(), simplBinExpr.getBinaryOperator(), simplBinExpr.getRightOperand());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("getResolvedJoinExpression", msg));
 
 		// left operand
 		FieldIdentifier pLeftFieldIden = (FieldIdentifier) simplBinExpr.getLeftOperand();
@@ -266,11 +260,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// combine with the operator
 		String finalExpr = lOperandName + " " + getOperator(simplBinExpr.getBinaryOperator()) + " " + rOperandName;
 
-		LOGGER.finer(String.format("Final Expr: %s", finalExpr));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"getResolvedJoinExpression:: finalExpr: " + finalExpr);
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "getResolvedJoinExpression:: end");
+		msg = String.format("Final Expr: %s", finalExpr);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("getResolvedJoinExpression", msg));
 
 		return finalExpr;
 	}
@@ -286,8 +278,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 *         operation.
 	 */
 	private List<FieldInfo> getConnectedFields(RuntimeConfigMetadata runtimeMetadataHandle) {
-		LOGGER.finer(String.format("RuntimeConfigMetadata: %s", runtimeMetadataHandle));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "getConnectedFields:: begin");
+		String msg = String.format("RuntimeConfigMetadata: %s", runtimeMetadataHandle);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("getConnectedFields", msg));
 
 		int i = 0;
 		List<FieldInfo> fields = new ArrayList<>();
@@ -298,8 +291,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 			i++;
 		}
-		LOGGER.finer(String.format("Connected fields: %s", fields));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "getConnectedFields:: end");
+		msg = String.format("Connected fields: %s", fields);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("getConnectedFields", msg));
 		return fields;
 	}
 
@@ -314,8 +308,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 ************************************* 
 	 */
 	private int processFilterAndJoin(RuntimeConfigMetadata runtimeMetadataHandle) {
-		LOGGER.finer(String.format("RuntimeConfigMetadata: %s", runtimeMetadataHandle));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processFilterAndJoin:: begin");
+		String msg = String.format("RuntimeConfigMetadata: %s", runtimeMetadataHandle);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processFilterAndJoin", msg));
 
 		ASOOperation m_asoOperation = runtimeMetadataHandle.getAdapterDataSourceOperation();
 		ASOComplexType asoComplexType = m_asoOperation.getComplexTypes().get(0);
@@ -324,36 +319,42 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		Capability cap = caps.get(0);
 
 		for (Projection proj : projlist) {
-			LOGGER.finer(String.format("Projection: %s", proj));
+			msg = String.format("Projection: %s", proj);
+			LOGGER.log(Level.FINER, msg);
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processFilterAndJoin", msg));
 			if (proj == null) {
-				LOGGER.severe(String.format("Projection is null"));
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, "Error : Projections is NULL");
+				msg = "Projection is null";
+				LOGGER.log(Level.SEVERE, msg);
+				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, formatLog("processFilterAndJoin", msg));
 				return EReturnStatus.FAILURE;
 			}
 
 			List<OperationBase> baseOperList = proj.getBaseOperations();
-			LOGGER.finer(String.format("Base Projection: %s, size=%s", baseOperList, baseOperList.size()));
+			msg = String.format("Base Projection: %s, size=%s", baseOperList, baseOperList.size());
+			LOGGER.log(Level.FINER, msg);
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processFilterAndJoin", msg));
 			if (baseOperList == null) {
-				LOGGER.severe(String.format("Base Projection is null. Projection: %s", proj));
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-						"Error : Base Projection is NULL");
+				msg = String.format("Base Projection is null. Projection: %s", proj);
+				LOGGER.log(Level.SEVERE, msg);
+				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, msg);
 				return EReturnStatus.FAILURE;
 			}
 
 			int status = EReturnStatus.SUCCESS;
 			for (OperationBase ob : baseOperList) {
 				if (ob == null) {
-					LOGGER.severe(String.format("Operation Base is null. Projection: %s, Base Projecion: %s", proj,
-							baseOperList));
-					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-							"Error : Operation Base is NULL");
+					msg = String.format("Operation Base is null. Projection: %s, Base Projecion: %s", proj,
+							baseOperList);
+					LOGGER.severe(msg);
+					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, msg);
 					return EReturnStatus.FAILURE;
 				}
 
-				LOGGER.finer(String.format("Operation: %s, ReadCapacity?: %s", ob, cap instanceof ReadCapability));
+				msg = String.format("Operation: %s, ReadCapacity?: %s", ob.getClass().getName(), cap instanceof ReadCapability);
+				LOGGER.log(Level.FINER, msg);
+				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processFilterAndJoin", msg));
 				if (cap instanceof ReadCapability) {
 					if (ob instanceof FilterOperation) {
-						LOGGER.finer(String.format("Filter Opeartion"));
 						FilterOperation filterOperation = (FilterOperation) ob;
 						if (filterOperation.isNativeFilter()) {
 							status = processNativeFilter(filterOperation);
@@ -362,18 +363,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						}
 					} else if (ob instanceof JoinOperation) {
 						JoinOperation joinOperation = (JoinOperation) ob;
-						LOGGER.finer(String.format("Join Opeartion. Is Native?: %s", joinOperation.isNativeJoin()));
+						LOGGER.log(Level.FINER,String.format("Join Opeartion. Is Native?: %s", joinOperation.isNativeJoin()));
 						if (joinOperation.isNativeJoin()) {
 							status = processNativeJoin(joinOperation);
 						} else {
 							status = processPlatformJoin(joinOperation);
 						}
 					} else if (ob instanceof SortOperation) {
-						LOGGER.finer(String.format("Sort Opeartion"));
 						status = processSortOperation((SortOperation) ob);
 
 					} else if (ob instanceof ProjectionOperation) {
-						LOGGER.finer(String.format("Projection Opeartion"));
 						status = processProjectionOperation((ProjectionOperation) ob);
 					}
 
@@ -383,9 +382,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				}
 			}
 		}
-		LOGGER.finer("<<");
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processFilterAndJoin:: end");
-
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -399,16 +395,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return status of the processing for filter operation
 	 */
 	private int processNativeFilter(FilterOperation nativeFilter) {
-		LOGGER.finer(String.format("FilterOperation: %s", nativeFilter));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processNativeFilter:: begin");
+		String msg = String.format("FilterOperation: %s, Filter Extension: %s", nativeFilter, nativeFilter.getFilterExpression());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processNativeFilter", msg));
 
 		m_FilterOperation = nativeFilter;
 		nativeFilterQuery = m_FilterOperation.getFilterExpression();
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"Native Filter expression " + m_FilterOperation.getFilterExpression());
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processNativeFilter:: end");
 
 		return EReturnStatus.SUCCESS;
 	}
@@ -423,8 +415,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return status of the processing for filter operation
 	 */
 	private int processPlatformFilter(FilterOperation platformFilter) {
-		LOGGER.finer(String.format("FilterOperation: %s", platformFilter));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processPlatformFilter:: begin");
+		String msg = String.format("FilterOperation: %s", platformFilter);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformFilter", msg));
 
 		m_FilterOperation = platformFilter;
 		SDKExpression expression = m_FilterOperation.getInfaSDKExpression();
@@ -434,14 +427,15 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			simpleLogicalOp = simpleExpr.getLogicalOperator().toString();
 
 			filterQuery = generateFilterClauseFromExpression(expression);
-			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, filterQuery);
+			msg = String.format("filterQuery: %s", filterQuery);
+			LOGGER.log(Level.FINER, msg);
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformFilter", msg));
 		} else {
-			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "Unsupported expression type");
+			msg = String.format("Unsupported expression type: %s", expression.getClass().getName());
+			LOGGER.log(Level.FINER, msg);
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformFilter", msg));
 			return EReturnStatus.FAILURE;
 		}
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processPlatformFilter:: end");
-
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -455,15 +449,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return status for the processing of join operation
 	 */
 	private int processNativeJoin(JoinOperation nativeJoin) {
-		LOGGER.finer(String.format("JoinOperation: %s", nativeJoin));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processNativeJoin:: begin");
-
+		String msg = String.format("JoinOperation: %s, JoinCondition: %s", nativeJoin, nativeJoin.getJoinCondition());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processNativeJoin", msg));
 		nativeJoinQuery = nativeJoin.getJoinCondition();
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"Native Join expression " + nativeJoin.getJoinCondition());
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processNativeJoin:: end");
-
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -477,14 +466,14 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return status for the processing of join operation
 	 */
 	private int processPlatformJoin(JoinOperation platformJoin) {
-		LOGGER.finer(String.format(
-				"JoinOperation: Name: %s," + " InfaSDKExpression: %s," + " Join Policy Enum: %s,"
-						+ " Foreign Key Relationship: %s," + " Join Condition: %s," + " Join Modifier: %s",
+		String msg = String.format(
+				"JoinOperation: Name: %s,InfaSDKExpression: %s, Join Policy Enum: %s,"
+						+ " Foreign Key Relationship: %s, Join Condition: %s, Join Modifier: %s",
 				platformJoin.getName(), platformJoin.getInfaSDKExpression().getExpressionString(),
 				platformJoin.getJoinPolicyEnum(), platformJoin.getForeignKeyRelationship(),
-				platformJoin.getJoinCondition(), platformJoin.getJoinModifier()));
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processPlatformJoin:: begin");
+				platformJoin.getJoinCondition(), platformJoin.getJoinModifier());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformJoin", msg));
 
 		SDKExpression expression = platformJoin.getInfaSDKExpression();
 		String jexpr = "";
@@ -503,19 +492,23 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			break;
 		}
 
-		LOGGER.finer(String.format("Join Expression: %s", expression.getExpressionString()));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"Join expression " + expression.getExpressionString());
+		msg = String.format("Join Expression: %s", expression.getExpressionString());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformJoin", msg));
 
 		if (expression instanceof SimpleSDKExpression) {
 			SimpleSDKExpression simpleExpr = (SimpleSDKExpression) expression;
 			simpleLogicalOp = simpleExpr.getLogicalOperator().toString();
-			LOGGER.finer(String.format("Simple Logical Op: %s", simpleLogicalOp));
+			msg = String.format("Simple Logical Op: %s", simpleLogicalOp);
+			LOGGER.log(Level.FINER, msg);
+			logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_VERBOSE_DATA, formatLog("processPlatformJoin", msg));
 
 			List<SimpleBinaryExpression> simplBinExprs = simpleExpr.getSimpleBinaryExpressions();
 
 			for (SimpleBinaryExpression simplBinExpr : simplBinExprs) {
-				LOGGER.finer(String.format("Simple Binary Expression: %s", simplBinExpr));
+				msg = String.format("Simple Binary Expression: %s", simplBinExpr);
+				LOGGER.log(Level.FINER, msg);
+				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_VERBOSE_DATA, formatLog("processPlatformJoin", msg));
 				jexpr += " " + simpleLogicalOp + " " + getResolvedJoinExpression(simplBinExpr);
 			}
 
@@ -523,19 +516,22 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			jexpr = jexpr.replaceFirst(simpleLogicalOp, "");
 			joinExprs.add(" ON " + jexpr);
 		} else {
-			LOGGER.severe(String.format("Unsupported expression type: %s", expression.getClass().getName()));
-			logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, "Unsupported expression type");
+			msg = String.format("Unsupported expression type: %s", expression.getClass().getName());
+			LOGGER.log(Level.SEVERE, msg);
+			logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, formatLog("processPlatformJoin", msg));
 			return EReturnStatus.FAILURE;
 		}
 
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processPlatformJoin:: end");
-		LOGGER.finer(String.format("JoinExprs: %s", joinExprs));
+		msg = String.format("JoinExprs: %s", joinExprs);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processPlatformJoin", msg));
 		return EReturnStatus.SUCCESS;
 	}
 
 	private int processProjectionOperation(ProjectionOperation ob) {
-		LOGGER.finer(String.format("ProjectionOperation: %s", ob));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processProjectionOperation:: ");
+		String msg = String.format("ProjectionOperation: %s, Select Type: %s", ob, ob.getSelectTypeEnum());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processProjectionOperation", msg));
 
 		ProjectionOperation po = (ProjectionOperation) ob;
 		// Get the type of return set for the lookup query
@@ -550,10 +546,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		 * selType.toString() .equalsIgnoreCase("ANY")) selectexpression =
 		 * " LIMIT 1";
 		 */
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "processProjectionOperation:: end");
 		return EReturnStatus.SUCCESS;
-
 	}
 
 	/**
@@ -565,9 +558,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return
 	 */
 	private int processSortOperation(SortOperation ob) {
-		LOGGER.finer(String.format("SortOperation: %s", ob));
-		List<FieldBase> sortFieldBase = ob.getSortFieldsList();
+		String msg = String.format(
+				"SortOperation: %s, Field Base: %s, Sort Order: %S",
+				ob, ob.getSortFieldsList(), ob.getSortOrdersEnumList());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("processSortOperation", msg));
 
+		List<FieldBase> sortFieldBase = ob.getSortFieldsList();
 		List<SortOrderEnum> sortOrderEnum = ob.getSortOrdersEnumList();
 		/*
 		 * String sortquery = ""; if (sortFieldBase.size() > 0) if
@@ -605,7 +602,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int beginDataSession(DataSession dataSession) {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s", dataSession));
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -621,7 +618,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int endDataSession(DataSession dataSession) {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s", dataSession));
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -637,8 +634,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int deinitDataSession(DataSession dataSession) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "deinitDataSession:: begin");
+		String msg = String.format("DataSession: %s", dataSession);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("deinitDataSession", msg));
 
 		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
@@ -651,7 +649,18 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				loader.finish();
 				loader.close();
 			} catch (Exception e1) {
-				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, e1.getMessage());
+				final String eMsg = e1.getMessage();
+				logger.logMessage(
+						EMessageLevel.MSG_ERROR,
+						ELogLevel.TRACE_NONE,
+						e1.getMessage());
+				throw new SDKException() {
+					private static final long serialVersionUID = 1L;
+
+					public String getMessage() {
+						return eMsg;
+					}					
+				};
 			}
 
 			// int operationType = runtimeMd.getRowIUDIndicator(0);
@@ -667,9 +676,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				opInd = EIUDIndicator.DELETE;
 				break;
 			default:
-				opInd = EIUDIndicator.INSERT; //Informatica does not support UPSERT
+				opInd = EIUDIndicator.INSERT; //Informatica does not support UPSERT yet
 			}
-			 
+
+			// TODO: SNOW-23802: deinit should be able to update the row stats
 			RowsStatInfo rowsStatInfo =
 					runtimeMetadataHandle.getRowsStatInfo(opInd);
 			
@@ -680,44 +690,35 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
 			rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-			LOGGER.finer(String.format(
+			
+			msg = String.format(
 					"Processed Record Count: %s, "
 					+ "Operation Record Count: %s, "
 					+ "Rejected Recourd Count: %s",
 					listener.getProcessedRecordCount(op),
 					listener.getOperationRecordCount(op),
-					listener.getRejectedRecordCount(op)));
+					listener.getRejectedRecordCount(op));
+			LOGGER.log(Level.FINER, msg);
 
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-					"deinit: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> "
-							+ listener.getProcessedRecordCount(op));
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-					"deinit: rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
-							+ listener.getOperationRecordCount(op));
-			logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-					"deinit: rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
-							+ listener.getRejectedRecordCount(op));
-
-			/*
-			 * } catch (Exception e1) {
-			 * logger.logMessage(EMessageLevel.MSG_INFO,
-			 * ELogLevel.TRACE_VERBOSE_DATA,
-			 * "deinitDataSession:: SDKException while setting processing status - "
-			 * + e1.getMessage()); } //END - Capture Processing Stats
-			 */
+			logger.logMessage(
+					EMessageLevel.MSG_INFO,
+					ELogLevel.TRACE_VERBOSE_DATA,
+					formatLog("deinitDataSession", msg));
 		}
-
-		try {
-			// Close result set
-			if (rs != null) {
-				rs.close();
+		else if (capability instanceof ReadCapability) {
+			try {
+				// Close result set
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+				LOGGER.log(Level.WARNING, e.getMessage());
+				logger.logMessage(
+						EMessageLevel.MSG_ERROR,
+						ELogLevel.TRACE_NONE,
+						formatLog("deinitDataSession", e.getMessage()));
 			}
-			// Close statements
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "deinitDataSession:: end");
-
 		return EReturnStatus.SUCCESS;
 	}
 
@@ -736,10 +737,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int read(DataSession dataSession, ReadAttributes readAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s," + " ReadAttributes: %s," + " Number of Rows to Read: %s",
-				dataSession, readAttr, readAttr.getNumRowsToRead()));
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "SnowflakeV2TableDataAdapter:Read:: begin");
+		String msg = String.format("DataSession: %s," + " ReadAttributes: %s," + " Number of Rows to Read: %s",
+				dataSession, readAttr, readAttr.getNumRowsToRead());
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("read", msg));
 
 		int rowsToRead = readAttr.getNumRowsToRead();
 		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
@@ -801,28 +802,28 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 
 			try {
-				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-						"SnowflakeV2TableDataAdapter:Read:: query: " + query);
+				msg = String.format("Query: %s", query);
+				LOGGER.log(Level.FINER, msg);
+				logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, formatLog("read", msg));
 
-				rs = ps.executeQuery(query);
+				resultSet = ps.executeQuery(query);
 			} catch (SQLException e1) {
 				ps.close();
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, e1.getMessage());
+				LOGGER.log(Level.SEVERE, e1.getMessage());
+				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, formatLog("read", e1.getMessage()));
 				return EReturnStatus.FAILURE;
 			}
 
 		} catch (SQLException se) {
+			LOGGER.log(Level.SEVERE, se.getMessage());
 			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, se.getMessage());
 			return EReturnStatus.FAILURE;
 		}
 
 		List<List<Object>> dataTable = new ArrayList<List<Object>>();
-
 		int returnStatus = readDatafromSource(dataSession, dataTable, rowsToRead);
 		setDataToPlatform(dataSession, dataTable);
 		readAttr.setNumRowsRead(dataTable.size());
-
-		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL, "SnowflakeV2TableDataAdapter:Read:: end");
 		return returnStatus;
 	}
 
@@ -835,9 +836,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return JOIN query including the native JOIN expression
 	 */
 	private String getNativeJoinQuery(List<FieldInfo> connectedFields) {
-		LOGGER.finer(String.format("ConnectedFields: %s", connectedFields));
+		String msg = String.format("ConnectedFields: %s", connectedFields);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_VERBOSE_DATA, formatLog("getNativeJoinQuery", msg));
 		String query = getQuery(connectedFields);
-
 		return query + " ON " + nativeJoinQuery;
 	}
 
@@ -850,10 +852,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return JOIN query along with the SDK JOIN expression
 	 */
 	private String getJoinQuery(List<FieldInfo> connectedFields) {
-		LOGGER.finer(String.format("ConnectedFields: %s", connectedFields));
+		LOGGER.log(Level.FINER,String.format("ConnectedFields: %s", connectedFields));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getJoinQuery:: begin");
+				"SnowflakeV2TableDataAdapter:getJoinQuery: begin");
 		String query = getGenericQuery(connectedFields);
 
 		FlatRecord fr1 = (FlatRecord) nativeRecords.get(0);
@@ -875,7 +877,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				query += " " + joinTypes.get(i - 1) + " " + tabName2;
 		}
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getJoinQuery:: end");
+				"SnowflakeV2TableDataAdapter:getJoinQuery: end");
 		return query;
 	}
 
@@ -887,10 +889,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return The prepared generic query
 	 */
 	private String getGenericQuery(List<FieldInfo> connectedFields) {
-		LOGGER.finer(String.format("ConnectedFields: %s", connectedFields));
+		LOGGER.log(Level.FINER,String.format("ConnectedFields: %s", connectedFields));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getGenericQuery:: begin");
+				"SnowflakeV2TableDataAdapter:getGenericQuery: begin");
 
 		// TODO: do we need this? selectdestinct. This is not used.
 		String query = "SELECT " + selectdestinct;
@@ -906,10 +908,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		query += " FROM ";
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getGenericQuery:: query: " + query);
+				"SnowflakeV2TableDataAdapter:getGenericQuery: query: " + query);
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getGenericQuery:: end");
+				"SnowflakeV2TableDataAdapter:getGenericQuery: end");
 		return query;
 	}
 
@@ -917,10 +919,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * Builds the read query from the connected fields
 	 */
 	private String getQuery(List<FieldInfo> connectedFields) {
-		LOGGER.finer(String.format("ConnectedFields: %s", connectedFields));
+		LOGGER.log(Level.FINER,String.format("ConnectedFields: %s", connectedFields));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getQuery:: begin");
+				"SnowflakeV2TableDataAdapter:getQuery: begin");
 
 		String query = "SELECT ";
 		boolean addComma = false;
@@ -935,10 +937,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		query += " FROM " + ((Record) nativeRecords.get(0)).getNativeName();
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getQuery:: query: " + query);
+				"SnowflakeV2TableDataAdapter:getQuery: query: " + query);
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getQuery:: end");
+				"SnowflakeV2TableDataAdapter:getQuery: end");
 		return query;
 	}
 
@@ -957,11 +959,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * 
 	 */
 	private int readDatafromSource(DataSession dataSession, List<List<Object>> dataTable, int rowsToRead) {
-		LOGGER.finer(String.format("DataSession: %s," + " DataTable: %s," + " RowsToRead: %s", dataSession, dataTable,
+		LOGGER.log(Level.FINER,String.format("DataSession: %s," + " DataTable: %s," + " RowsToRead: %s", dataSession, dataTable,
 				rowsToRead));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:readDatafromSource:: begin");
+				"SnowflakeV2TableDataAdapter:readDatafromSource: begin");
 
 		int rowsRead = 0;
 		int status = EReturnStatus.SUCCESS;
@@ -976,7 +978,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 
 			while (rowsRead < rowsToRead) {
-				if (!rs.next()) {
+				if (!resultSet.next()) {
 					status = EReturnStatus.NO_MORE_DATA;
 					break;
 				}
@@ -985,9 +987,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				for (int i = 0; i < connectedFields.size(); i++) {
 					String dataType = connectedFields.get(i).field.getNativeFieldRef().getDataType();
 					if ("BOOLEAN".equalsIgnoreCase(dataType) || "OBJECT".equalsIgnoreCase(dataType)) {
-						datarow.add(rs.getString(i + 1));
+						datarow.add(resultSet.getString(i + 1));
 					} else {
-						datarow.add(rs.getObject(i + 1));
+						datarow.add(resultSet.getObject(i + 1));
 					}
 				}
 
@@ -1005,7 +1007,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		setSnowflakeUserContext(dataSession, muc);
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:readDatafromSource:: end");
+				"SnowflakeV2TableDataAdapter:readDatafromSource: end");
 		return status;
 	}
 
@@ -1027,10 +1029,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 *            single row.
 	 */
 	private void setDataToPlatform(DataSession dataSession, List<List<Object>> dataTable) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, DataTable: %s", dataSession, dataTable));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s, DataTable: %s", dataSession, dataTable));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:setDataToPlatform:: begin");
+				"SnowflakeV2TableDataAdapter:setDataToPlatform: begin");
 
 		for (int row = 0; row < dataTable.size(); row++) {
 			List<Object> rowData = dataTable.get(row);
@@ -1055,7 +1057,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						String boolValue = data.toString();
 
 						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-								"setDataToPlatform:: boolValue : " + boolValue + " pDataAttributes.getIndicator() : "
+								"setDataToPlatform: boolValue : " + boolValue + " pDataAttributes.getIndicator() : "
 										+ pDataAttributes.getIndicator());
 
 						if ("true".equalsIgnoreCase(boolValue) || "t".equalsIgnoreCase(boolValue)
@@ -1067,7 +1069,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 							data = "false";
 						}
 						logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-								"setDataToPlatform:: data : " + data);
+								"setDataToPlatform: data : " + data);
 
 					} else if ("OBJECT".equalsIgnoreCase(nativeType)) {
 
@@ -1280,7 +1282,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		}
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:setDataToPlatform:: end");
+				"SnowflakeV2TableDataAdapter:setDataToPlatform: end");
 
 	}
 
@@ -1313,7 +1315,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int write(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s," + " WriteAttributes: %s," + " Number of Rows to Write: %s",
+		LOGGER.log(Level.FINER,String.format("DataSession: %s," + " WriteAttributes: %s," + " Number of Rows to Write: %s",
 				dataSession, writeAttr, writeAttr.getNumRowsToWrite()));
 
 		// Get runtime config metadata handle
@@ -1324,7 +1326,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		int operationType = runtimeMd.getRowIUDIndicator(0);
 
 		String operationTypeString = this.getOperationTypeString(operationType);
-		LOGGER.finer(String.format("Operation Type: %s", operationTypeString));
+		LOGGER.log(Level.FINER,String.format("Operation Type: %s", operationTypeString));
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 				"write:begin Operation Type: " + operationTypeString);
 
@@ -1379,7 +1381,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
 		rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-		LOGGER.finer(String.format(
+		LOGGER.log(Level.FINER,String.format(
 				"Processed Record Count: %s, "
 				+ "Operation Record Count: %s, "
 				+ "Rejected Recourd Count: %s",
@@ -1438,7 +1440,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return Returns comma separated list of columns from the target table.
 	 */
 	private String getTargetColumnList() {
-		LOGGER.finer(">>");
+		LOGGER.log(Level.FINER,">>");
 		String colList = "";
 		if (null == connectedFields || connectedFields.size() == 0) {
 			return null;
@@ -1464,7 +1466,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @throws SnowflakeV2OperationNotSupportedException
 	 */
 	private ExecutionType getQueryExecType(boolean isBulk) throws SnowflakeV2OperationNotSupportedException {
-		LOGGER.finer(String.format("IsBulk: %s", isBulk));
+		LOGGER.log(Level.FINER,String.format("IsBulk: %s", isBulk));
 		String nativeType = "";
 		boolean hasSemiStructure = false;
 		boolean hasDateTime = false;
@@ -1538,7 +1540,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 *         <code>PreparedStatement</code>
 	 */
 	private String getSingleInsertQuery(String tableName) {
-		LOGGER.finer(String.format("TableName: %s", tableName));
+		LOGGER.log(Level.FINER,String.format("TableName: %s", tableName));
 		String insertSQL = "SELECT ";
 
 		String nativeType = "";
@@ -1567,7 +1569,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	}
 
 	private String getQueryFieldPlaceHolder(BasicProjectionField field) {
-		LOGGER.finer(String.format("BasicProjectionField: %s", field));
+		LOGGER.log(Level.FINER,String.format("BasicProjectionField: %s", field));
 		String nativeType = field.getNativeFieldRef().getDataType();
 		String placeHolder = "?";
 		switch (nativeType) {
@@ -1603,7 +1605,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private String getDataValueFromPlatform(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField", dataSession,
+		LOGGER.log(Level.FINER,String.format("DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField", dataSession,
 				pDataAttributes, field));
 
 		String dataValue = "";
@@ -1684,7 +1686,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private void setDataValueToNativeSink(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field, PreparedStatement pstmt, int index) throws SDKException, SQLException {
-		LOGGER.finer(
+		LOGGER.log(Level.FINER,
 				String.format(
 						"DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField: %s, "
 								+ "PreparedStatement: %s, " + "Index: %s",
@@ -1709,7 +1711,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					pstmt.setNull(index, Types.BOOLEAN);
 				} else {
 					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-							"setDataValueToNativeSink:: strDataValue : " + strDataValue);
+							"setDataValueToNativeSink: strDataValue : " + strDataValue);
 
 					if ("t".equalsIgnoreCase(strDataValue) || "true".equalsIgnoreCase(strDataValue)
 							|| "yes".equalsIgnoreCase(strDataValue) || "y".equalsIgnoreCase(strDataValue)
@@ -1721,7 +1723,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					}
 
 					logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-							"setDataValueToNativeSink:: boolValue : " + boolValue);
+							"setDataValueToNativeSink: boolValue : " + boolValue);
 
 					pstmt.setBoolean(index, boolValue);
 					pDataAttributes.setIndicator((short) 0);
@@ -1840,7 +1842,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	// Unused.
 	private void setUpdateDataValueToNativeSink(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field, PreparedStatement pstmt, int index) throws SDKException, SQLException {
-		LOGGER.finer(
+		LOGGER.log(Level.FINER,
 				String.format(
 						"DataSession: %s, " + "DataAttributes: %s, " + "BasicProjectionField: %s, "
 								+ "PreparedStatement: %s, " + "Index: %s",
@@ -1998,7 +2000,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int reset(DataSession dataSession) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s", dataSession));
 
 		SDKExpression expression;
 
@@ -2038,9 +2040,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return a where clause
 	 */
 	private String generateFilterClauseFromExpression(SDKExpression expression) {
-		LOGGER.finer(String.format("SDKExpression: %s", expression));
+		LOGGER.log(Level.FINER,String.format("SDKExpression: %s", expression));
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression:: begin");
+				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: begin");
 
 		SimpleSDKExpression simpleExpr = (SimpleSDKExpression) expression;
 		List<SimpleBinaryExpression> pBinExprsList = simpleExpr.getSimpleBinaryExpressions();
@@ -2077,18 +2079,18 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		filterExpression = filterExpression.substring(0, filterExpression.lastIndexOf(simpleLogicalOp));
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression:: filterExpression: "
+				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: filterExpression: "
 						+ filterExpression);
 
 		logger.logMessage(EMessageLevel.MSG_DEBUG, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression:: end");
+				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: end");
 
 		return filterExpression;
 	}
 
 	// Fetches the operand if its an instance of the Field
 	private String getFieldOperand(String filterExpression, FieldIdentifier pFieldIden) {
-		LOGGER.finer(String.format("FilterExpression: %s, FieldIdentifier: %s", filterExpression, pFieldIden));
+		LOGGER.log(Level.FINER,String.format("FilterExpression: %s, FieldIdentifier: %s", filterExpression, pFieldIden));
 		Field efield = (Field) pFieldIden.getNativeFieldRef();
 		if (efield != null) {
 			filterExpression += efield.getNativeName();
@@ -2110,7 +2112,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 *         party.
 	 */
 	private String buildTabName(String nativeName) {
-		LOGGER.finer(String.format("NativeName: %s", nativeName));
+		LOGGER.log(Level.FINER,String.format("NativeName: %s", nativeName));
 		// 17-Jun-2016: Using native name in Snowflake queries is not supported.
 		// Input is not in the native name format.
 		// So, commenting out this splitting-logic and returning the input as it
@@ -2130,7 +2132,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 
 	private String getOperator(BinaryOperatorEnum binaryOperator) {
-		LOGGER.finer(String.format("BinaryOperatorEnum: %s", binaryOperator));
+		LOGGER.log(Level.FINER,String.format("BinaryOperatorEnum: %s", binaryOperator));
 		switch (binaryOperator) {
 		case EQUALS:
 			return "=";
@@ -2164,7 +2166,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return a constant value
 	 */
 	private String getConstantOperand(String filterExpression, Constant eConstant) {
-		LOGGER.finer(String.format("FieldExpression: %s, Constant: %s", filterExpression, eConstant));
+		LOGGER.log(Level.FINER,String.format("FieldExpression: %s, Constant: %s", filterExpression, eConstant));
 		if (eConstant instanceof DecimalConstant) {
 			BigDecimal eValue = ((DecimalConstant) eConstant).getDecimalDataValue();
 			// TODO: format double with precision and scale
@@ -2220,12 +2222,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	}
 
 	private void setSnowflakeUserContext(DataSession dataSession, SnowflakeV2UserContext muc) {
-		LOGGER.finer(String.format("DataSession: %s, SnowflakeV2UserContext: %s", dataSession, muc));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s, SnowflakeV2UserContext: %s", dataSession, muc));
 		dataSession.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata).setUserHandle(muc);
 	}
 
 	private SnowflakeV2UserContext getSnowflakeUserContext(DataSession dataSession) {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s", dataSession));
 		return (SnowflakeV2UserContext) dataSession.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata)
 				.getUserHandle();
 	}
@@ -2267,7 +2269,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		SINGLE, // Execute queries one by one. No option to improve performance
 		BATCH, // Use PreparedStatement and batch up for improved performance
-		BULK, // Create a Single query appending all values, if user opts for
+		BULK, // Create a Single query appending all values, if luser opts for
 				// Bulk write
 		NOP // Request cannot be processed. Applicable when user opts for Bulk
 			// Write
@@ -2280,14 +2282,14 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	public void logDebugMessage(String caller, String method, String message) {
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				caller + ":" + method + ":: " + message);
+				caller + ":" + method + ": " + message);
 	}
 
 	/**
 	 * Kicks off the bulk loader process (threads)
 	 */
 	private void initBulkLoader(DataSession dataSession) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s", dataSession));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s", dataSession));
 
 		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
 
@@ -2295,27 +2297,27 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		String schema = conn.getSchema();
 
 		String tableName = currentFlatRecord.getName();
-		LOGGER.finer(
+		LOGGER.log(Level.FINER,
 				String.format("Table Name: %s, Table Native Name: %s", tableName, currentFlatRecord.getNativeName()));
 
 		List<String> columnsList = new ArrayList<>();
 		for (FieldInfo fieldInfo : connectedFields) {
 			columnsList.add(fieldInfo.field.getName());
 		}
-		LOGGER.finer(String.format("Column List: %s", columnsList));
+		LOGGER.log(Level.FINER,String.format("Column List: %s", columnsList));
 
 		List<Field> pkFields = new ArrayList<>();
 		PrimaryKey pk = currentFlatRecord.getPrimaryKey();
 		if (null != pk && null != pk.getFieldList() && !pk.getFieldList().isEmpty()) {
 			pkFields.addAll(pk.getFieldList());
 		}
-		LOGGER.finer(String.format("Primary Key Fields: %s", pkFields));
+		LOGGER.log(Level.FINER,String.format("Primary Key Fields: %s", pkFields));
 
 		List<String> pkColumns = new ArrayList<>();
 		for (Field pkField : pkFields) {
 			pkColumns.add(pkField.getName());
 		}
-		LOGGER.finer(String.format("Primary Key Columns: %s", pkColumns));
+		LOGGER.log(Level.FINER,String.format("Primary Key Columns: %s", pkColumns));
 
 		RecordMeta recordMeta = new RecordMeta();
 		recordMeta.setCatalogName(db);
@@ -2446,7 +2448,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	}
 
 	private int submitDataToLoader(DataSession dataSession, int numberOfRows) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, NoOfRows: %s", dataSession, numberOfRows));
+		LOGGER.log(Level.FINER,String.format("DataSession: %s, NoOfRows: %s", dataSession, numberOfRows));
 
 		loader.resetOperation(op);
 		((BulkLoadResultListener) loader.getListener()).setOperation(op);
@@ -2463,7 +2465,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				for (int fieldIndex = 0; fieldIndex < noOfCols; fieldIndex++) {
 
 					FieldInfo fieldInfo = connectedFields.get(fieldIndex);
-					LOGGER.finer(String.format(
+					LOGGER.log(Level.FINER,String.format(
 							"FieldInfo: "
 							+ " Index: %s,"
 							+ " Field Name: %s,"
@@ -2518,13 +2520,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	private Object getDataObjectValueFromPlatform(DataSession dataSession, DataAttributes pDataAttributes,
 			BasicProjectionField field) throws SDKException {
-		LOGGER.finer(String.format("DataSession: %s, DataAttributes: %s, BasicProjectionField: %s", dataSession,
+		LOGGER.log(Level.FINER,String.format("DataSession: %s, DataAttributes: %s, BasicProjectionField: %s", dataSession,
 				pDataAttributes, field));
 
 		String dataValue = "";
 		Object objValue = null;
 
-		LOGGER.finer(String.format("Data Type: %s", field.getDataType()));
+		LOGGER.log(Level.FINER,String.format("Data Type: %s", field.getDataType()));
 		switch (field.getDataType().toLowerCase()) {
 		case "string":
 		case "text":
@@ -2599,5 +2601,9 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private final boolean isNullOrEmpty(String str) {
 		return str == null || str.length() == 0;
+	}
+	
+	private final String formatLog(String methodName, String msg) {
+		return SnowflakeV2TableDataAdapter.class.getSimpleName() + "." + methodName + ": " + msg;
 	}
 }

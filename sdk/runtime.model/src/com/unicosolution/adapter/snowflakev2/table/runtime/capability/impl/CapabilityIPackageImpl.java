@@ -175,12 +175,12 @@ implements com.unicosolution.adapter.snowflakev2.table.runtime.capability.Capabi
     private com.informatica.imf.icore.IClass tableLookupCapabilityAttributesExtensionIClass = null;
     private com.informatica.imf.icore.IClass tableReadCapabilityAttributesExtensionIClass = null;
     private com.informatica.imf.icore.IClass tableWriteCapabilityAttributesExtensionIClass = null;
-    private static com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl theComInformaticaMetadataCommonParameterIPackage = (com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl)com.informatica.metadata.common.parameter.ParameterIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
-    private static com.informatica.metadata.common.types.impl.TypesIPackageImpl theComInformaticaMetadataCommonTypesIPackage = (com.informatica.metadata.common.types.impl.TypesIPackageImpl)com.informatica.metadata.common.types.TypesIPackage.I_INSTANCE;
     private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
     private static com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl theComInformaticaAdapterSdkadapterAsoextensionIPackage = (com.informatica.adapter.sdkadapter.asoextension.impl.AsoextensionIPackageImpl)com.informatica.adapter.sdkadapter.asoextension.AsoextensionIPackage.I_INSTANCE;
     private static com.informatica.metadata.common.core.impl.CoreIPackageImpl theComInformaticaMetadataCommonCoreIPackage = (com.informatica.metadata.common.core.impl.CoreIPackageImpl)com.informatica.metadata.common.core.CoreIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.types.impl.TypesIPackageImpl theComInformaticaMetadataCommonTypesIPackage = (com.informatica.metadata.common.types.impl.TypesIPackageImpl)com.informatica.metadata.common.types.TypesIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl theComInformaticaMetadataCommonParameterIPackage = (com.informatica.metadata.common.parameter.impl.ParameterIPackageImpl)com.informatica.metadata.common.parameter.ParameterIPackage.I_INSTANCE;
     private CapabilityIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.table.runtime.capability.CapabilityIFactory.I_INSTANCE);
         // set all the package-info

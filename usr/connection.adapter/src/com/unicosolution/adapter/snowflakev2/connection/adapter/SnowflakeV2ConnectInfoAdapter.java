@@ -26,8 +26,8 @@ import java.util.logging.SimpleFormatter;
 
 public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAdapter {
 	public static final String CONNECTOR_NAMESPACE = "com.unicosolution";
-	public static final String JDBC_NAMESPACE = "com.snowflake";
-	public static final String SYSTEM_PROPERTY_NAMESPACE = "com.snowflake.connector.informatica.";
+	public static final String JDBC_NAMESPACE = "net.snowflake";
+	public static final String SYSTEM_PROPERTY_NAMESPACE = "net.snowflake.connector.informatica.";
 	public static final Level DEFAULT_LOG_LEVEL = Level.SEVERE;
 
 	private Logger LOGGER = Logger.getLogger(SnowflakeV2ConnectInfoAdapter.class.getName());
@@ -35,8 +35,8 @@ public class SnowflakeV2ConnectInfoAdapter extends SnowflakeV2BaseConnectInfoAda
 	static {
 		/**
 		 * Configures logger to output to a file. Two System parameters: -
-		 * com.snowflake.connector.informatica.logging.level: Log Level -
-		 * com.snowflake.connector.informatica.logging.filename: Log file name
+		 * net.snowflake.connector.informatica.logging.level: Log Level -
+		 * net.snowflake.connector.informatica.logging.filename: Log file name
 		 */
 		String userLogLevel = System.getProperty(SYSTEM_PROPERTY_NAMESPACE + "logging.level");
 		if (userLogLevel != null) {

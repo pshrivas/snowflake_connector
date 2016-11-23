@@ -54,12 +54,12 @@ public class AdapterFactory extends SAD_Factory
         MapEntry entry;
         entry = new MapEntry("com.unicosolution.adapter.snowflakev2.runtime.aso.semantic.auto.SAComplexASO", "com.unicosolution.adapter.snowflakev2.runtime.aso.objectmanager.auto.MAComplexASO");
         addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.runtime.aso.ComplexASO", entry);
-        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableWriteCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableWriteCapabilityAttributesExtension");
-        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension", entry);
-        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableReadCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableReadCapabilityAttributesExtension");
-        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableReadCapabilityAttributesExtension", entry);
         entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableLookupCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableLookupCapabilityAttributesExtension");
         addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableLookupCapabilityAttributesExtension", entry);
+        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableReadCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableReadCapabilityAttributesExtension");
+        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableReadCapabilityAttributesExtension", entry);
+        entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableWriteCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableWriteCapabilityAttributesExtension");
+        addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension", entry);
         entry = new MapEntry("com.unicosolution.adapter.snowflakev2.table.runtime.capability.semantic.auto.SATableCallCapabilityAttributesExtension", "com.unicosolution.adapter.snowflakev2.table.runtime.capability.objectmanager.auto.MATableCallCapabilityAttributesExtension");
         addMapping(_AdapterFactory_map, "com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableCallCapabilityAttributesExtension", entry);
         entry = new MapEntry(null, "com.unicosolution.adapter.snowflakev2.runtime.semantic.manual.SnowflakeV2ASOOperationObjMgr");

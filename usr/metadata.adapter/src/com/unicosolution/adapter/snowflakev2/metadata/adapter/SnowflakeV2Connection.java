@@ -29,9 +29,9 @@ import java.util.logging.Logger;
 import com.informatica.sdk.adapter.metadata.common.Status;
 import com.informatica.sdk.adapter.metadata.common.StatusEnum;
 import com.informatica.sdk.adapter.metadata.provider.AbstractConnection;
-import com.snowflake.client.loader.Loader;
-import com.snowflake.client.loader.LoaderFactory;
-import com.snowflake.client.loader.LoaderProperty;
+import net.snowflake.client.loader.Loader;
+import net.snowflake.client.loader.LoaderFactory;
+import net.snowflake.client.loader.LoaderProperty;
 
 public class SnowflakeV2Connection extends AbstractConnection {
 	Logger LOGGER = Logger.getLogger(SnowflakeV2Connection.class.getName());
@@ -126,7 +126,7 @@ public class SnowflakeV2Connection extends AbstractConnection {
 			connectionURL = customURL;
 		}
 
-		String JDBC_DRIVER = "com.snowflake.client.jdbc.SnowflakeDriver";
+		String JDBC_DRIVER = "net.snowflake.client.jdbc.SnowflakeDriver";
 
 		try {
 			Class.forName(JDBC_DRIVER);

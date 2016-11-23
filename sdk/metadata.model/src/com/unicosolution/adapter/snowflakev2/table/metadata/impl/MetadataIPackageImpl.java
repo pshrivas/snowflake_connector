@@ -78,8 +78,8 @@ implements com.unicosolution.adapter.snowflakev2.table.metadata.MetadataIPackage
 
     private com.informatica.imf.icore.IClass tableFieldExtensionsIClass = null;
     private com.informatica.imf.icore.IClass tableRecordExtensionsIClass = null;
-    private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
     private static com.informatica.imf.icore.impl.IcoreIPackageImpl theComInformaticaImfIcoreIPackage = (com.informatica.imf.icore.impl.IcoreIPackageImpl)com.informatica.imf.icore.IcoreIPackage.I_INSTANCE;
+    private static com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl theComInformaticaMetadataCommonModelextensionIPackage = (com.informatica.metadata.common.modelextension.impl.ModelextensionIPackageImpl)com.informatica.metadata.common.modelextension.ModelextensionIPackage.I_INSTANCE;
     private static com.informatica.adapter.sdkadapter.logical.impl.LogicalIPackageImpl theComInformaticaAdapterSdkadapterLogicalIPackage = (com.informatica.adapter.sdkadapter.logical.impl.LogicalIPackageImpl)com.informatica.adapter.sdkadapter.logical.LogicalIPackage.I_INSTANCE;
     private MetadataIPackageImpl() {
         super(com.unicosolution.adapter.snowflakev2.table.metadata.MetadataIFactory.I_INSTANCE);

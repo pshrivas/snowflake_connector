@@ -251,15 +251,7 @@
          <WorkflowTask id="NMO_METADATA_FIELD_MODEL_table" taskType="NMO_METADATA_FIELD_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_OPERATIONS_table" taskType="NMO_RUNTIME_OPERATIONS" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_MODEL_table" taskType="NMO_RUNTIME_MODEL" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
-         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
-            <DepenendentTasks>
-               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
-               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
-               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
-               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
-            </DepenendentTasks>
-         </WorkflowTask>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="TEST_NMO_READ_table" taskType="TEST_NMO_READ" componentName="table" status="NONE" taskKind="TestTask">
             <DepenendentTasks>
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
@@ -270,18 +262,38 @@
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
             </DepenendentTasks>
          </WorkflowTask>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
+            <DepenendentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+            </DepenendentTasks>
+         </WorkflowTask>
       </WorkflowTasks>
    </ConnectorWorkflow>
    <ProjectConfiguration>
       <BuildConfigurations>
          <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-2.7.100.1" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-3.0.2" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
          <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-2.7.100.1" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-3.0.2" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
       </BuildConfigurations>
