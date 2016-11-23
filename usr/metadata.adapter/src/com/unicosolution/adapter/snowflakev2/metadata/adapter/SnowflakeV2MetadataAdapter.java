@@ -201,10 +201,9 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.severe(String.format("Failed to get metadata: %s", e.getMessage(), e));
+			LOGGER.log(Level.SEVERE, String.format("Failed to get metadata: %s", e.getMessage()), e);
 			return false;
 		}
-
 		return true;
 	}
 
