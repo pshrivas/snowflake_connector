@@ -720,8 +720,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			}
 		}
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NONE,
-				formatLog("deinitDataSession",
-						(returnStatus == EReturnStatus.SUCCESS ? "SUCCESS" : "FAILURE")));
+				formatLog("deinitDataSession", (returnStatus == EReturnStatus.SUCCESS ? "SUCCESS" : "FAILURE")));
 		return returnStatus;
 	}
 
@@ -1324,10 +1323,27 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// Checking the first row is good enough
 		int operationType = runtimeMd.getRowIUDIndicator(0);
 
+		ASOOperation asoOperation = runtimeMd.getAdapterDataSourceOperation();
+		WriteCapabilityAttributes currPartInfo = asoOperation.getWriteCapabilityAttributes();
+
+		String writerPartID = null;
+		boolean bulkLoad = false;
+		boolean isUpsert = false;
+
+		if (currPartInfo != null) {
+			SEMTableWriteCapabilityAttributesExtension partAttris = (SEMTableWriteCapabilityAttributesExtension) (currPartInfo)
+					.getExtensions();
+			// TODO: fix this
+			// writerPartID = partAttris.getPartitionID();
+			bulkLoad = partAttris.isBulkLoad();
+			// isUpsert = partAttris.getUpdateMode().equalsIgnoreCase("Update As
+			// Update")?false:true;
+		}
+
 		String operationTypeString = this.getOperationTypeString(operationType);
-		LOGGER.log(Level.FINER, String.format("Operation Type: %s", operationTypeString));
+		LOGGER.log(Level.FINER, String.format("Operation Type: %s, is Upsert?: %s", operationTypeString, isUpsert));
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"write:begin Operation Type: " + operationTypeString);
+				"write:begin Operation Type: " + operationTypeString + ", isUpsert: " + isUpsert);
 
 		int returnStatus = EReturnStatus.FAILURE;
 
@@ -1339,7 +1355,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			op = Operation.DELETE;
 			break;
 		case EIUDIndicator.UPDATE:
-			op = Operation.MODIFY;
+			if (!isUpsert) {
+				op = Operation.MODIFY;
+			} else {
+				op = Operation.UPSERT;
+			}
 			break;
 
 		default: // Default is INSERT
@@ -1361,21 +1381,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
 		rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-		LOGGER.log(Level.FINER,
-				String.format(
-						"Processed Record Count: %s, " + "Operation Record Count: %s, " + "Rejected Recourd Count: %s",
-						listener.getProcessedRecordCount(op), listener.getOperationRecordCount(op),
-						listener.getRejectedRecordCount(op)));
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"write: rowsStatInfo.incrementApplied(listener.getProcessedRecordCount(op)) -> "
-						+ listener.getProcessedRecordCount(op));
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"write: rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op)) -> "
-						+ listener.getOperationRecordCount(op));
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"write: rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op)) -> "
-						+ listener.getRejectedRecordCount(op));
+		String msg = String.format("Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
+				listener.getProcessedRecordCount(op), listener.getOperationRecordCount(op),
+				listener.getRejectedRecordCount(op));
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, "write: " + msg);
 
 		// Restart the loader, for potentially subsequent calls to "write"
 		// method by the platform
@@ -2418,7 +2428,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					FieldInfo fieldInfo = connectedFields.get(fieldIndex);
 					LOGGER.log(Level.FINER,
 							String.format(
-									"FieldInfo: " + " Index: %s," + " Field Name: %s," + " Field Native Ref Name: %s,"
+									"FieldInfo: Index: %s, Field Name: %s, Field Native Ref Name: %s,"
 											+ " Field Native Ref Native Name: %s",
 									fieldInfo.index, fieldInfo.field.getName(),
 									fieldInfo.field.getNativeFieldRef().getName(),

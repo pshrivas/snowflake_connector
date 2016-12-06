@@ -1,28 +1,18 @@
 package com.unicosolution.adapter.snowflakev2.metadata.adapter;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URI;
-import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
-import java.sql.DriverPropertyInfo;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -220,7 +210,8 @@ public class SnowflakeV2Connection extends AbstractConnection {
 		prop.put(LoaderProperty.tableName, recordInfo.getRecordName());
 		prop.put(LoaderProperty.schemaName, getSchema());
 		prop.put(LoaderProperty.databaseName, getCatalog());
-		prop.put(LoaderProperty.remoteStage, "~");
+		prop.put(LoaderProperty.remoteStage, "~"); // use the user stage at all
+													// times
 		prop.put(LoaderProperty.keys, recordInfo.getKeys());
 		prop.put(LoaderProperty.columns, recordInfo.getColumns());
 
@@ -229,127 +220,6 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 		return loader;
 
-	}
-
-	/**
-	 * Inner class.<br>
-	 * Custom driver class loader for loading the third party jar.
-	 * 
-	 * TODO: Shige: o we still need this?
-	 */
-	public static class DriverClassLoader extends URLClassLoader {
-
-		private static final String SYSTEM_CLASSPATH = System.getenv("CLASSPATH");
-		private static final String INFA_JAVA_CMD_CLASSPATH = System.getenv("INFA_JAVA_CMD_CLASSPATH");
-		private static final String OSNAME = "os.name";
-
-		public DriverClassLoader(ClassLoader parent) throws MalformedURLException {
-			super(getClassPathURL(parent), parent);
-		}
-
-		private static URL[] getClassPathURL(ClassLoader parentLoader) throws MalformedURLException {
-			List<URL> jars;
-
-			jars = getClassPathURL(parentLoader, INFA_JAVA_CMD_CLASSPATH);
-			jars.addAll(getClassPathURL(parentLoader, SYSTEM_CLASSPATH));
-
-			URL[] urlArray = new URL[jars.size()];
-			return jars.toArray(urlArray);
-		}
-
-		private static List<URL> getClassPathURL(ClassLoader parentLoader, String classpathVariable)
-				throws MalformedURLException {
-			List<URL> jars = new ArrayList<URL>();
-			if (classpathVariable == null)
-				return jars;
-
-			Properties prop = System.getProperties();
-			String osName = ((String) prop.get(OSNAME)).toUpperCase();
-
-			StringTokenizer st1;
-			if (osName.indexOf("WIN") >= 0)
-				st1 = new StringTokenizer(classpathVariable, ";");
-			else
-				st1 = new StringTokenizer(classpathVariable, ":");
-
-			String jarName;
-			File jarFile;
-			while (st1.hasMoreTokens()) {
-				jarName = st1.nextToken();
-				if (jarName.endsWith("*")) {
-					// it should be directory
-					int len = jarName.length();
-					String directoryName = jarName.substring(0, len - 1);
-					File directoryFile = new File(directoryName);
-					if (directoryFile.isDirectory()) {
-						addDirectory(jars, directoryFile);
-					}
-				} else if (jarName.toUpperCase(Locale.ENGLISH).endsWith(".JAR")) {
-					jarFile = new File(jarName);
-					try {
-						jars.add(jarFile.toURI().toURL());
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			return jars;
-		}
-
-		private static void addDirectory(List<URL> jars, File directoryFile) throws MalformedURLException {
-			for (File f : directoryFile.listFiles()) {
-				if (f.isDirectory()) {
-					addDirectory(jars, f);
-				} else if (f.getName().toUpperCase(Locale.ENGLISH).endsWith(".JAR")) {
-					jars.add(f.toURI().toURL());
-				}
-			}
-		}
-	}
-
-	/**
-	 * Inner class.<br>
-	 * Custom driver wrapper class
-	 * 
-	 * TODO: Shige: o we still need this?
-	 */
-
-	public class DriverWrapper implements Driver {
-		private Driver driver;
-
-		public DriverWrapper(Driver d) {
-			this.driver = d;
-		}
-
-		public boolean acceptsURL(String u) throws SQLException {
-			return this.driver.acceptsURL(u);
-		}
-
-		public Connection connect(String u, Properties p) throws SQLException {
-			return this.driver.connect(u, p);
-		}
-
-		public int getMajorVersion() {
-			return this.driver.getMajorVersion();
-		}
-
-		public int getMinorVersion() {
-			return this.driver.getMinorVersion();
-		}
-
-		public DriverPropertyInfo[] getPropertyInfo(String u, Properties p) throws SQLException {
-			return this.driver.getPropertyInfo(u, p);
-		}
-
-		public boolean jdbcCompliant() {
-			return this.driver.jdbcCompliant();
-		}
-
-		@Override
-		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-			return this.driver.getParentLogger();
-		}
 	}
 
 	/**
