@@ -60,8 +60,8 @@ public class MATableFieldExtensions extends MAL_ModelExtensionFieldBase implemen
     public boolean validate_defaultColValue(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.metadata.TableFieldExtensions.Properties.DEFAULT_COL_VALUE);
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.metadata.TableFieldExtensions.Properties.DEFAULT_COL_VALUE);
         return rc;
 
     }

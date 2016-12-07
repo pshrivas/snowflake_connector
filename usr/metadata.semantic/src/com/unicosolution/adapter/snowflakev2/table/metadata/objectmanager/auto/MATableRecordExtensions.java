@@ -51,8 +51,8 @@ public class MATableRecordExtensions extends MAL_ModelExtensionNode implements O
     public boolean validate_tableType(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.metadata.TableRecordExtensions.Properties.TABLE_TYPE);
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.metadata.TableRecordExtensions.Properties.TABLE_TYPE);
         return rc;
 
     }

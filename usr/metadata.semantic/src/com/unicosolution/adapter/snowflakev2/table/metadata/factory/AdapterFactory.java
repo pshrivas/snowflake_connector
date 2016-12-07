@@ -36,7 +36,7 @@ public class AdapterFactory extends SP_Factory implements SEMFactory
 
 
     /** Map contains assoications between IMF interfaces and semantic/validator classes */
-    private static HashMap<String, MapEntry> _AdapterFactory_map = new HashMap<String, MapEntry>();
+    private static java.util.concurrent.ConcurrentHashMap<String, MapEntry> _AdapterFactory_map = new java.util.concurrent.ConcurrentHashMap<String, MapEntry>();
 
     /** Get mapping for this IMF class. Delegate upwards if not found */
     public MapEntry getMapping(String imfInterfaceClass) throws SL_Exception

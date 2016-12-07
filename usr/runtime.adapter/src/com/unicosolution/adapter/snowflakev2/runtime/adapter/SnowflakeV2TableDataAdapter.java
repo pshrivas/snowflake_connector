@@ -1333,11 +1333,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		if (currPartInfo != null) {
 			SEMTableWriteCapabilityAttributesExtension partAttris = (SEMTableWriteCapabilityAttributesExtension) (currPartInfo)
 					.getExtensions();
-			// TODO: fix this
-			// writerPartID = partAttris.getPartitionID();
 			bulkLoad = partAttris.isBulkLoad();
-			// isUpsert = partAttris.getUpdateMode().equalsIgnoreCase("Update As
-			// Update")?false:true;
+			isUpsert = partAttris.getUpdateMode().equalsIgnoreCase("Update As Update")?false:true;
 		}
 
 		String operationTypeString = this.getOperationTypeString(operationType);
@@ -2386,7 +2383,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		try {
 
-			LOGGER.info(String.format("Writing data start"));
+			LOGGER.log(Level.FINE, String.format("Writing data start"));
 			loader.start();
 
 		} catch (Exception e) {

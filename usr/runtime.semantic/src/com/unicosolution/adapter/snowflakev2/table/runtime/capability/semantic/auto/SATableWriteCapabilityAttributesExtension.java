@@ -42,6 +42,7 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
 {
 
     // Unique property IDs for use with generic versions of get/set/add/remove/(etc):
+    public static final int UPDATEMODE_ID = -850965417;
     public static final int TRUNCATETARGETTABLE_ID = 2036646736;
     public static final int BULKLOAD_ID = 2097310645;
     public static final int PRESQL_ID = -937490449;
@@ -61,7 +62,9 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
             for (IProperty prop : props) {
                 // create prop id string
                 String propIDStr = prop.getName().toUpperCase() + "_ID";
-                if (propIDStr.equalsIgnoreCase("TRUNCATETARGETTABLE_ID"))
+                if (propIDStr.equalsIgnoreCase("UPDATEMODE_ID"))
+                    propMap.put(prop,UPDATEMODE_ID);
+                else if (propIDStr.equalsIgnoreCase("TRUNCATETARGETTABLE_ID"))
                     propMap.put(prop,TRUNCATETARGETTABLE_ID);
                 else if (propIDStr.equalsIgnoreCase("BULKLOAD_ID"))
                     propMap.put(prop,BULKLOAD_ID);
@@ -150,6 +153,43 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     protected ObjectChange createPropertyChange(Object object, IProperty property)
     {
         return Utils.createPropertyChange(object, property);
+
+    }
+
+    /** 
+      * Get the 'UpdateMode' property.
+      */
+    public String getUpdateMode()
+    {
+        return _get_imfObject().getUpdateMode();
+    }
+
+    /** 
+      * Set the 'UpdateMode' property.
+      */
+    public final void setUpdateMode(String newObj)throws SL_Exception
+    {
+        setUpdateMode(newObj, null);
+    }
+
+
+    /** 
+      * Set the 'UpdateMode' property.
+      */
+    public void setUpdateMode(String newVal, ObjectChangeSink sink)
+    {
+        if(newVal!=null && newVal.equals(getUpdateMode())) return;
+
+        if(rootObj.isAutoValidate())
+            _get_objectmanager().validate_UpdateMode(new ObjectManagerContextImpl(Action.SET), newVal, this);
+
+        ((TableWriteCapabilityAttributesExtension)_imfObject).setUpdateMode(newVal);
+        Utils.setBitCascade(sink, getAdaptee());
+        if (sink != null) {
+            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.UPDATE_MODE);
+            sink.addObjectChange(getAdaptee(), change);
+        }
+
 
     }
 
@@ -490,6 +530,7 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     public String toString()
     {
         String rc = "SATableWriteCapabilityAttributesExtension " +" (hashCode="+hashCode()+")";
+        rc += " (UpdateMode="+getUpdateMode()+")";
         rc += " (truncateTargetTable="+isTruncateTargetTable()+")";
         rc += " (bulkLoad="+isBulkLoad()+")";
         rc += " (preSql="+getPreSql()+")";
@@ -534,6 +575,8 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     {
             switch(propID)
             {
+            case UPDATEMODE_ID:
+                return getUpdateMode();
             case TRUNCATETARGETTABLE_ID:
                 return isTruncateTargetTable();
             case BULKLOAD_ID:
@@ -563,6 +606,9 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     {
             switch(propID)
             {
+            case UPDATEMODE_ID:
+                setUpdateMode((String)obj);
+                return;
             case TRUNCATETARGETTABLE_ID:
                 setTruncateTargetTable((java.lang.Boolean)obj);
                 return;
@@ -648,6 +694,8 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     public  void _shallowCopyInternal(SL_Obj fromObjArg) {
         SATableWriteCapabilityAttributesExtension fromObj = (SATableWriteCapabilityAttributesExtension)fromObjArg;
         super._shallowCopyInternal((SL_Obj)fromObj);
+
+        setUpdateMode(fromObj.getUpdateMode());
 
         setTruncateTargetTable(fromObj.isTruncateTargetTable());
 

@@ -1,1 +1,0 @@
-#define SnowflakeV2_CONN_SUCC_200	"SnowflakeV2_CONN_SUCC_200"

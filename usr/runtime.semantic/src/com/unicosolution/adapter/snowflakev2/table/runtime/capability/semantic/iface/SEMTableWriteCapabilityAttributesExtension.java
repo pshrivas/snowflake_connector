@@ -10,6 +10,14 @@ public interface SEMTableWriteCapabilityAttributesExtension extends com.informat
 {
 
     /** 
+      * Get the 'UpdateMode' property.
+      */
+    public String getUpdateMode();
+    /** 
+      * Set the 'UpdateMode' property.
+      */
+    public void setUpdateMode(String _newVal);
+    /** 
       * Get the 'truncateTargetTable' property.
       */
     public boolean isTruncateTargetTable();

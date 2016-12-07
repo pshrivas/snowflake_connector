@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension point="com.informatica.sdk.typesystem.typesystem" id="SNOWFLAKEV2TYPESYSTEM">
-      <typesystem identity="com.unicosolution.adapter.snowflakev2.typesystem.SnowflakeV2TypeSystem" seedProviderExtensionId="com.unicosolution.adapter.snowflakev2.seedprovider.SNOWFLAKEV2SEEDPROVIDER"/>
-   </extension>
-</plugin>

@@ -42,6 +42,7 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
             rc = false;
         SATableWriteCapabilityAttributesExtension semObj = (SATableWriteCapabilityAttributesExtension)currentObj;
         SL_ContainerObj rootObj = semObj.getRootObj();
+        if(!validate_UpdateMode(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getUpdateMode(), semObj)) rc = false;
         if(!validate_truncateTargetTable(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isTruncateTargetTable(), semObj)) rc = false;
         if(!validate_bulkLoad(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isBulkLoad(), semObj)) rc = false;
         if(!validate_preSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPreSql(), semObj)) rc = false;
@@ -51,6 +52,16 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         if(!validate_oneBatch(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isOneBatch(), semObj)) rc = false;
         if(!validate_startTransactionForJobs(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isStartTransactionForJobs(), semObj)) rc = false;
         if(!validate_updateKeyColumns(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getUpdateKeyColumns(), semObj)) rc = false;
+        return rc;
+
+    }
+
+    /** Validate the 'UpdateMode' property  */
+    public boolean validate_UpdateMode(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
+    {
+        boolean rc = true;
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_MODE);
         return rc;
 
     }
@@ -75,8 +86,8 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
     public boolean validate_preSql(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL);
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.PRE_SQL);
         return rc;
 
     }
@@ -85,8 +96,8 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
     public boolean validate_postSql(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>255)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 255, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL);
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.POST_SQL);
         return rc;
 
     }
@@ -127,8 +138,8 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
     public boolean validate_updateKeyColumns(ObjectManagerContext ctx, String newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
-        if(newVal.length()<0 || newVal.length()>1024)
-            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 1024, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS);
+        if(newVal.length()<0 || newVal.length()>4000)
+            rc = Utils.processLengthViolation((SL_Obj)semanticObject, newVal.length(), 0, 4000, newVal, com.unicosolution.adapter.snowflakev2.table.runtime.capability.TableWriteCapabilityAttributesExtension.Properties.UPDATE_KEY_COLUMNS);
         return rc;
 
     }
