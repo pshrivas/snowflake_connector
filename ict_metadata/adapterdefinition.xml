@@ -211,8 +211,8 @@
                      <supportedPlatform>JAVA</supportedPlatform>
                   </supportedPlatforms>
                </operationTypes>
-               <metadataWriteOptions supportCreate="true" supportUpdate="true" supportDelete="true">
-                  <writeDialogOptions displayUpdateElseCreate="true" displayDropAndCreate="true"/>
+               <metadataWriteOptions supportCreate="true" supportUpdate="false" supportDelete="false">
+                  <writeDialogOptions displayUpdateElseCreate="false" displayDropAndCreate="true"/>
                </metadataWriteOptions>
             </PatternObject>
             <PatternObject description="SnowflakeV2_Description" displayName="SnowflakeV2_DisplayName" objectType="table" name="tableField" patternObjectType="Fields" supported="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="nativeObjectFieldDefinition">
@@ -268,8 +268,20 @@
                <dependentTasks>NMO_RUNTIME_ADAPTER_table</dependentTasks>
             </DepenendentTasks>
          </WorkflowTask>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
+         <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask"/>
          <WorkflowTask id="NMO_RUNTIME_ADAPTER_table" taskType="NMO_RUNTIME_ADAPTER" componentName="table" status="GENERATED" taskKind="CodeGenerationTask">
             <DepenendentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
+               <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
+               <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
+               <dependentTasks>TYPESYSTEM_SnowflakeV2Unicosolutiontypesystem</dependentTasks>
+               <dependentTasks>CONNECTION_MODEL_SnowflakeV2</dependentTasks>
                <dependentTasks>NMO_METADATA_FIELD_MODEL_table</dependentTasks>
                <dependentTasks>NMO_METADATA_MODEL_table</dependentTasks>
                <dependentTasks>NMO_RUNTIME_MODEL_table</dependentTasks>
@@ -283,12 +295,12 @@
       <BuildConfigurations>
          <JavaBuildConfiguration componentName="SnowflakeV2" componentType="CONNECTION">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-3.0.2" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-3.0.3" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
          <JavaBuildConfiguration componentName="table" componentType="RUNTIME">
             <JavaLibraryReferences>
-               <JavaLibraryReference file="snowflake-jdbc-3.0.2" canShip="true"/>
+               <JavaLibraryReference file="snowflake-jdbc-3.0.3" canShip="true"/>
             </JavaLibraryReferences>
          </JavaBuildConfiguration>
       </BuildConfigurations>

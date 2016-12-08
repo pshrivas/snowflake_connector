@@ -3,6 +3,7 @@ package com.unicosolution.adapter.snowflakev2.metadata.adapter;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import com.informatica.sdk.adapter.metadata.common.CDetailImportOpts;
 import com.informatica.sdk.adapter.metadata.common.Option;
 import com.informatica.sdk.adapter.metadata.common.Status;
 import com.informatica.sdk.adapter.metadata.common.StatusEnum;
+import com.informatica.sdk.adapter.metadata.common.semantic.iface.MetadataObject;
+import com.informatica.sdk.adapter.metadata.field.semantic.iface.FieldBase;
 import com.informatica.sdk.adapter.metadata.patternblocks.catalog.semantic.iface.Catalog;
 import com.informatica.sdk.adapter.metadata.patternblocks.constraint.semantic.iface.PrimaryKey;
 import com.informatica.sdk.adapter.metadata.patternblocks.constraint.semantic.iface.UniqueKey;
@@ -28,10 +31,14 @@ import com.informatica.sdk.adapter.metadata.patternblocks.shared.semantic.iface.
 import com.informatica.sdk.adapter.metadata.patternblocks.shared.semantic.iface.RecordTypeEnum;
 import com.informatica.sdk.adapter.metadata.provider.AbstractMetadataAdapter;
 import com.informatica.sdk.adapter.metadata.provider.Connection;
+import com.informatica.sdk.adapter.metadata.writeback.ActionTypeEnum;
+import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteAction;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteOptions;
+import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteResults;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteSession;
 import com.informatica.sdk.adapter.metadata.common.CWriteObjectsOpts;
 import com.informatica.sdk.exceptions.ExceptionManager;
+import com.unicosolution.adapter.snowflakev2.runtime.adapter.SnowflakeV2TableDataConnection;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableRecordExtensions;
 
@@ -134,7 +141,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					Package pack = sdkFactory.newPackage(catalog);
 					pack.setName(foundCatalogName);
 					foundCatalogList.add(pack);
-					if (foundCatalogName.equalsIgnoreCase(catName)) { // case insensitive
+					// case insensitive
+					if (foundCatalogName.equalsIgnoreCase(catName)) {
 						catalog.addRootPackage(pack);
 					}
 				}
@@ -167,10 +175,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				}
 				schemaResultSet.close();
 
-				 // use schema if found otherwise all schemas
-				ResultSet tablesIter = metadata.getTables(
-						tabSchema.getName(),
-						foundSchema ? schemaName : "%",
+				// use schema if found otherwise all schemas
+				ResultSet tablesIter = metadata.getTables(tabSchema.getName(), foundSchema ? schemaName : "%",
 						nameFilter == null ? "%" : "%" + nameFilter + "%", null);
 
 				while (tablesIter.next()) {
@@ -479,69 +485,137 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		LOGGER.finer(String.format("Connection: %s, Session: %s, Options: %s", connection != null, writeSession,
 				defOptions));
 		// retrieve the options
-		int optionID; List<Option> options = defOptions.getOptions();
+		int optionID;
+		List<Option> options = defOptions.getOptions();
 		Boolean defCreateIfMissing = true;
-		for (Option option : options) {
-			optionID = option.getDescription().getEffectiveDefinition().getOptionID();
-			if (optionID == CWriteObjectsOpts.DROP_AND_CREATE) {
-				defCreateIfMissing = (Boolean)option.getValue();
-			} else {
-				//
+		StringBuffer createQueryBuffer = new StringBuffer("CREATE TABLE ");
+		String createQuery;
+		Statement stmt = null;
+		try {
+			SnowflakeV2Connection snowflakeConnection = (SnowflakeV2Connection) connection;
+			stmt = snowflakeConnection.getSnowflakeConnection().createStatement();
+			for (Option option : options) {
+				optionID = option.getDescription().getEffectiveDefinition().getOptionID();
+				if (optionID == CWriteObjectsOpts.DROP_AND_CREATE) {
+					defCreateIfMissing = (Boolean) option.getValue();
+				} else {
+					// CWriteObjectsOpts.CONTINUE_ON_ERROR;
+					// CWriteObjectsOpts.UPDATE_ELSE_CREATE;
+					String optionDescription = optionID == CWriteObjectsOpts.CONTINUE_ON_ERROR ? "CONTINUE_ON_ERROR"
+							: optionID == CWriteObjectsOpts.UPDATE_ELSE_CREATE ? "UPDATE_ELSE_CREATE" : "UNKNOWN";
+					ExceptionManager.createNonNlsAdapterSDKException("Not supported Operation: " + optionDescription);
+				}
+			}
+			MetadataObject defParentObj = defOptions.getParentObject();
+			ActionTypeEnum defActType = defOptions.getActionType();
+			List<MetadataWriteAction> wrtActions = writeSession.getWriteActions();
+			Catalog catalog = null;
+			// perform individual actions
+			for (MetadataWriteAction action : wrtActions) {
+				MetadataObject objToWrite = action.getObjectToWrite();
+				MetadataWriteOptions wrtOptions = action.getWriteOptions();
+				ActionTypeEnum actType = defActType;
+				MetadataObject parentObj = defParentObj;
+				Boolean createIfMissing = defCreateIfMissing;
+
+				// if overridden options are provided, get the overridden values
+				// of parent action type, options. Else, take default global
+				// options
+				if (wrtOptions != null) {
+					// get current action type, parent, options
+					actType = wrtOptions.getActionType();
+					parentObj = wrtOptions.getParentObject();
+					List<Option> currOptions = wrtOptions.getOptions();
+					for (Option option : currOptions) {
+						optionID = option.getDescription().getEffectiveDefinition().getOptionID();
+						if (optionID == CWriteObjectsOpts.DROP_AND_CREATE) {
+							createIfMissing = (Boolean) option.getValue();
+						} else {
+							// TODO: do we need to support them? What is the
+							// behavior?
+							// CWriteObjectsOpts.CONTINUE_ON_ERROR;
+							// CWriteObjectsOpts.UPDATE_ELSE_CREATE;
+							String optionDescription = optionID == CWriteObjectsOpts.CONTINUE_ON_ERROR
+									? "CONTINUE_ON_ERROR"
+									: optionID == CWriteObjectsOpts.UPDATE_ELSE_CREATE ? "UPDATE_ELSE_CREATE"
+											: "UNKNOWN";
+							ExceptionManager
+									.createNonNlsAdapterSDKException("Not supported Operation: " + optionDescription);
+						}
+					}
+				}
+
+				if (objToWrite instanceof FlatRecord) {
+
+					FlatRecord rec = (FlatRecord) objToWrite;
+					String recName = rec.getName();
+					rec.setNativeName(recName);
+					List<FieldBase> flds = rec.getFieldList();
+					// get parent package under which the record should be
+					// inserted
+					List<Package> pkgs = rec.getParentPackages();
+					catalog = rec.getCatalog();
+
+					// create/update/delete record in external system using
+					// metadata connection and record/field details provided
+					switch (actType) {
+					case create:
+						LOGGER.fine(
+								String.format("CREATE object?: %s, createIfMissing: %s", createQuery, createIfMissing));
+
+						createQueryBuffer.append(recName);
+						createQueryBuffer.append(" (");
+
+						for (FieldBase fld : flds) {
+							createQueryBuffer.append(fld.getName());
+							createQueryBuffer.append(" ");
+							createQueryBuffer.append(fld.getDataType());
+							createQueryBuffer.append(",");
+						}
+
+						createQuery = createQueryBuffer.substring(0, createQueryBuffer.length() - 1);
+						createQuery = createQuery + ")";
+
+						stmt.executeUpdate(createQuery);
+
+						// create record under parent parentObj
+						break;
+					case delete:
+						LOGGER.fine(String.format("DELETE object?"));
+						// delete record
+						break;
+					case update:
+						LOGGER.fine(String.format("UPDATE object?"));
+						// update record
+						break;
+					default:
+						LOGGER.fine(String.format("What operation for an object?"));
+						break;
+
+					}
+					MetadataWriteResults res = new MetadataWriteResults(new Status(StatusEnum.SUCCESS, ""));
+					// if updated object is different, set the appropriate value
+					FlatRecord updatedObject = catalog.getFactory().newFlatRecord(catalog);
+					updatedObject.setName("someName");
+					// set other attributes
+					res.setUpdatedObject(updatedObject);
+					action.setWriteResults(res);
+				} else {
+					LOGGER.fine(String.format("Not FlatRecord type object: %s", objToWrite.getClass().getName()));
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.severe(String.format("Error occurred in writing object: %s", e));
+			ExceptionManager.createNonNlsAdapterSDKException("Error occurred in writing object: " + e);
+			return new Status(StatusEnum.FAILURE, e.getMessage());
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e) {
+				LOGGER.severe(String.format("Error occurred in writing object: %s", e));
 			}
 		}
-		
-		/*
-		 * int optionID; List<Option> options = defOptions.getOptions(); Boolean
-		 * defCreateIfMissing = true; for (Option option : options) { optionID =
-		 * option.getDescription().getEffectiveDefinition() .getOptionID(); if
-		 * (optionID == CWriteObjectsOpts.DROP_AND_CREATE) { defCreateIfMissing
-		 * = (Boolean) option.getValue(); } else {
-		 * //ExceptionManager.createNonNlsAdapterSDKException(
-		 * "Not supported option found"); } } //get default parent and action
-		 * type MetadataObject defParentObj = defOptions.getParentObject();
-		 * ActionTypeEnum defActType = defOptions.getActionType();
-		 * List<MetadataWriteAction> wrtActions =
-		 * writeSession.getWriteActions(); Catalog catalog = null;
-		 * 
-		 * //perform individual actions for(MetadataWriteAction action:
-		 * wrtActions) { MetadataObject objToWrite = action.getObjectToWrite();
-		 * MetadataWriteOptions wrtOptions = action.getWriteOptions();
-		 * ActionTypeEnum actType = defActType; MetadataObject parentObj =
-		 * defParentObj; Boolean createIfMissing = defCreateIfMissing;
-		 * 
-		 * //if overridden options are provided, get the overridden values of
-		 * parent action type, options. Else, take default global options
-		 * if(wrtOptions != null){ //get current action type, parent, options
-		 * actType = wrtOptions.getActionType(); parentObj =
-		 * wrtOptions.getParentObject(); List<Option> currOptions =
-		 * wrtOptions.getOptions(); for (Option option : currOptions) { optionID
-		 * = option.getDescription().getEffectiveDefinition() .getOptionID(); if
-		 * (optionID == CWriteObjectsOpts.DROP_AND_CREATE) { createIfMissing =
-		 * (Boolean) option.getValue(); } else {
-		 * //ExceptionManager.createNonNlsAdapterSDKException(
-		 * "Not supported option found"); } } }
-		 * 
-		 * 
-		 * if(objToWrite instanceof FlatRecord){ FlatRecord rec =
-		 * (FlatRecord)objToWrite; String recName = rec.getNativeName();
-		 * List<FieldBase> flds = rec.getFieldList(); //get parent package under
-		 * which the record should be inserted List<Package> pkgs =
-		 * rec.getParentPackages(); catalog = rec.getCatalog();
-		 * 
-		 * //create/update/delete record in external system using metadata
-		 * connection and record/field details provided switch(actType){ case
-		 * create: //create record under parent parentObj break; case delete:
-		 * //delete record break; case update: //update record break; default:
-		 * break;
-		 * 
-		 * 
-		 * } MetadataWriteResults res = new MetadataWriteResults(new
-		 * Status(StatusEnum.SUCCESS, "")); //if updated object is different,
-		 * set the appropriate value FlatRecord updatedObject =
-		 * catalog.getFactory().newFlatRecord(catalog);
-		 * updatedObject.setName("someName"); //set other attributes
-		 * res.setUpdatedObject(updatedObject); action.setWriteResults(res); } }
-		 */
 
 		// return success if writeback succeeded
 		return new Status(StatusEnum.SUCCESS, "");
