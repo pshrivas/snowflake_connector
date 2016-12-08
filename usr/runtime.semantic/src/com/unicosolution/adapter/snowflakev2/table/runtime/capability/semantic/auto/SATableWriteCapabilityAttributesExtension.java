@@ -44,7 +44,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
     // Unique property IDs for use with generic versions of get/set/add/remove/(etc):
     public static final int UPDATEMODE_ID = -850965417;
     public static final int TRUNCATETARGETTABLE_ID = 2036646736;
-    public static final int BULKLOAD_ID = 2097310645;
     public static final int PRESQL_ID = -937490449;
     public static final int POSTSQL_ID = 265500770;
     public static final int ABORTONERRORS_ID = 1873395073;
@@ -66,8 +65,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                     propMap.put(prop,UPDATEMODE_ID);
                 else if (propIDStr.equalsIgnoreCase("TRUNCATETARGETTABLE_ID"))
                     propMap.put(prop,TRUNCATETARGETTABLE_ID);
-                else if (propIDStr.equalsIgnoreCase("BULKLOAD_ID"))
-                    propMap.put(prop,BULKLOAD_ID);
                 else if (propIDStr.equalsIgnoreCase("PRESQL_ID"))
                     propMap.put(prop,PRESQL_ID);
                 else if (propIDStr.equalsIgnoreCase("POSTSQL_ID"))
@@ -224,43 +221,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         Utils.setBitCascade(sink, getAdaptee());
         if (sink != null) {
             ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.TRUNCATE_TARGET_TABLE);
-            sink.addObjectChange(getAdaptee(), change);
-        }
-
-
-    }
-
-    /** 
-      * Get the 'bulkLoad' property.
-      */
-    public boolean isBulkLoad()
-    {
-        return _get_imfObject().isBulkLoad();
-    }
-
-    /** 
-      * Set the 'bulkLoad' property.
-      */
-    public final void setBulkLoad(boolean newObj)throws SL_Exception
-    {
-        setBulkLoad(newObj, null);
-    }
-
-
-    /** 
-      * Set the 'bulkLoad' property.
-      */
-    public void setBulkLoad(boolean newVal, ObjectChangeSink sink)
-    {
-        if(newVal==isBulkLoad()) return;
-
-        if(rootObj.isAutoValidate())
-            _get_objectmanager().validate_bulkLoad(new ObjectManagerContextImpl(Action.SET), newVal, this);
-
-        ((TableWriteCapabilityAttributesExtension)_imfObject).setBulkLoad(newVal);
-        Utils.setBitCascade(sink, getAdaptee());
-        if (sink != null) {
-            ObjectChange change = createPropertyChange(getAdaptee(), TableWriteCapabilityAttributesExtension.Properties.BULK_LOAD);
             sink.addObjectChange(getAdaptee(), change);
         }
 
@@ -532,7 +492,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         String rc = "SATableWriteCapabilityAttributesExtension " +" (hashCode="+hashCode()+")";
         rc += " (UpdateMode="+getUpdateMode()+")";
         rc += " (truncateTargetTable="+isTruncateTargetTable()+")";
-        rc += " (bulkLoad="+isBulkLoad()+")";
         rc += " (preSql="+getPreSql()+")";
         rc += " (postSql="+getPostSql()+")";
         rc += " (abortOnErrors="+isAbortOnErrors()+")";
@@ -579,8 +538,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return getUpdateMode();
             case TRUNCATETARGETTABLE_ID:
                 return isTruncateTargetTable();
-            case BULKLOAD_ID:
-                return isBulkLoad();
             case PRESQL_ID:
                 return getPreSql();
             case POSTSQL_ID:
@@ -611,9 +568,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
                 return;
             case TRUNCATETARGETTABLE_ID:
                 setTruncateTargetTable((java.lang.Boolean)obj);
-                return;
-            case BULKLOAD_ID:
-                setBulkLoad((java.lang.Boolean)obj);
                 return;
             case PRESQL_ID:
                 setPreSql((String)obj);
@@ -698,8 +652,6 @@ public class SATableWriteCapabilityAttributesExtension extends SAD_ModelExtensio
         setUpdateMode(fromObj.getUpdateMode());
 
         setTruncateTargetTable(fromObj.isTruncateTargetTable());
-
-        setBulkLoad(fromObj.isBulkLoad());
 
         setPreSql(fromObj.getPreSql());
 

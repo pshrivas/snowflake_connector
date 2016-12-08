@@ -44,7 +44,6 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
         SL_ContainerObj rootObj = semObj.getRootObj();
         if(!validate_UpdateMode(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getUpdateMode(), semObj)) rc = false;
         if(!validate_truncateTargetTable(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isTruncateTargetTable(), semObj)) rc = false;
-        if(!validate_bulkLoad(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isBulkLoad(), semObj)) rc = false;
         if(!validate_preSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPreSql(), semObj)) rc = false;
         if(!validate_postSql(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.getPostSql(), semObj)) rc = false;
         if(!validate_abortOnErrors(new ObjectManagerContextImpl(Action.NOCHANGE), semObj.isAbortOnErrors(), semObj)) rc = false;
@@ -68,14 +67,6 @@ public class MATableWriteCapabilityAttributesExtension extends MD_ModelExtension
 
     /** Validate the 'truncateTargetTable' property  */
     public boolean validate_truncateTargetTable(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
-    {
-        boolean rc = true;
-        return rc;
-
-    }
-
-    /** Validate the 'bulkLoad' property  */
-    public boolean validate_bulkLoad(ObjectManagerContext ctx, boolean newVal, MetadataObject semanticObject) throws SL_ValidationException
     {
         boolean rc = true;
         return rc;

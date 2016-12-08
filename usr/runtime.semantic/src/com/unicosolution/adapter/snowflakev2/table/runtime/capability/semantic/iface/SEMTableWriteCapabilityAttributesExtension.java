@@ -26,14 +26,6 @@ public interface SEMTableWriteCapabilityAttributesExtension extends com.informat
       */
     public void setTruncateTargetTable(boolean _newVal);
     /** 
-      * Get the 'bulkLoad' property.
-      */
-    public boolean isBulkLoad();
-    /** 
-      * Set the 'bulkLoad' property.
-      */
-    public void setBulkLoad(boolean _newVal);
-    /** 
       * Get the 'preSql' property.
       */
     public String getPreSql();

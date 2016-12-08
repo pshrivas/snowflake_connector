@@ -489,7 +489,6 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		List<Option> options = defOptions.getOptions();
 		Boolean defCreateIfMissing = true;
 		StringBuffer createQueryBuffer = new StringBuffer("CREATE TABLE ");
-		String createQuery;
 		Statement stmt = null;
 		try {
 			SnowflakeV2Connection snowflakeConnection = (SnowflakeV2Connection) connection;
@@ -560,9 +559,6 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					// metadata connection and record/field details provided
 					switch (actType) {
 					case create:
-						LOGGER.fine(
-								String.format("CREATE object?: %s, createIfMissing: %s", createQuery, createIfMissing));
-
 						createQueryBuffer.append(recName);
 						createQueryBuffer.append(" (");
 
@@ -573,8 +569,11 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 							createQueryBuffer.append(",");
 						}
 
-						createQuery = createQueryBuffer.substring(0, createQueryBuffer.length() - 1);
+						String createQuery = createQueryBuffer.substring(0, createQueryBuffer.length() - 1);
 						createQuery = createQuery + ")";
+
+						LOGGER.fine(
+								String.format("CREATE object?: %s, createIfMissing: %s", createQuery, createIfMissing));
 
 						stmt.executeUpdate(createQuery);
 

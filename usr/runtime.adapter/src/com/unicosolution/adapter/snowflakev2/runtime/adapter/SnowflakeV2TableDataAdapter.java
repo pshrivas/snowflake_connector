@@ -1327,14 +1327,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		WriteCapabilityAttributes currPartInfo = asoOperation.getWriteCapabilityAttributes();
 
 		String writerPartID = null;
-		boolean bulkLoad = false;
 		boolean isUpsert = false;
 
 		if (currPartInfo != null) {
 			SEMTableWriteCapabilityAttributesExtension partAttris = (SEMTableWriteCapabilityAttributesExtension) (currPartInfo)
 					.getExtensions();
-			bulkLoad = partAttris.isBulkLoad();
-			isUpsert = partAttris.getUpdateMode().equalsIgnoreCase("Update As Update")?false:true;
+			isUpsert = !partAttris.getUpdateMode().equalsIgnoreCase("Update As Update");
 		}
 
 		String operationTypeString = this.getOperationTypeString(operationType);
