@@ -54,6 +54,7 @@ import com.informatica.sdk.adapter.metadata.projection.expression.semantic.iface
 import com.informatica.sdk.adapter.metadata.projection.expression.semantic.iface.StringConstant;
 import com.informatica.sdk.adapter.metadata.projection.helper.semantic.iface.BasicProjectionField;
 import com.informatica.sdk.adapter.metadata.projection.helper.semantic.iface.BasicProjectionView;
+import com.informatica.sdk.exceptions.ExceptionManager;
 import com.informatica.sdk.exceptions.SDKException;
 import com.informatica.sdk.adapter.javasdk.dataadapter.ReadAttributes;
 import com.informatica.sdk.adapter.javasdk.dataadapter.WriteAttributes;
@@ -152,14 +153,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	@Override
 	public int initDataSession(DataSession dataSession) throws SDKException {
-		// Static logger is used to debug and trace the code
-		String msg = String.format("DataSession: %s", dataSession);
-		LOGGER.log(Level.FINER, msg);
-
-		// Use the logger for logging messages to the session log
-		// as logMessage(ELogLevel.TRACE_NONE, Messages.CONN_SUCC_200,
-		// "user",6005,5.2);
 		logger = dataSession.getInfaUtilsHandle().getLogger();
+
+		String msg = "begin";
+		LOGGER.log(Level.FINER, msg);
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initDataSession", msg));
 
 		// The runtime metadata handle allows access to runtime metadata
@@ -171,6 +168,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// fields/ filter / join metadata
 		projectionView = runtimeMetadataHandle.getBasicProjection();
 
+		// TODO: this is used only once in getConnectedFields. Doesn't need to
+		// TODO: be instance variable
 		// projectionFields has all fields of the native object to the platform
 		// source/target
 		projectionFields = projectionView.getProjectionFields();
@@ -183,6 +182,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// native flatrecord list used in the data session
 		nativeRecords = projectionView.getNativeRecords();
 
+		// TODO: what is this? This is not used even in MySQL example
 		// handle to the list of capability attributes. Get the read/write
 		// capability details using this list
 		capAttrs = runtimeMetadataHandle.getCapabilityAttributes();
@@ -270,7 +270,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 *         operation.
 	 */
 	private List<FieldInfo> getConnectedFields(RuntimeConfigMetadata runtimeMetadataHandle) {
-		String msg = String.format("RuntimeConfigMetadata: %s", runtimeMetadataHandle);
+		String msg = "begin";
 		LOGGER.log(Level.FINER, msg);
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getConnectedFields", msg));
 
@@ -338,7 +338,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				if (ob == null) {
 					msg = String.format("Operation Base is null. Projection: %s, Base Projecion: %s", proj,
 							baseOperList);
-					LOGGER.severe(msg);
+					LOGGER.log(Level.SEVERE, msg);
 					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, msg);
 					return EReturnStatus.FAILURE;
 				}
@@ -632,7 +632,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int deinitDataSession(DataSession dataSession) throws SDKException {
-		String msg = String.format("DataSession: %s", dataSession);
+		String msg = "begin";
 		LOGGER.log(Level.FINER, msg);
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("deinitDataSession", msg));
 
@@ -686,17 +686,20 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
 						formatLog("deinitDataSession", msg));
 				returnStatus = EReturnStatus.SUCCESS;
-			} catch (Exception e1) {
-				final String eMsg = e1.getMessage();
-				LOGGER.log(Level.SEVERE, eMsg, e1);
-				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, eMsg);
+			} catch (Exception e) {
+				final String eMsg = e.getMessage();
+				LOGGER.log(Level.SEVERE, eMsg, e);
+				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
+						formatLog("deinitDataSession", eMsg));
+				ExceptionManager.createNonNlsAdapterSDKException(formatLog("deinitDataSession", eMsg));
+
 			} finally {
 				try {
 					loader.close();
 				} catch (Exception e) {
-					LOGGER.log(Level.WARNING, e.getMessage(), e);
-					logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE,
-							formatLog("deinitDataSession", e.getMessage()));
+					final String eMsg = formatLog("deinitDataSession", e.getMessage());
+					LOGGER.log(Level.WARNING, eMsg, e);
+					logger.logMessage(EMessageLevel.MSG_WARNING, ELogLevel.TRACE_NONE, eMsg);
 				}
 			}
 		} else if (capability instanceof ReadCapability) {
@@ -707,9 +710,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				}
 				returnStatus = EReturnStatus.SUCCESS;
 			} catch (SQLException e) {
-				LOGGER.log(Level.WARNING, e.getMessage(), e);
-				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE,
-						formatLog("deinitDataSession", e.getMessage()));
+				final String eMsg = e.getMessage();
+				LOGGER.log(Level.SEVERE, eMsg, e);
+				logger.logMessage(EMessageLevel.MSG_WARNING, ELogLevel.TRACE_NONE,
+						formatLog("deinitDataSession", eMsg));
+				ExceptionManager.createNonNlsAdapterSDKException(formatLog("deinitDataSession", eMsg));
 			}
 		}
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NONE,
@@ -740,6 +745,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		int rowsToRead = readAttr.getNumRowsToRead();
 		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
 		SnowflakeV2UserContext suc = getSnowflakeUserContext(dataSession);
+
+		// Checking if the call to read is multiple times. Multiple calls to
+		// read occurs when the data read is more than the platform buffer
+		// allocated. rowsToRead > rows that is read from the third party
 
 		if (!suc.isResetRowIndex()) {
 			List<List<Object>> dataTable = new ArrayList<List<Object>>();
@@ -802,17 +811,15 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("read", msg));
 
 				resultSet = ps.executeQuery(query);
-			} catch (SQLException e1) {
+			} finally {
 				ps.close();
-				LOGGER.log(Level.SEVERE, e1.getMessage());
-				logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-						formatLog("read", e1.getMessage()));
-				return EReturnStatus.FAILURE;
 			}
 
 		} catch (SQLException se) {
-			LOGGER.log(Level.SEVERE, se.getMessage());
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, se.getMessage());
+			String eMsg = se.getMessage();
+			LOGGER.log(Level.SEVERE, eMsg, se);
+			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, formatLog("read", eMsg));
+			ExceptionManager.createNonNlsAdapterSDKException(formatLog("read", eMsg));
 			return EReturnStatus.FAILURE;
 		}
 
@@ -835,8 +842,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		String msg = String.format("ConnectedFields: %s", connectedFields);
 		LOGGER.log(Level.FINER, msg);
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, formatLog("getNativeJoinQuery", msg));
-		String query = getQuery(connectedFields);
-		return query + " ON " + nativeJoinQuery;
+		return getQuery(connectedFields) + " ON " + nativeJoinQuery;
 	}
 
 	/**
@@ -850,8 +856,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	private String getJoinQuery(List<FieldInfo> connectedFields) {
 		LOGGER.log(Level.FINER, String.format("ConnectedFields: %s", connectedFields));
 
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getJoinQuery: begin");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getJoinQuery", "begin"));
 		String query = getGenericQuery(connectedFields);
 
 		FlatRecord fr1 = (FlatRecord) nativeRecords.get(0);
@@ -872,8 +877,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			else
 				query += " " + joinTypes.get(i - 1) + " " + tabName2;
 		}
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getJoinQuery: end");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getJoinQuery", query));
 		return query;
 	}
 
@@ -886,9 +890,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private String getGenericQuery(List<FieldInfo> connectedFields) {
 		LOGGER.log(Level.FINER, String.format("ConnectedFields: %s", connectedFields));
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getGenericQuery: begin");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getGenericQuery", "begin"));
 
 		// TODO: do we need this? selectdestinct. This is not used.
 		String query = "SELECT " + selectdestinct;
@@ -902,9 +904,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			addComma = true;
 		}
 		query += " FROM ";
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getGenericQuery: query: " + query);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getGenericQuery", query));
 		return query;
 	}
 
@@ -913,9 +913,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private String getQuery(List<FieldInfo> connectedFields) {
 		LOGGER.log(Level.FINER, String.format("ConnectedFields: %s", connectedFields));
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getQuery: begin");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getQuery", "begin"));
 
 		String query = "SELECT ";
 		boolean addComma = false;
@@ -929,8 +927,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		// Assuming of a single source
 		query += " FROM " + ((Record) nativeRecords.get(0)).getNativeName();
 
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:getQuery: query: " + query);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("getQuery", query));
 		return query;
 	}
 
@@ -952,8 +949,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		LOGGER.log(Level.FINER, String.format("DataSession: %s," + " DataTable: %s," + " RowsToRead: %s", dataSession,
 				dataTable, rowsToRead));
 
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:readDatafromSource: begin");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("readDatafromSource", "begin"));
 
 		int rowsRead = 0;
 		int status = EReturnStatus.SUCCESS;
@@ -990,14 +986,16 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			muc.setTotalRows(muc.getTotalRows() + rowsRead);
 
 		} catch (SQLException e) {
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, e.getMessage());
+			String eMsg = e.getMessage();
+			LOGGER.log(Level.SEVERE, eMsg, e);
+			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
+					formatLog("readDatafromSource", eMsg));
+			ExceptionManager.createNonNlsAdapterSDKException(formatLog("readDatafromSource", eMsg));
 			return EReturnStatus.FAILURE;
 		}
 
 		setSnowflakeUserContext(dataSession, muc);
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:readDatafromSource: end");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("readDatafromSource", "end"));
 		return status;
 	}
 
@@ -1020,9 +1018,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private void setDataToPlatform(DataSession dataSession, List<List<Object>> dataTable) throws SDKException {
 		LOGGER.log(Level.FINER, String.format("DataSession: %s, DataTable: %s", dataSession, dataTable));
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:setDataToPlatform: begin");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("setDataToPlatform", "begin"));
 
 		for (int row = 0; row < dataTable.size(); row++) {
 			List<Object> rowData = dataTable.get(row);
@@ -1087,29 +1083,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 							pDataAttributes.setIndicator(EIndicator.VALID);
 						}
 					}
-					if ("TIMESTAMPNTZ".equalsIgnoreCase(nativeType)) { // TIMESTAMPNTZ
-																		// does
-																		// not
-																		// accept
-																		// TimeZone.
-																		// So we
-																		// have
-																		// mapped
-																		// it to
-																		// Informatica
-																		// "string"
-																		// type.
-																		// But
-																		// the
-																		// data
-																		// from
-																		// the
-																		// datasource
-																		// would
-																		// still
-																		// be
-																		// TIMESTAMPNTZ
-																		// (Timestamp)
+					// TODO: is this still valid?
+					// TIMESTAMPNTZ does not accept Timezone. So
+					// we have mapped it to Informatica "string" type.
+					// But the data from the datasource would still be
+					// TIMESTAMPNTZ
+					if ("TIMESTAMPNTZ".equalsIgnoreCase(nativeType)) {
 						// dataSession.setDateTimeData((Timestamp) data,
 						// pDataAttributes);
 						// dataSession.setStringData((String) data.toString(),
@@ -1270,9 +1249,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 				}
 			}
 		}
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:setDataToPlatform: end");
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("setDataToPlatform", "end"));
 
 	}
 
@@ -1437,7 +1414,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	private String generateFilterClauseFromExpression(SDKExpression expression) {
 		LOGGER.log(Level.FINER, String.format("SDKExpression: %s", expression));
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: begin");
+				formatLog("generateFilterClauseFromExpression", "begin"));
 
 		SimpleSDKExpression simpleExpr = (SimpleSDKExpression) expression;
 		List<SimpleBinaryExpression> pBinExprsList = simpleExpr.getSimpleBinaryExpressions();
@@ -1472,14 +1449,8 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		}
 
 		filterExpression = filterExpression.substring(0, filterExpression.lastIndexOf(simpleLogicalOp));
-
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: filterExpression: "
-						+ filterExpression);
-
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL,
-				"SnowflakeV2TableDataAdapter:generateFilterClauseFromExpression: end");
-
+				formatLog("generateFilterClauseFromExpression", filterExpression));
 		return filterExpression;
 	}
 
@@ -1795,9 +1766,10 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 			LOGGER.log(Level.FINE, String.format("Writing data start"));
 			loader.start();
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, String.format("Writing data start caused errors: %s", e.getMessage()));
-			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
-					formatLog("initBulkLoader", "Loader failed to start: " + e.getMessage()));
+			String eMsg = String.format("Failed to start Loader: ", e.getMessage());
+			LOGGER.log(Level.SEVERE, eMsg);
+			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, formatLog("initBulkLoader", eMsg));
+			ExceptionManager.createNonNlsAdapterSDKException(formatLog("initBulkLoader", eMsg));
 			try {
 				loader.finish();
 				loader.close();
@@ -1849,9 +1821,13 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 				loader.submitRow(rowData);
 			} catch (Exception e) {
-				LOGGER.severe(String.format("Write caused errors: row: %s, op: %s, table: %s, Error: %s, Cause: %s",
-						row, op, currentFlatRecord.getName(), e.getMessage(),
-						e.getCause() != null ? e.getCause().getMessage() : "N/A"));
+				String eMsg = formatLog("submitDataToLoader",
+						String.format("Rejecting row-%s for %s operation on table %s, Cause: %s", row, op,
+								currentFlatRecord.getName(), e.getMessage()));
+				LOGGER.log(Level.INFO, eMsg, e);
+				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, eMsg);
+				ExceptionManager.createNonNlsAdapterSDKException(formatLog("submitDataToLoader", eMsg));
+
 				if (loader instanceof StreamLoader) {
 					if (((StreamLoader) loader).getListener() instanceof BulkLoadResultListener) {
 						// The Loader and LoadResultListener APIs do not provide
@@ -1861,16 +1837,19 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 						BulkLoadResultListener bulkLoadResultListener = (BulkLoadResultListener) streamLoader
 								.getListener();
 						bulkLoadResultListener.addRejectedRecordCount(op, 1);
-						LOGGER.warning(String.format("Write failed: %s", e.getMessage(),
-								bulkLoadResultListener.getRejectedRecordCount(op)));
+						LOGGER.log(Level.WARNING, String.format("Write failed: %s", e.getMessage(),
+								bulkLoadResultListener.getRejectedRecordCount(op)), e);
 					} else {
-						LOGGER.severe(String.format("Unsupported loader is used: %s", loader.getClass().getName()));
+						LOGGER.log(Level.SEVERE,
+								String.format("Unsupported loader is used: %s", loader.getClass().getName()), e);
 					}
+				} else {
+					// if not StreamLoader, implement here to set the rejected
+					// record.
+					eMsg = String.format("The loader class is not StreamLoader: %s. Ignored...",
+							loader.getClass().getName());
+					LOGGER.log(Level.WARNING, eMsg);
 				}
-
-				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE,
-						formatLog("submitDataToLoader", "Rejecting row-" + row + "for " + op + " operation on table "
-								+ currentFlatRecord.getName() + " Cause: " + e.getMessage()));
 				return EReturnStatus.FAILURE;
 			}
 		}
@@ -1949,7 +1928,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		}
 
 		return objValue;
-
 	}
 
 	/**
