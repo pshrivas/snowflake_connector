@@ -45,12 +45,12 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 	@Override
 	public Status openConnection(Map<String, Object> connAttrs) {
-		if (LOGGER.isLoggable(Level.FINER)) {
+		if (LOGGER.isLoggable(Level.FINE)) {
 			Map<String, Object> tmpConnAttrs = new HashMap<>(connAttrs);
 			if (tmpConnAttrs.containsKey("password")) {
 				tmpConnAttrs.remove("password");
 			}
-			LOGGER.finer(String.format("ConnAttrs: %s", tmpConnAttrs));
+			LOGGER.log(Level.FINE, String.format("ConnAttrs: %s", tmpConnAttrs));
 		}
 		this.account = (String) connAttrs.get("account"); // required
 		this.user = (String) connAttrs.get("user"); // required
@@ -68,8 +68,7 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 		if (!useCustomURL) {
 			String queryString = "";
-
-			// db & schema are mandatory parameters. Still checking to be sure
+			// TODO: escape names
 			if (null != warehouse && !"".equals(warehouse)) {
 				queryString = queryString + "warehouse=" + warehouse;
 			}
@@ -120,7 +119,7 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 		try {
 			Class.forName(JDBC_DRIVER);
-			LOGGER.finer(String.format("JDBC URL: %s", connectionURL));
+			LOGGER.log(Level.FINE, String.format("JDBC URL: %s", connectionURL));
 			Connection conn1 = DriverManager.getConnection(connectionURL, user, password);
 			Connection conn2 = DriverManager.getConnection(connectionURL, user, password);
 
@@ -144,7 +143,7 @@ public class SnowflakeV2Connection extends AbstractConnection {
 
 	@Override
 	public Status closeConnection() {
-		LOGGER.finer("");
+		LOGGER.log(Level.FINE, "Closing all Snowflake connections");
 		try {
 			Connection conn1 = nativeConnectionHolder.getPutConnection();
 			Connection conn2 = nativeConnectionHolder.getProcessConnection();

@@ -46,7 +46,7 @@ import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTa
 public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	private final static Logger LOGGER = Logger.getLogger(SnowflakeV2MetadataAdapter.class.getName());
 
-	private Package tabSchema = null;
+	private Package catalogPackage = null;
 	private Factory sdkFactory = null;
 
 	/**
@@ -129,6 +129,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 		String nameFilter = MetadataUtils.getNameFilter(options);
 		String catName = ((SnowflakeV2Connection) connection).getCatalog();
 		String schemaName = ((SnowflakeV2Connection) connection).getSchema();
+		LOGGER.log(Level.FINER, String.format("Specified Catalog: %s, Schema: %s", catName, schemaName));
 		try {
 			DatabaseMetaData metadata = ((SnowflakeV2Connection) connection).getSnowflakeConnection().getMetaData();
 
@@ -137,7 +138,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				List<Package> foundCatalogList = new ArrayList<>();
 				ResultSet resultIter = metadata.getCatalogs();
 				while (resultIter.next()) {
-					String foundCatalogName = resultIter.getString(1);
+					String foundCatalogName = resultIter.getString("TABLE_CAT");
 					Package pack = sdkFactory.newPackage(catalog);
 					pack.setName(foundCatalogName);
 					foundCatalogList.add(pack);
@@ -149,7 +150,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				resultIter.close();
 
 				if (catalog.getRootPackages().size() == 0) {
-					// If none of them matches, add all DB names to the list
+					// If none of catalog name matches, add all DB names to the
+					// list
 					for (Package pack : foundCatalogList) {
 						catalog.addRootPackage(pack);
 					}
@@ -161,34 +163,37 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				 * Get tables of schema. Use name filter if applicable. If name
 				 * filter is not applicable, it should be null
 				 */
-				tabSchema = startFolder;
+				catalogPackage = startFolder;
 
 				boolean foundSchema = false;
-				ResultSet schemaResultSet = metadata.getSchemas(tabSchema.getName(), "%");
+				ResultSet schemaResultSet = metadata.getSchemas(catalogPackage.getName(), "%");
 				while (schemaResultSet.next()) {
-					String targetSchema = schemaResultSet.getString(1);
-					String taretCatalog = schemaResultSet.getString(2);
-					if (targetSchema.equals(schemaName)) {
+					String targetSchema = schemaResultSet.getString("TABLE_SCHEM");
+					String taretCatalog = schemaResultSet.getString("TABLE_CATALOG");
+					if (targetSchema.equalsIgnoreCase(schemaName)) {
 						foundSchema = true;
 					}
-					LOGGER.finer(String.format("Catalog: %s, Schema: %s", taretCatalog, targetSchema));
+					String msg = String.format("CatalogPackage: %s, Input Catalog: %s, Input Schema: %s",
+							catalogPackage.getName(), taretCatalog, targetSchema);
+					LOGGER.finer(msg);
 				}
 				schemaResultSet.close();
 
+				LOGGER.finer(String.format("found schema: %s", foundSchema));
 				// use schema if found otherwise all schemas
-				ResultSet tablesIter = metadata.getTables(tabSchema.getName(), foundSchema ? schemaName : "%",
+				ResultSet tablesIter = metadata.getTables(catalogPackage.getName(), foundSchema ? schemaName : "%",
 						nameFilter == null ? "%" : "%" + nameFilter + "%", null);
 
 				while (tablesIter.next()) {
 					FlatRecord flatRecord = sdkFactory.newFlatRecord(catalog);
-					String targetSchema = tablesIter.getString(2);
-					String tableName = tablesIter.getString(3);
-					String tableType = tablesIter.getString(4);
+					String targetSchema = tablesIter.getString("TABLE_SCHEM");
+					String tableName = tablesIter.getString("TABLE_NAME");
+					String tableType = tablesIter.getString("TABLE_TYPE");
 
 					flatRecord.setName(tableName);
 					flatRecord.setNmoType("table");
-					flatRecord.setNativeName(SnowflakeV2MetadataAdapter
-							.encodeFullyQualifiedTableName(startFolder.getName(), targetSchema, tableName));
+					flatRecord.setNativeName(SnowflakeV2MetadataAdapter.encodeFullyQualifiedName3(startFolder.getName(),
+							targetSchema, tableName));
 
 					LOGGER.finer(String.format("Table Type: %s", tableType));
 					if ("TABLE".equals(tableType)) {
@@ -244,29 +249,27 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 			LOGGER.finer(String.format("Connection: %s, Options: %s, ImportableObjects: %s, Catalog: %s",
 					connection != null, optionStrings, importableObjects, catalog));
 		}
-
+		String schemaName = ((SnowflakeV2Connection) connection).getSchema();
 		try {
 			int optionID;
 			boolean isgetRelated = false;
 			for (Option opt : options) {
-				// TODO: what is this?
 				optionID = opt.getDescription().getEffectiveDefinition().getOptionID();
 				if (optionID == CDetailImportOpts.GET_NON_CONTAINED_SHARED_DATA_RELS) {
 					isgetRelated = true;
 				}
 			}
 
-			SnowflakeV2Connection sfConnection = (SnowflakeV2Connection) connection;
-
-			DatabaseMetaData metaData = sfConnection.getSnowflakeConnection().getMetaData();
+			DatabaseMetaData metadata = ((SnowflakeV2Connection) connection).getSnowflakeConnection().getMetaData();
 			for (ImportableObject obj : importableObjects) {
 				FlatRecord record = (FlatRecord) obj;
 
 				// Add related objects
 				if (isgetRelated) {
-					ResultSet tablesIter = metaData.getImportedKeys(null, tabSchema.getName(), record.getName());
+					ResultSet tablesIter = metadata.getImportedKeys(catalogPackage.getName(), schemaName,
+							record.getName());
 					while (tablesIter.next()) {
-						String PKImportTableName = tablesIter.getString(3);
+						String PKImportTableName = tablesIter.getString("PKTABLE_NAME");
 
 						FlatRecord relRecord = null;
 						for (FlatRecord rec : catalog.getFlatRecords()) {
@@ -279,16 +282,8 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 						if (relRecord == null) {
 							relRecord = sdkFactory.newFlatRecord(catalog);
 							relRecord.setName(PKImportTableName);
-							relRecord.setNativeName(tabSchema.getName() + "." + PKImportTableName);
-
-							// Set the record access type
-							/*
-							 * if
-							 * (!PKImportTableName.toLowerCase().contains("tgt")
-							 * ) relRecord.setRecordTypeEnum(RecordTypeEnum.
-							 * OUT_TYPE);
-							 */
-
+							relRecord.setNativeName(SnowflakeV2MetadataAdapter.encodeFullyQualifiedName3(
+									catalogPackage.getName(), schemaName, PKImportTableName));
 							catalog.getRootPackage(0).addChildRecord(relRecord);
 						}
 
@@ -303,7 +298,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 
 				} else {
 					// add columns
-					addColumns(metaData, catalog, record);
+					addColumns(metadata, catalog, record);
 				}
 			}
 		} catch (SQLException e) {
@@ -410,7 +405,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					field, name, dType, length, scale, precision));
 		}
 		field.setName(name);
-		field.setNativeName(SnowflakeV2MetadataAdapter.encodeFullyQualifiedTableName(catalogName, schemaName, tableName)
+		field.setNativeName(SnowflakeV2MetadataAdapter.encodeFullyQualifiedName3(catalogName, schemaName, tableName)
 				+ "." + SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(name));
 		field.setLength(length);
 
@@ -547,6 +542,7 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 				if (objToWrite instanceof FlatRecord) {
 
 					FlatRecord rec = (FlatRecord) objToWrite;
+					rec.getCatalog();
 					String recName = rec.getName();
 					rec.setNativeName(recName);
 					List<FieldBase> flds = rec.getFieldList();
@@ -555,11 +551,14 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					List<Package> pkgs = rec.getParentPackages();
 					catalog = rec.getCatalog();
 
+					String schemaName = ((SnowflakeV2Connection) connection).getSchema();
+					String fullyQualifiedTableName = SnowflakeV2MetadataAdapter
+							.encodeFullyQualifiedName3(catalogPackage.getName(), schemaName, recName);
 					// create/update/delete record in external system using
 					// metadata connection and record/field details provided
 					switch (actType) {
 					case create:
-						createQueryBuffer.append(recName);
+						createQueryBuffer.append(fullyQualifiedTableName);
 						createQueryBuffer.append(" (");
 
 						for (FieldBase fld : flds) {
@@ -595,8 +594,11 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 					MetadataWriteResults res = new MetadataWriteResults(new Status(StatusEnum.SUCCESS, ""));
 					// if updated object is different, set the appropriate value
 					FlatRecord updatedObject = catalog.getFactory().newFlatRecord(catalog);
-					updatedObject.setName("someName");
+					updatedObject.setName(recName);
+					updatedObject.setNmoType("table");
+					updatedObject.setNativeName(fullyQualifiedTableName);
 					// set other attributes
+					updatedObject.setRecordTypeEnum(RecordTypeEnum.INOUT_TYPE);
 					res.setUpdatedObject(updatedObject);
 					action.setWriteResults(res);
 				} else {
@@ -638,12 +640,24 @@ public class SnowflakeV2MetadataAdapter extends AbstractMetadataAdapter {
 	 * @param catalog
 	 * @param schema
 	 * @param table
-	 * @return a fully qualified table name
+	 * @return a fully qualified name
 	 */
-	private static final String encodeFullyQualifiedTableName(String catalog, String schema, String table) {
+	private static final String encodeFullyQualifiedName3(String catalog, String schema, String table) {
 		return SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(catalog) + "."
 				+ SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(schema) + "."
 				+ SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(table);
+	}
+
+	/**
+	 * Encodes a pair of object names into a fully qualified name
+	 * 
+	 * @param parent
+	 * @param child
+	 * @return a fully qualified name
+	 */
+	private static final String encodeFullyQualifiedName2(String parent, String child) {
+		return SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(parent) + "."
+				+ SnowflakeV2MetadataAdapter.encodeFullyQualifiedName(child);
 	}
 
 	/**
