@@ -38,7 +38,6 @@ import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteResults;
 import com.informatica.sdk.adapter.metadata.writeback.MetadataWriteSession;
 import com.informatica.sdk.adapter.metadata.common.CWriteObjectsOpts;
 import com.informatica.sdk.exceptions.ExceptionManager;
-import com.unicosolution.adapter.snowflakev2.runtime.adapter.SnowflakeV2TableDataConnection;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableFieldExtensions;
 import com.unicosolution.adapter.snowflakev2.table.metadata.semantic.iface.SEMTableRecordExtensions;
 
