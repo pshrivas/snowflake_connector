@@ -1253,11 +1253,15 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 	}
 
-	private String getOperationTypeString(int operationType) {
+	private String getOperationTypeString(int operationType, boolean isUpsert) {
 		if (operationType == EIUDIndicator.INSERT) {
 			return "INSERT";
 		} else if (operationType == EIUDIndicator.UPDATE) {
-			return "UPDATE";
+			if (isUpsert) {
+				return "UPSERT";
+			} else {
+				return "UPDATE";
+			}
 		} else if (operationType == EIUDIndicator.DELETE) {
 			return "DELETE";
 		} else if (operationType == EIUDIndicator.STREAMING_INSERT) {
@@ -1282,10 +1286,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	@Override
 	public int write(DataSession dataSession, WriteAttributes writeAttr) throws SDKException {
-		LOGGER.log(Level.FINER,
-				String.format("DataSession: %s," + " WriteAttributes: %s," + " Number of Rows to Write: %s",
-						dataSession, writeAttr, writeAttr.getNumRowsToWrite()));
-
 		// Get runtime config metadata handle
 		RuntimeConfigMetadata runtimeMetadataHandle = (RuntimeConfigMetadata) dataSession
 				.getMetadataHandle(EmetadataHandleTypes.runtimeConfigMetadata);
@@ -1298,17 +1298,18 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		String writerPartID = null;
 		boolean isUpsert = false;
+		boolean abortOnErrors = false;
+		boolean propagateData = false;
 
 		if (currPartInfo != null) {
 			SEMTableWriteCapabilityAttributesExtension partAttris = (SEMTableWriteCapabilityAttributesExtension) (currPartInfo)
 					.getExtensions();
 			isUpsert = !partAttris.getUpdateMode().equalsIgnoreCase("Update As Update");
-		}
 
-		String operationTypeString = getOperationTypeString(operationType);
-		LOGGER.log(Level.FINER, String.format("Operation Type: %s, is Upsert?: %s", operationTypeString, isUpsert));
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				"write:begin Operation Type: " + operationTypeString + ", isUpsert: " + isUpsert);
+			// loader listener properties
+			abortOnErrors = partAttris.isAbortOnErrors();
+			propagateData = partAttris.isPropagateData();
+		}
 
 		int returnStatus = EReturnStatus.FAILURE;
 
@@ -1333,8 +1334,6 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		}
 
 		returnStatus = submitDataToLoader(dataSession, writeAttr.getNumRowsToWrite());
-		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA,
-				formatLog("write", writeAttr.getNumRowsToWrite() + " record was submitted to loader"));
 
 		// Capture the processing stats from the loader's listener
 		RowsStatInfo rowsStatInfo = runtimeMetadataHandle.getRowsStatInfo(operationType);
@@ -1346,15 +1345,18 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		rowsStatInfo.incrementAffected(listener.getOperationRecordCount(op));
 		rowsStatInfo.incrementRejected(listener.getRejectedRecordCount(op));
 
-		String msg = String.format("Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
+		String msg = String.format(
+				"Operation Type: %s, Submitted: %s, Processed Record Count: %s, Operation Record Count: %s, Rejected Recourd Count: %s",
+				getOperationTypeString(operationType, isUpsert), writeAttr.getNumRowsToWrite(),
 				listener.getProcessedRecordCount(op), listener.getOperationRecordCount(op),
 				listener.getRejectedRecordCount(op));
 		LOGGER.log(Level.FINER, msg);
 		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_VERBOSE_DATA, formatLog("write", msg));
 
-		// Restart the loader, for potentially subsequent calls to "write"
-		// method by the platform
+		// Resetting the listener. All metrics are reset
 		listener = new BulkLoadResultListener(this);
+		listener.setAbortOnErrors(abortOnErrors);
+		listener.setPropagate(propagateData);
 		((BulkLoadResultListener) listener).setOperation(op);
 		loader.setListener(listener);
 		return returnStatus;
@@ -1640,10 +1642,11 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 */
 	private int initBulkLoader(DataSession dataSession) throws SDKException {
 		LOGGER.log(Level.FINER, String.format("DataSession: %s", dataSession));
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initBulkLoader", "begin"));
 
 		SnowflakeV2TableDataConnection conn = (SnowflakeV2TableDataConnection) dataSession.getConnection();
 
-		String db = conn.getCatalog();
+		String database = conn.getCatalog();
 		String schema = conn.getSchema();
 
 		String tableName = currentFlatRecord.getName();
@@ -1670,7 +1673,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 		LOGGER.log(Level.FINER, String.format("Primary Key Columns: %s", pkColumns));
 
 		RecordMeta recordMeta = new RecordMeta();
-		recordMeta.setCatalogName(db);
+		recordMeta.setCatalogName(database);
 		recordMeta.setRecordName(tableName);
 		recordMeta.setColumns(columnsList);
 		recordMeta.setKeys(pkColumns);
@@ -1686,48 +1689,53 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 		String preSql = null;
 		String postSql = null;
-		boolean abortOnErrors = false;
-		boolean propagateData = false;
 		boolean oneBatch = false;
 		boolean truncateTable = false;
 		String updatedKeyColumns = null;
+		boolean startTransaction = false;
+		boolean abortOnErrors = false;
+		boolean propagateData = false;
 
 		if (writeCapAttr != null) {
 			SEMTableWriteCapabilityAttributesExtension writeAttribs = (SEMTableWriteCapabilityAttributesExtension) (writeCapAttr)
 					.getExtensions();
 
+			// loader properties
 			preSql = writeAttribs.getPreSql();
 			postSql = writeAttribs.getPostSql();
-			abortOnErrors = writeAttribs.isAbortOnErrors();
-			propagateData = writeAttribs.isPropagateData();
 			oneBatch = writeAttribs.isOneBatch();
 			truncateTable = writeAttribs.isTruncateTargetTable();
 			updatedKeyColumns = writeAttribs.getUpdateKeyColumns();
+			startTransaction = writeAttribs.isStartTransactionForJobs();
+
+			// loader listener properties
+			abortOnErrors = writeAttribs.isAbortOnErrors();
+			propagateData = writeAttribs.isPropagateData();
 		}
 
-		if (preSql != null && !preSql.trim().isEmpty()) {
+		if (!isNullOrEmpty(preSql)) {
 			loader.setProperty(LoaderProperty.executeBefore, preSql);
 		}
-		if (db != null && !db.trim().isEmpty()) {
-			loader.setProperty(LoaderProperty.databaseName, db);
+		if (!isNullOrEmpty(database)) {
+			loader.setProperty(LoaderProperty.databaseName, database);
 		}
-		if (schema != null && !schema.trim().isEmpty()) {
+		if (!isNullOrEmpty(schema)) {
 			loader.setProperty(LoaderProperty.schemaName, schema);
 		}
-
-		loader.setProperty(LoaderProperty.oneBatch, oneBatch);
-
-		if (postSql != null && !postSql.trim().isEmpty()) {
+		if (!isNullOrEmpty(postSql)) {
 			loader.setProperty(LoaderProperty.executeAfter, postSql);
 		}
 
+		loader.setProperty(LoaderProperty.startTransaction, startTransaction);
+		loader.setProperty(LoaderProperty.oneBatch, oneBatch);
 		loader.setProperty(LoaderProperty.truncateTable, truncateTable);
 
 		// safe to set, delayed OP change will be a no-ops
 		loader.setProperty(LoaderProperty.operation, Operation.INSERT);
 		op = Operation.INSERT;
 
-		if (updatedKeyColumns != null && !updatedKeyColumns.trim().isEmpty()) {
+		if (!isNullOrEmpty(updatedKeyColumns)) {
+			// key columns
 			List<String> keys = new ArrayList<>();
 			for (String c : updatedKeyColumns.split("\\s*;\\s*")) {
 				boolean found = false;
@@ -1747,35 +1755,47 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 					}
 				}
 				if (!found) {
-					LOGGER.log(Level.WARNING, String.format("Not found the Update Key Column: %s", c));
+					// no column didn't match
+					String msg = String.format("Not found the Update Key Column: %s", c);
+					LOGGER.log(Level.WARNING, msg);
+					logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE,
+							formatLog("initBulkLoader", msg));
+					ExceptionManager.createNonNlsAdapterSDKException(formatLog("initBulkLoader", msg));
 					return EReturnStatus.FAILURE;
 				}
 			}
 			loader.setProperty(LoaderProperty.keys, keys);
 		}
 
+		String msg = String.format(
+				"Loader Properties: DB: %s, Schema: %s, OneBatch: %s, TruncateTable: %s, StartTransaction: %s, UpdatedKeyColumns: %s",
+				database, schema, oneBatch, truncateTable, startTransaction, updatedKeyColumns);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initBulkLoader", msg));
+		msg = String.format("Loader Listener Properties: AbortOnErrors %s, Propagte: %s", abortOnErrors, propagateData);
+		LOGGER.log(Level.FINER, msg);
+		logger.logMessage(EMessageLevel.MSG_INFO, ELogLevel.TRACE_NORMAL, formatLog("initBulkLoader", msg));
+
 		// A new listener. All metrics are reset
 		listener = new BulkLoadResultListener(this);
 		listener.setAbortOnErrors(abortOnErrors);
 		listener.setPropagate(propagateData);
-
-		// Set the listener to the loader
 		loader.setListener(listener);
 		try {
-
-			LOGGER.log(Level.FINE, String.format("Writing data start"));
+			LOGGER.log(Level.FINE, String.format("Starting Loader..."));
 			loader.start();
 		} catch (Exception e) {
-			String eMsg = String.format("Failed to start Loader: ", e.getMessage());
+			String eMsg = String.format("Failed to start Loader: %s", e.getMessage());
 			LOGGER.log(Level.SEVERE, eMsg);
 			logger.logMessage(EMessageLevel.MSG_FATAL_ERROR, ELogLevel.TRACE_NONE, formatLog("initBulkLoader", eMsg));
-			ExceptionManager.createNonNlsAdapterSDKException(formatLog("initBulkLoader", eMsg));
 			try {
 				loader.finish();
 				loader.close();
 			} catch (Exception e1) {
 				LOGGER.log(Level.WARNING,
-						String.format("Ignoring Loader finish/close failed in the event of start failure"));
+						String.format("Ignoring Loader finish/close failed in the event of loader start failure"));
+			} finally {
+				ExceptionManager.createNonNlsAdapterSDKException(formatLog("initBulkLoader", eMsg));
 			}
 			return EReturnStatus.FAILURE;
 		}
@@ -1821,13 +1841,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 
 				loader.submitRow(rowData);
 			} catch (Exception e) {
-				String eMsg = formatLog("submitDataToLoader",
-						String.format("Rejecting row-%s for %s operation on table %s, Cause: %s", row, op,
-								currentFlatRecord.getName(), e.getMessage()));
-				LOGGER.log(Level.INFO, eMsg, e);
-				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, eMsg);
-				ExceptionManager.createNonNlsAdapterSDKException(formatLog("submitDataToLoader", eMsg));
-
+				String eMsg = "";
 				if (loader instanceof StreamLoader) {
 					if (((StreamLoader) loader).getListener() instanceof BulkLoadResultListener) {
 						// The Loader and LoadResultListener APIs do not provide
@@ -1850,6 +1864,12 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 							loader.getClass().getName());
 					LOGGER.log(Level.WARNING, eMsg);
 				}
+				eMsg = formatLog("submitDataToLoader",
+						String.format("Rejecting row-%s for %s operation on table %s, Cause: %s", row, op,
+								currentFlatRecord.getName(), e.getMessage()));
+				LOGGER.log(Level.INFO, eMsg, e);
+				logger.logMessage(EMessageLevel.MSG_ERROR, ELogLevel.TRACE_NONE, eMsg);
+				ExceptionManager.createNonNlsAdapterSDKException(formatLog("submitDataToLoader", eMsg));
 				return EReturnStatus.FAILURE;
 			}
 		}
@@ -1937,7 +1957,7 @@ public class SnowflakeV2TableDataAdapter extends DataAdapter {
 	 * @return true if null or empty
 	 */
 	private final boolean isNullOrEmpty(String str) {
-		return str == null || str.length() == 0;
+		return str == null || str.trim().isEmpty();
 	}
 
 	private final String formatLog(String methodName, String msg) {
